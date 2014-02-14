@@ -22,7 +22,9 @@ public class CompLing {
 
 	/** Text to analyse */
 	private Text text;
-	private CharacterAnalyserImpl characterAnalyser;
+
+	/** Character analyser. Can be null - the instance is created first time CharacterAnalyser is required */
+	private CharacterAnalyser characterAnalyser;
 
 	/**
 	 * Instances are accessible only via getInstance method

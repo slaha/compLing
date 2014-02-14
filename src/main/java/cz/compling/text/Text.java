@@ -6,7 +6,9 @@ import cz.compling.analysis.CharacterAnalysable;
 
 /**
  *
- * This interface defines all possible analysis of text
+ * <p></p>This interface defines all possible analysis of text.
+ *
+ * <p>Classes that are implementing this interface should be immutable
  *
  * <dl>
  * <dt>Created by:</dt>
