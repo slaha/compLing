@@ -1,0 +1,4 @@
+compLing
+========
+
+Computational linguistics library
