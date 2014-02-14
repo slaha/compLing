@@ -20,4 +20,10 @@ public interface CharacterAnalysable {
 	 */
 	int getPlainTextLength();
 
+	/**
+	 * Returns frequency of characters in the text
+	 *
+	 * @return frequency of characters in the text
+	 */
+	CharacterFrequency getCharacterFrequency();
 }

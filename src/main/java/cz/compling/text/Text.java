@@ -1,9 +1,6 @@
 package cz.compling.text;
 
 
-import cz.compling.analysis.CharacterAnalysable;
-
-
 /**
  *
  * <p></p>This interface defines all possible analysis of text.
@@ -17,6 +14,7 @@ import cz.compling.analysis.CharacterAnalysable;
  * <dd> 14.2.14 18:31</dd>
  * </dl>
  */
-public interface Text extends CharacterAnalysable {
+public interface Text {
 
+	String getPlainText();
 }

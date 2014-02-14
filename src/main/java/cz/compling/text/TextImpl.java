@@ -32,7 +32,7 @@ public class TextImpl implements Text {
 	}
 
 	@Override
-	public int getPlainTextLength() {
-		return plainText.length();
+	public String getPlainText() {
+		return plainText;
 	}
 }
