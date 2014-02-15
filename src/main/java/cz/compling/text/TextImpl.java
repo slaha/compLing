@@ -1,5 +1,9 @@
 package cz.compling.text;
 
+import cz.compling.rules.CharacterModificationRule;
+import cz.compling.rules.Rule;
+import cz.compling.rules.TextModificationRule;
+
 /**
  *
  * Basic implementation of Text interface
@@ -16,6 +20,10 @@ public class TextImpl implements Text {
 	/** Text to analyse. Should be encoded in utf-8 */
 	private final String plainText;
 
+	private String rulesAppliedText;
+
+	private final RuleHolder ruleHolder;
+
 	/**
 	 * Create new instance.
 	 *
@@ -28,11 +36,38 @@ public class TextImpl implements Text {
 			throw new IllegalArgumentException("text cannot be null");
 		}
 		this.plainText = text;
+		this.ruleHolder = new RuleHolderImpl();
 
 	}
 
 	@Override
 	public String getPlainText() {
+
+		if (ruleHolder.anyModificationRule()) {
+			this.rulesAppliedText = plainText;
+			for (TextModificationRule rule : ruleHolder.getModificationRules()) {
+				this.rulesAppliedText = rule.modify(rulesAppliedText);
+			}
+			return rulesAppliedText;
+		}
+
 		return plainText;
 	}
+
+	@Override
+	public String[] getLines() {
+		return plainText.split("\\r?\\n");
+	}
+
+	@Override
+	public void registerRule(Rule rule) {
+		ruleHolder.add(rule);
+
+	}
+
+	@Override
+	public Iterable<? extends CharacterModificationRule> getCharacterModificationRules() {
+		return ruleHolder.getCharacterModificationRules();
+	}
+
 }

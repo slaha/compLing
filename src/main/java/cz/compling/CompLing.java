@@ -2,6 +2,7 @@ package cz.compling;
 
 import cz.compling.analysis.analysator.CharacterAnalyser;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImpl;
+import cz.compling.rules.Rule;
 import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
 
@@ -55,5 +56,9 @@ public class CompLing {
 		}
 
 		return new CompLing(new TextImpl(text));
+	}
+
+	public void registerRule(Rule rule) {
+		text.registerRule(rule);
 	}
 }

@@ -1,6 +1,9 @@
 package cz.compling.text;
 
 
+import cz.compling.rules.CharacterModificationRule;
+import cz.compling.rules.Rule;
+
 /**
  *
  * <p></p>This interface defines all possible analysis of text.
@@ -16,5 +19,17 @@ package cz.compling.text;
  */
 public interface Text {
 
+	/**
+	 * @return text
+	 */
 	String getPlainText();
+
+	/**
+	 * @return text separated by lines
+	 */
+	String[] getLines();
+
+	void registerRule(Rule rule);
+
+	Iterable<? extends CharacterModificationRule> getCharacterModificationRules();
 }
