@@ -26,4 +26,5 @@ public interface CharacterAnalysable {
 	 * @return frequency of characters in the text
 	 */
 	CharacterFrequency getCharacterFrequency();
+
 }

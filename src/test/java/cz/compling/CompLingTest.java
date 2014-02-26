@@ -1,6 +1,12 @@
 package cz.compling;
 
 import cz.compling.analysis.analysator.CharacterAnalyser;
+import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
+import cz.compling.analysis.analysator.impl.CharacterFrequencyTest;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 /**
  *
@@ -11,32 +17,35 @@ import cz.compling.analysis.analysator.CharacterAnalyser;
  * <dd> 14.2.14 18:37</dd>
  * </dl>
  */
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+	CharacterAnalyserImplTest.class,
+	CharacterFrequencyTest.class
+})
 public class CompLingTest extends AbstTest {
 
-	public void testGetCompLingInstanceNull() {
 
-		try {
-			CompLing.getInstance(null);
-			fail("No IllegalArgumentException when creating CompLing instance wit null parameter");
-		} catch (IllegalArgumentException ex) {
+	@Test(expected = IllegalArgumentException.class)
+	public void getCompLingInstanceNull() {
 
-		}
-
+		CompLing.getInstance(null);
 	}
 
-	public void testGetCompLingInstance() {
+	@Test
+	public void getCompLingInstance() {
 
 		CompLing compLing = CompLing.getInstance("");
 
-		assertTrue(compLing != null);
+		Assert.assertTrue(compLing != null);
 
 	}
 
-	public void testGetCharacterAnalyser() {
+	@Test
+	public void getCharacterAnalyser() {
 
-		CharacterAnalyser characterAnalyser1 = compLing.getCharacterAnalyser();
-		CharacterAnalyser characterAnalyser2 = compLing.getCharacterAnalyser();
+		CharacterAnalyser characterAnalyser1 = getCompLing().getCharacterAnalyser();
+		CharacterAnalyser characterAnalyser2 = getCompLing().getCharacterAnalyser();
 
-		assertEquals(characterAnalyser1, characterAnalyser2);
+		Assert.assertEquals(characterAnalyser1, characterAnalyser2);
 	}
 }

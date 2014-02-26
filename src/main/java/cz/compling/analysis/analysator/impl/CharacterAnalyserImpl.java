@@ -19,6 +19,8 @@ public class CharacterAnalyserImpl implements CharacterAnalyser {
 
 	private final Text text;
 
+	private CharacterFrequency characterFrequency;
+
 	public CharacterAnalyserImpl(Text text) {
 		this.text = text;
 	}
@@ -30,6 +32,7 @@ public class CharacterAnalyserImpl implements CharacterAnalyser {
 
 	@Override
 	public CharacterFrequency getCharacterFrequency() {
+
 		return new CharacterFrequency(text);
 	}
 }
