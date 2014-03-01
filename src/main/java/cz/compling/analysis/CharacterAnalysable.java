@@ -1,5 +1,7 @@
 package cz.compling.analysis;
 
+import cz.compling.analysis.analysator.frequency.CharacterFrequency;
+
 /**
  *
  * This interface contains methods which should be performed in character analysis

@@ -1,7 +1,7 @@
 package cz.compling.rules;
 
 
-import utils.Reference;
+import cz.compling.utils.Reference;
 
 /**
  *

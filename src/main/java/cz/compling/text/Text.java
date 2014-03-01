@@ -3,6 +3,7 @@ package cz.compling.text;
 
 import cz.compling.rules.CharacterModificationRule;
 import cz.compling.rules.Rule;
+import cz.compling.rules.TextModificationRule;
 
 /**
  *
@@ -32,4 +33,6 @@ public interface Text {
 	void registerRule(Rule rule);
 
 	Iterable<? extends CharacterModificationRule> getCharacterModificationRules();
+
+	String applyRule(TextModificationRule rule);
 }

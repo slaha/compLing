@@ -1,7 +1,9 @@
 package cz.compling;
 
 import cz.compling.analysis.analysator.CharacterAnalyser;
+import cz.compling.analysis.analysator.WordFrequencyAnalyser;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImpl;
+import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImpl;
 import cz.compling.rules.Rule;
 import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
@@ -24,8 +26,11 @@ public class CompLing {
 	/** Text to analyse */
 	private Text text;
 
-	/** Character analyser. Can be null - the instance is created first time CharacterAnalyser is required */
+	/** Character analyser. Can be null - the instance is created first time {@code CharacterAnalyser} is required */
 	private CharacterAnalyser characterAnalyser;
+
+	/** Word analyser. Can be null - the instance is created first time {@code WordFrequencyAnalyser} is required */
+	private WordFrequencyAnalyser wordFrequencyAnalyser;
 
 	/**
 	 * Instances are accessible only via getInstance method
@@ -35,13 +40,23 @@ public class CompLing {
 	}
 
 	/**
-	 * Returns an instance of CharacterAnalyser which can perform detailed analysis of characters it the text
+	 * Returns an instance of {@code CharacterAnalyser} which can perform detailed analysis of characters it the text
 	 */
 	public synchronized CharacterAnalyser getCharacterAnalyser() {
 		if (this.characterAnalyser == null) {
 			this.characterAnalyser = new CharacterAnalyserImpl(this.text);
 		}
 		return this.characterAnalyser;
+	}
+
+	/**
+	 * Returns an instance of {@code WordFrequencyAnalyser} which can perform detailed analysis of words it the text
+	 */
+	public synchronized WordFrequencyAnalyser getWordFrequencyAnalyser() {
+		if (this.wordFrequencyAnalyser == null) {
+			this.wordFrequencyAnalyser = new WordFrequencyAnalyserImpl(this.text);
+		}
+		return this.wordFrequencyAnalyser;
 	}
 
 	/**

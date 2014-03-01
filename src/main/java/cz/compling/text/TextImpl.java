@@ -70,4 +70,10 @@ public class TextImpl implements Text {
 		return ruleHolder.getCharacterModificationRules();
 	}
 
+	@Override
+	public String applyRule(TextModificationRule rule) {
+		return rule.modify(getPlainText());
+
+	}
+
 }

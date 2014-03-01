@@ -2,7 +2,7 @@ package cz.compling;
 
 import cz.compling.analysis.analysator.CharacterAnalyser;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
-import cz.compling.analysis.analysator.impl.CharacterFrequencyTest;
+import cz.compling.analysis.analysator.impl.CharacterFrequencyImplTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	CharacterAnalyserImplTest.class,
-	CharacterFrequencyTest.class
+	CharacterFrequencyImplTest.class
 })
 public class CompLingTest extends AbstTest {
 

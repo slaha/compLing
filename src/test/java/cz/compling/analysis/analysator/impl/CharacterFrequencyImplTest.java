@@ -1,13 +1,13 @@
 package cz.compling.analysis.analysator.impl;
 
-import cz.compling.analysis.CharacterFrequency;
 import cz.compling.rules.CharacterModificationRule;
 import cz.compling.rules.TextModificationRule;
+import cz.compling.utils.Reference;
+import cz.compling.utils.TrooveUtils;
 import org.javatuples.Pair;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import utils.Reference;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,9 +24,9 @@ import java.util.Locale;
  * <dd> 26.2.14 11:43</dd>
  * </dl>
  */
-public class CharacterFrequencyTest extends CharacterAnalyserImplTest {
+public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 
-	private static CharacterFrequency frequency;
+	private static cz.compling.analysis.analysator.frequency.CharacterFrequency frequency;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -61,7 +61,7 @@ public class CharacterFrequencyTest extends CharacterAnalyserImplTest {
 
 		getCompLing().registerRule(rule);
 
-		CharacterFrequency frequency1 = getAnalyser().getCharacterFrequency();
+		cz.compling.analysis.analysator.frequency.CharacterFrequency frequency1 = getAnalyser().getCharacterFrequency();
 		aFr = frequency1.getFrequencyFor('a');
 		Assert.assertEquals(2, aFr);
 
@@ -110,7 +110,7 @@ public class CharacterFrequencyTest extends CharacterAnalyserImplTest {
 
 	@Test
 	public void testGetAllByFrequency() throws Exception {
-		List<Pair<String,Integer>> allByFrequencyDesc = frequency.getAllByFrequency(true);
+		List<Pair<String,Integer>> allByFrequencyDesc = frequency.getAllByFrequency(TrooveUtils.SortOrder.DESCENDING);
 		int lastFreq = -1;
 		for (Pair<String, Integer> pair : allByFrequencyDesc) {
 			if (lastFreq < 0) {
@@ -123,7 +123,7 @@ public class CharacterFrequencyTest extends CharacterAnalyserImplTest {
 			}
 		}
 
-		List<Pair<String,Integer>> allByFrequencyAsc = frequency.getAllByFrequency(false);
+		List<Pair<String,Integer>> allByFrequencyAsc = frequency.getAllByFrequency(TrooveUtils.SortOrder.ASCENDING);
 		lastFreq = -1;
 		for (Pair<String, Integer> pair : allByFrequencyAsc) {
 			if (lastFreq < 0) {
