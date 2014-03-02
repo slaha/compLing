@@ -74,8 +74,11 @@ public class CharacterFrequencyImpl implements CharacterFrequency {
 	}
 
 	@Override
-	public int getFrequencyFor(String string) {
-		return frequency.get(string);
+	public int getFrequencyFor(String freqFor) {
+		if (freqFor == null || freqFor.trim().isEmpty()) {
+			throw new IllegalArgumentException("getFrequencyFor cannot be called with NULL or empty or whitespaces only argument");
+		}
+		return frequency.get(freqFor);
 	}
 
 	@Override

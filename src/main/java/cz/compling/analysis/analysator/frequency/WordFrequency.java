@@ -24,8 +24,39 @@ public interface WordFrequency {
 	 */
 	int getCountOfWords();
 
-	int getFrequencyFor(String string);
+	/**
+	 * Returns frequency for {@code word}
+	 *
+	 * @param word word to look for its frequency
+	 *
+	 * @return frequency of occasions of the word. Zero if it is not in the text
+	 */
+	int getFrequencyFor(String word);
 
-	List<Pair<String, Integer>> getAllByFrequency(TrooveUtils.SortOrder order);
+	/**
+	 * Returns frequency for all words of length {@code length}
+	 *
+	 * @param length length of words to look for their frequency. Must be > 0
+	 *
+	 * @return frequency of occasions of words of the length. Zero if it is not in the text
+	 */
+	int getFrequencyFor(int length);
 
+	/**
+	 * Returns list of all words with count of their occasions in the text
+	 *
+	 * @param order how the list will be sorted
+	 *
+	 * @return sorted list with pairs of occasions for each word.
+	 */
+	List<Pair<String, Integer>> getAllWordsByFrequency(TrooveUtils.SortOrder order);
+
+	/**
+	 * Returns list of all lengths od words with count of their occasions in the text
+	 *
+	 * @param order how the list will be sorted
+	 *
+	 * @return sorted list with pairs where first value is length and second value is number of occasions.
+	 */
+	List<Pair<Integer, Integer>> getAllWordsLengthsByFrequency(TrooveUtils.SortOrder order);
 }

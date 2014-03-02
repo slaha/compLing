@@ -3,6 +3,7 @@ package cz.compling.text;
 import cz.compling.rules.CharacterModificationRule;
 import cz.compling.rules.Rule;
 import cz.compling.rules.TextModificationRule;
+import cz.compling.rules.WordModificationRule;
 
 /**
  *
@@ -74,6 +75,11 @@ public class TextImpl implements Text {
 	public String applyRule(TextModificationRule rule) {
 		return rule.modify(getPlainText());
 
+	}
+
+	@Override
+	public Iterable<? extends WordModificationRule> getWordModificationRules() {
+		return ruleHolder.getWordModificationRules();
 	}
 
 }

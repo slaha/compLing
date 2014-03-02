@@ -2,15 +2,16 @@ package cz.compling.analysis.analysator.frequency.impl;
 
 import cz.compling.analysis.analysator.frequency.WordFrequency;
 import cz.compling.rules.TextModificationRule;
+import cz.compling.rules.WordModificationRule;
 import cz.compling.text.Text;
-import cz.compling.text.TextImpl;
+import cz.compling.utils.Reference;
 import cz.compling.utils.TrooveUtils;
 import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import org.javatuples.Pair;
 
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  *
@@ -25,19 +26,21 @@ import java.util.StringTokenizer;
  */
 public class WordFrequencyImpl implements WordFrequency {
 
-	private static final String SPLIT_BY_SPACE_S_REGEX = "( )+";
-
 	/** Text to analyse */
 	private final Text text;
 
+	/** Frequency of words (word is key, frequency is value) */
 	private final TObjectIntMap<String> frequency;
 
+	private final TIntIntHashMap wordsByLength;
+
+	/** How many words is in the text */
 	private int countOfWords;
 
 	public WordFrequencyImpl(Text text) {
-//		this.text = text;
-		this.text = new TextImpl("Ahoj,    jak se    máte????\nJá   se   mááám  dobřeeee   jak\n\n\n");
+		this.text = text;
 		frequency = new TObjectIntHashMap<String>();
+		wordsByLength = new TIntIntHashMap();
 		compute();
 	}
 
@@ -49,27 +52,35 @@ public class WordFrequencyImpl implements WordFrequency {
 			public String modify(String text) {
 				StringBuilder sb = new StringBuilder(text.length());
 				for (char c : text.toCharArray()) {
-					if (c == ' ' || Character.isLetter(c)) {
-						sb.append(c);
-					} else {
-						sb.append(' ');
-					}
+					sb.append(Character.isLetter(c) ? c : ' ');
 				}
 				return sb.toString().trim();
 			}
 		};
 		final String onlyAlphabetText = text.applyRule(removeNonAlphabetCharacters);
 
-		//..Maybe String.split("( )+").length is faster I don't know
-		StringTokenizer tokenizer = new StringTokenizer(onlyAlphabetText, " ", false);
-		this.countOfWords = tokenizer.countTokens();
+		//..Split by space(s). Used String.split because javadoc to StringTokenizer says "its use is discouraged in new code"
+		String[] words = onlyAlphabetText.split("\\s+");
+		this.countOfWords = words.length;
 
-		String nextWord;
-		while (tokenizer.hasMoreTokens()) {
-			nextWord =  tokenizer.nextToken();
-
-			frequency.adjustOrPutValue(nextWord, 1, 1);
+		final Reference<String> word = new Reference<String>();
+		final Reference<Integer> length = new Reference<Integer>();
+		for (String nextWord : words) {
+			word.value = nextWord;
+			length.value = nextWord.length();
+			applyRules(word, length);
+			frequency.adjustOrPutValue(word.value, 1, 1);
+			wordsByLength.adjustOrPutValue(length.value, 1, 1);
 		}	
+	}
+
+	private void applyRules(Reference<String> word, Reference<Integer> length) {
+
+		for (WordModificationRule rule : text.getWordModificationRules()) {
+			if (rule.modify(word, length)) {
+				return;
+			}
+		}
 	}
 
 	@Override
@@ -86,7 +97,16 @@ public class WordFrequencyImpl implements WordFrequency {
 	}
 
 	@Override
-	public List<Pair<String, Integer>> getAllByFrequency(TrooveUtils.SortOrder order) {
+	public int getFrequencyFor(int length) {
+		if (length <= 0) {
+			throw new IllegalArgumentException("Param length must be positive, was " + length);
+		}
+
+		return wordsByLength.get(length);
+	}
+
+	@Override
+	public List<Pair<String, Integer>> getAllWordsByFrequency(TrooveUtils.SortOrder order) {
 
 		return new TrooveUtils.Lists<String, Pair<String, Integer>>()
 			.toList(frequency)
@@ -94,10 +114,12 @@ public class WordFrequencyImpl implements WordFrequency {
 			.getList();
 	}
 
-	public static void main(String[] args) {
-		WordFrequency wf = new WordFrequencyImpl(null);
-		System.out.println("Počet slov " + wf.getCountOfWords());
-		System.out.println("Počet slov 'jak' " + wf.getFrequencyFor("jak"));
-		System.out.println("Dle frekvence: \n" + wf.getAllByFrequency(TrooveUtils.SortOrder.DESCENDING));
+	@Override
+	public List<Pair<Integer, Integer>> getAllWordsLengthsByFrequency(TrooveUtils.SortOrder order) {
+
+		return new TrooveUtils.Lists<Integer, Pair<Integer, Integer>>()
+			.toList(wordsByLength)
+			.sort(order)
+			.getList();
 	}
 }

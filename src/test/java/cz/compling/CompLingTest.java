@@ -1,8 +1,8 @@
 package cz.compling;
 
 import cz.compling.analysis.analysator.CharacterAnalyser;
+import cz.compling.analysis.analysator.frequency.impl.CharacterFrequencyImplTest;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
-import cz.compling.analysis.analysator.impl.CharacterFrequencyImplTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

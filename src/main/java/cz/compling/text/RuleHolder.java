@@ -3,6 +3,7 @@ package cz.compling.text;
 import cz.compling.rules.CharacterModificationRule;
 import cz.compling.rules.Rule;
 import cz.compling.rules.TextModificationRule;
+import cz.compling.rules.WordModificationRule;
 
 /**
  *
@@ -24,4 +25,6 @@ public interface RuleHolder {
 	Iterable<? extends CharacterModificationRule> getCharacterModificationRules();
 
 	Iterable<? extends TextModificationRule> getModificationRules();
+
+	Iterable<? extends WordModificationRule> getWordModificationRules();
 }

@@ -1,6 +1,7 @@
 package cz.compling.utils;
 
 import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
@@ -38,11 +39,23 @@ public class TrooveUtils {
 		/**
 		 * Converts frequency table to list
 		 */
-		public Lists<K, PAIR> toList(TObjectIntMap<K> frequency) {
+		public Lists<K, PAIR> toList(TObjectIntMap<K> map) {
 
-			for (K key : frequency.keySet()) {
+			for (K key : map.keySet()) {
 				list.add(
-					(PAIR) new Pair<K, Integer>(key, frequency.get(key))
+					(PAIR) new Pair<K, Integer>(key, map.get(key))
+				);
+			}
+
+			return this;
+		}
+
+		public Lists<K, PAIR> toList(TIntIntHashMap map) {
+
+			for (Object key : map.keys()) {
+				list.add(
+					//..these casts are really ugly but I do not know how to solve it without them
+					(PAIR) new Pair<K, Integer>((K)key, map.get((Integer)key))
 				);
 			}
 
@@ -77,7 +90,7 @@ public class TrooveUtils {
 
 					if (diff == 0) {
 						//..frequency is the same. Compare characters
-						diff = o1.getValue0().compareTo(o2.getValue0());
+						diff = o2.getValue0().compareTo(o1.getValue0());
 					}
 
 					return order == SortOrder.DESCENDING ? diff : -diff;

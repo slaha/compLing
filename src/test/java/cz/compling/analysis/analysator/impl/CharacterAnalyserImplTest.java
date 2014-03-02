@@ -1,6 +1,7 @@
 package cz.compling.analysis.analysator.impl;
 
 import cz.compling.AbstTest;
+import cz.compling.TestUtils;
 import cz.compling.analysis.analysator.CharacterAnalyser;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -15,6 +16,8 @@ import org.junit.Test;
  * </dl>
  */
 public class CharacterAnalyserImplTest extends AbstTest {
+
+	private static final int TEXT_LENGTH = 5120;
 
 	protected static CharacterAnalyser getAnalyser() {
 		return analyser;
@@ -34,7 +37,13 @@ public class CharacterAnalyserImplTest extends AbstTest {
 	public void testGetPlainTextLength() throws Exception {
 		int length = analyser.getPlainTextLength();
 
-		Assert.assertEquals(37, length);
+		int realLength;
+		if (TestUtils.isLinux()) {
+			realLength = TestUtils.fileSize(AbstTest.FILE, TEXT_LENGTH);
+		} else {
+			realLength = TEXT_LENGTH;
+		}
+		Assert.assertEquals(realLength, length);
 
 	}
 }

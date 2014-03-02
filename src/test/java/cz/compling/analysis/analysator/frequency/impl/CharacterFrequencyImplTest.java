@@ -1,5 +1,6 @@
-package cz.compling.analysis.analysator.impl;
+package cz.compling.analysis.analysator.frequency.impl;
 
+import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
 import cz.compling.rules.CharacterModificationRule;
 import cz.compling.rules.TextModificationRule;
 import cz.compling.utils.Reference;
@@ -44,10 +45,10 @@ public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 	public void testGetFrequencyFor1() throws Exception {
 
 		int aFr = frequency.getFrequencyFor('a');
-		Assert.assertEquals(1, aFr);
+		Assert.assertEquals(273, aFr);
 
 		int eFr = frequency.getFrequencyFor('e');
-		Assert.assertEquals(4, eFr);
+		Assert.assertEquals(299, eFr);
 
 		int xFr = frequency.getFrequencyFor('x');
 		Assert.assertEquals(0, xFr);
@@ -63,7 +64,7 @@ public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 
 		cz.compling.analysis.analysator.frequency.CharacterFrequency frequency1 = getAnalyser().getCharacterFrequency();
 		aFr = frequency1.getFrequencyFor('a');
-		Assert.assertEquals(2, aFr);
+		Assert.assertEquals(275, aFr);
 
 		CharacterModificationRule chRule = new CharacterModificationRule() {
 			@Override
@@ -81,10 +82,10 @@ public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 		getCompLing().registerRule(chRule);
 		frequency1 = getAnalyser().getCharacterFrequency();
 		int chFr = frequency1.getFrequencyFor("ch");
-		Assert.assertEquals(1, chFr);
+		Assert.assertEquals(55, chFr);
 
 		aFr = frequency1.getFrequencyFor('a');
-		Assert.assertEquals(2, aFr);
+		Assert.assertEquals(275, aFr);
 
 
 		CharacterModificationRule onlyCharactersRule = new CharacterModificationRule() {

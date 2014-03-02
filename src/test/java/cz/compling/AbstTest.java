@@ -20,12 +20,13 @@ public class AbstTest {
 
 	private static CompLing compLing;
 
-	private static File dir = new File(".");
-	private static File file = new File(dir, "compling/src/test/java/cz/compling/testPoem.txt");
+	private static final File DIR = new File("compling/src/test/java/cz/compling");
+	public static final File FILE = new File(DIR, "testPoem.txt");
+
 
 	@BeforeClass
 	public static void setUp() throws Exception {
-		compLing = CompLing.getInstance(FileUtils.readFileToString(file));
+		compLing = CompLing.getInstance(FileUtils.readFileToString(FILE));
 	}
 
 	protected static CompLing getCompLing() {
