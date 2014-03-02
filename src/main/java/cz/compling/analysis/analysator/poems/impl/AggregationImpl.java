@@ -33,6 +33,21 @@ public class AggregationImpl implements cz.compling.analysis.analysator.poems.Ag
 		compute();
 	}
 
+	@Override
+	public Aggregation getAggregationFor(int distance)  {
+		if (distance < 1 || distance > getMaxDistance()) {
+			String msg = String.format("Param distance cannot be less than 1 or be bigger than %d. Was %d", getMaxDistance(), distance);
+			throw new IllegalArgumentException(msg);
+		}
+
+		return aggregation.get(distance);
+	}
+
+	@Override
+	public int getMaxDistance() {
+		return aggregation.size();
+	}
+
 	private void compute() {
 		final String onlyCharactersPoem = toOnlyLowercaseLetters();
 		final String[] lines = onlyCharactersPoem.split("\n");
@@ -101,9 +116,10 @@ public class AggregationImpl implements cz.compling.analysis.analysator.poems.Ag
 	}
 
 	private String[] createChunks(String line, int size) {
-		final String[] chunks = new String[line.length() - (size - 1)];
+		final int chunksSize = line.length() - (size - 1);
+		final String[] chunks = new String[chunksSize];
 
-		for (int index = 0; index < line.length() - (size - 1); index++) {
+		for (int index = 0; index < chunksSize; index++) {
 
 			String chunk = line.substring(index, index + size);
 			chunks[index] = chunk;
@@ -129,13 +145,16 @@ public class AggregationImpl implements cz.compling.analysis.analysator.poems.Ag
 				}
 				//diacritics out
 				String decomposed = java.text.Normalizer.normalize(sb.toString(), Normalizer.Form.NFD);
-                return  decomposed.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+				return  decomposed.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 			}
 		});
 	}
 
 	public static void main(String[] args) {
-		AggregationImpl aggregation1 = new AggregationImpl(new TextImpl("Usnul tu na zemi\npokryté sazemi"));
+		AggregationImpl aggregation1 = new AggregationImpl(new TextImpl("Usnul tu na zemi\npokryté sazemi\nUsnul tu na zemi"));
 		System.out.println(aggregation1.aggregation);
+		for (int i = 1; i <= aggregation1.getMaxDistance(); i++) {
+			System.out.println(aggregation1.getAggregationFor(i));
+		}
 	}
 }

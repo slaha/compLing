@@ -12,4 +12,7 @@ package cz.compling.analysis.analysator.poems;
  * </dl>
  */
 public interface Aggregation {
+	cz.compling.model.Aggregation getAggregationFor(int distance);
+
+	int getMaxDistance();
 }
