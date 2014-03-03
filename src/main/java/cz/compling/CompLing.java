@@ -1,9 +1,13 @@
 package cz.compling;
 
+import cz.compling.analysis.analysator.AggregationAnalyser;
 import cz.compling.analysis.analysator.CharacterAnalyser;
 import cz.compling.analysis.analysator.WordFrequencyAnalyser;
+import cz.compling.analysis.analysator.impl.AggregationAnalyserImpl;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImpl;
 import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImpl;
+import cz.compling.poem.Poem;
+import cz.compling.poem.PoemImpl;
 import cz.compling.rules.Rule;
 import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
@@ -26,17 +30,37 @@ public class CompLing {
 	/** Text to analyse */
 	private Text text;
 
+	/** Text as poem. Lazy loaded when it is required */
+	private Poem poem;
+
 	/** Character analyser. Can be null - the instance is created first time {@code CharacterAnalyser} is required */
 	private CharacterAnalyser characterAnalyser;
 
 	/** Word analyser. Can be null - the instance is created first time {@code WordFrequencyAnalyser} is required */
 	private WordFrequencyAnalyser wordFrequencyAnalyser;
 
+	/** Aggregation analyser. Can be null - the instance is created first time {@code AggregationAnalyser} is required */
+	private AggregationAnalyser aggregationAnalyser;
+
+
 	/**
 	 * Instances are accessible only via getInstance method
 	 */
 	private CompLing(Text text) {
 		this.text = text;
+	}
+
+	/**
+	 * Returns an instance of {@code AggregationAnalyser} which can perform analysis of aggregation in the poem
+	 */
+	public synchronized AggregationAnalyser getAggregationAnalyser() {
+		if (this.aggregationAnalyser == null) {
+			if (this.poem == null) {
+				this.poem = new PoemImpl(text);
+			}
+			this.aggregationAnalyser = new AggregationAnalyserImpl(this.poem);
+		}
+		return this.aggregationAnalyser;
 	}
 
 	/**

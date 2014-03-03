@@ -5,6 +5,9 @@ import cz.compling.rules.Rule;
 import cz.compling.rules.TextModificationRule;
 import cz.compling.rules.WordModificationRule;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 /**
  *
  * Basic implementation of Text interface
@@ -56,8 +59,8 @@ public class TextImpl implements Text {
 	}
 
 	@Override
-	public String[] getLines() {
-		return plainText.split("\\r?\\n");
+	public Collection<? extends String> getLines() {
+		return Arrays.asList(plainText.split("\\r?\\n"));
 	}
 
 	@Override

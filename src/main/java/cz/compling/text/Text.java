@@ -6,6 +6,8 @@ import cz.compling.rules.Rule;
 import cz.compling.rules.TextModificationRule;
 import cz.compling.rules.WordModificationRule;
 
+import java.util.Collection;
+
 /**
  *
  * <p></p>This interface defines all possible analysis of text.
@@ -29,7 +31,7 @@ public interface Text {
 	/**
 	 * @return text separated by lines
 	 */
-	String[] getLines();
+	Collection<? extends  String> getLines();
 
 	/**
 	 * Register new {@code Rule} to manipulate with text

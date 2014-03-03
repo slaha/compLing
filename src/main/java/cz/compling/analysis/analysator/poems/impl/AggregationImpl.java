@@ -1,8 +1,9 @@
 package cz.compling.analysis.analysator.poems.impl;
 
 import cz.compling.model.Aggregation;
+import cz.compling.poem.Poem;
+import cz.compling.poem.PoemImpl;
 import cz.compling.rules.TextModificationRule;
-import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -23,11 +24,11 @@ import java.util.Arrays;
  */
 public class AggregationImpl implements cz.compling.analysis.analysator.poems.Aggregation {
 
-	private final Text poem;
+	private final Poem poem;
 
 	private final TIntObjectMap<Aggregation> aggregation;
 
-	public AggregationImpl(Text poem) {
+	public AggregationImpl(Poem poem) {
 		this.poem = poem;
 		aggregation = new TIntObjectHashMap<Aggregation>();
 		compute();
@@ -145,13 +146,13 @@ public class AggregationImpl implements cz.compling.analysis.analysator.poems.Ag
 				}
 				//diacritics out
 				String decomposed = java.text.Normalizer.normalize(sb.toString(), Normalizer.Form.NFD);
-				return  decomposed.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+				return decomposed.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 			}
 		});
 	}
 
 	public static void main(String[] args) {
-		AggregationImpl aggregation1 = new AggregationImpl(new TextImpl("Usnul tu na zemi\npokryté sazemi\nUsnul tu na zemi"));
+		AggregationImpl aggregation1 = new AggregationImpl(new PoemImpl(new TextImpl("Usnul tu na zemi\npokryté sazemi\nUsnul tu na zemi")));
 		System.out.println(aggregation1.aggregation);
 		for (int i = 1; i <= aggregation1.getMaxDistance(); i++) {
 			System.out.println(aggregation1.getAggregationFor(i));
