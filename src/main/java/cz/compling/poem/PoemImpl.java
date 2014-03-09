@@ -8,7 +8,6 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -87,12 +86,12 @@ public class PoemImpl implements Poem {
 	}
 
 	@Override
-	public Collection<? extends String> getVerses() {
-		Collection<String> verses = new ArrayList<String>();
+	public Collection<Verse> getVerses() {
+		Collection<Verse> verses = new ArrayList<Verse>();
 
 		for (int i = 1; i <= getCountOfStrophes(); i++) {
 			String[] versesOfStrophe = strophes.get(i);
-			verses.addAll(Arrays.asList(versesOfStrophe));
+			toVerseCollection(verses, versesOfStrophe);
 		}
 		
 		return verses;
@@ -105,9 +104,9 @@ public class PoemImpl implements Poem {
 
 	@Override
 	public String getStrophe(int strophe) {
-		Collection<? extends String> versesOfStrophe = getVersesOfStrophe(strophe);
+		Collection<Verse> versesOfStrophe = getVersesOfStrophe(strophe);
 		StringBuilder stropheText = new StringBuilder();
-		for (String verse : versesOfStrophe) {
+		for (Verse verse : versesOfStrophe) {
 			stropheText
 				.append(verse)
 				.append('\n');
@@ -116,12 +115,23 @@ public class PoemImpl implements Poem {
 	}
 
 	@Override
-	public Collection<? extends String> getVersesOfStrophe(int strophe) {
+	public Collection<Verse> getVersesOfStrophe(int strophe) {
 		if (strophe < 1 || strophe > getCountOfStrophes()) {
 			String msg = String.format("Param strophe cannot be less than 1 or bigger than getCountOfStrophes()=%d. Was %d", getCountOfStrophes(), strophe);
 			throw new IllegalArgumentException(msg);
 		}
 		String[] verses = strophes.get(strophe);
-		return Arrays.asList(verses);
+		return toVerseCollection(verses);
+	}
+
+	private Collection<Verse> toVerseCollection(String[] verses) {
+		return toVerseCollection(new ArrayList<Verse>(), verses);
+	}
+
+	private Collection<Verse> toVerseCollection(Collection<Verse> collection, String[] verses) {
+		for (String verse : verses) {
+			collection.add(new Verse(verse));
+		}
+		return collection;
 	}
 }

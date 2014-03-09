@@ -42,7 +42,7 @@ public interface Poem {
 	 *
 	 * @return verses of the poem
 	 */
-	Collection<? extends String> getVerses();
+	Collection<Verse> getVerses();
 
 	/**
 	 * @return count of strophes in the poem
@@ -65,5 +65,5 @@ public interface Poem {
 	 *
 	 * @return text of the strophe as collection of verses
 	 */
-	Collection<? extends String> getVersesOfStrophe(int strophe);
+	Collection<Verse> getVersesOfStrophe(int strophe);
 }

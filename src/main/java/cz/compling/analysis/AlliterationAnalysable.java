@@ -1,6 +1,6 @@
 package cz.compling.analysis;
 
-import cz.compling.analysis.analysator.poems.IAggregation;
+import cz.compling.analysis.analysator.poems.IAlliteration;
 
 /**
  *
@@ -13,13 +13,13 @@ import cz.compling.analysis.analysator.poems.IAggregation;
  * <dd> 14.2.14 19:18</dd>
  * </dl>
  */
-public interface AggregationAnalysable {
+public interface AlliterationAnalysable {
 
 	/**
-	 * Returns aggregation of text
+	 * Returns alliteration of text
 	 *
-	 * @return aggregation in text
+	 * @return alliteration in text
 	 */
-	IAggregation getAggregation();
+	IAlliteration getAlliteration();
 
 }

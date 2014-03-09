@@ -30,7 +30,7 @@ public class CompLing {
 	/** Text to analyse */
 	private Text text;
 
-	/** Text as poem. Lazy loaded when it is required */
+	/** Text as poem. Lazy loaded when it is required for the first time */
 	private Poem poem;
 
 	/** Character analyser. Can be null - the instance is created first time {@code CharacterAnalyser} is required */
@@ -41,7 +41,6 @@ public class CompLing {
 
 	/** Aggregation analyser. Can be null - the instance is created first time {@code AggregationAnalyser} is required */
 	private AggregationAnalyser aggregationAnalyser;
-
 
 	/**
 	 * Instances are accessible only via getInstance method
@@ -83,6 +82,10 @@ public class CompLing {
 		return this.wordFrequencyAnalyser;
 	}
 
+	public void registerRule(Rule rule) {
+		text.registerRule(rule);
+	}
+
 	/**
 	 * Creates new instance of CompLing library.
 	 * @param text text to analyse. Cannot be null
@@ -97,7 +100,5 @@ public class CompLing {
 		return new CompLing(new TextImpl(text));
 	}
 
-	public void registerRule(Rule rule) {
-		text.registerRule(rule);
-	}
+
 }

@@ -1,7 +1,7 @@
 package cz.compling.analysis.analysator.impl;
 
 import cz.compling.analysis.analysator.AggregationAnalyser;
-import cz.compling.analysis.analysator.poems.Aggregation;
+import cz.compling.analysis.analysator.poems.IAggregation;
 import cz.compling.analysis.analysator.poems.impl.AggregationImpl;
 import cz.compling.poem.Poem;
 
@@ -25,7 +25,7 @@ public class AggregationAnalyserImpl implements AggregationAnalyser {
 	}
 
 	@Override
-	public Aggregation getAggregation() {
+	public IAggregation getAggregation() {
 		return new AggregationImpl(poem);
 	}
 }

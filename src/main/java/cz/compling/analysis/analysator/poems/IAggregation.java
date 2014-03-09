@@ -11,7 +11,7 @@ package cz.compling.analysis.analysator.poems;
  * <dd> 2.3.14 17:59</dd>
  * </dl>
  */
-public interface Aggregation {
+public interface IAggregation {
 	cz.compling.model.Aggregation getAggregationFor(int distance);
 
 	int getMaxDistance();

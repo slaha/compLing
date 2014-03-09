@@ -1,5 +1,6 @@
 package cz.compling.analysis.analysator.poems.impl;
 
+import cz.compling.analysis.analysator.poems.IAggregation;
 import cz.compling.model.Aggregation;
 import cz.compling.poem.Poem;
 import cz.compling.poem.PoemImpl;
@@ -22,7 +23,7 @@ import java.util.Arrays;
  * <dd> 2.3.14 17:59</dd>
  * </dl>
  */
-public class AggregationImpl implements cz.compling.analysis.analysator.poems.Aggregation {
+public class AggregationImpl implements IAggregation {
 
 	private final Poem poem;
 
@@ -101,7 +102,7 @@ public class AggregationImpl implements cz.compling.analysis.analysator.poems.Ag
 
 		int matches = 0;
 		int i1 = 0, i2 = 0;
-		while (i1 < maxIndex && i2 < maxIndex) {
+		while (i1 < line1.length && i2 < line2.length) {
 			final int cmp = line1[i1].compareTo(line2[i2]);
 			if (cmp == 0) {
 				matches++;
