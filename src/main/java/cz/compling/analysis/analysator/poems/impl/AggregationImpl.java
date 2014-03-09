@@ -98,8 +98,6 @@ public class AggregationImpl implements IAggregation {
 	}
 
 	private int intersection(String[] line1, String[] line2) {
-		final int maxIndex = Math.min(line1.length, line2.length);
-
 		int matches = 0;
 		int i1 = 0, i2 = 0;
 		while (i1 < line1.length && i2 < line2.length) {

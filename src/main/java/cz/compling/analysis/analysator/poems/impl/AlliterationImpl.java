@@ -42,14 +42,13 @@ public class AlliterationImpl implements IAlliteration {
 
 		for (Verse verse : verses) {
 			Alliteration allit = new Alliteration(++numberOfVerses);
-			Iterable<String> words = verse.getWords();
 			for (String word : verse.getWords()) {
 				char firstChar = findFirstChar(word);
 				if (firstChar > 0) {
 					allit.add(firstChar);
 				}
 			}
-			alliteration.put(numberOfVerses, allit);
+			alliteration.put(numberOfVerses, allit.removeNotAlliterationChars());
 		}
 	}
 

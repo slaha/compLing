@@ -1,9 +1,11 @@
 package cz.compling;
 
 import cz.compling.analysis.analysator.AggregationAnalyser;
+import cz.compling.analysis.analysator.AlliterationAnalyser;
 import cz.compling.analysis.analysator.CharacterAnalyser;
 import cz.compling.analysis.analysator.WordFrequencyAnalyser;
 import cz.compling.analysis.analysator.impl.AggregationAnalyserImpl;
+import cz.compling.analysis.analysator.impl.AlliterationAnalyserImpl;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImpl;
 import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImpl;
 import cz.compling.poem.Poem;
@@ -41,6 +43,7 @@ public class CompLing {
 
 	/** Aggregation analyser. Can be null - the instance is created first time {@code AggregationAnalyser} is required */
 	private AggregationAnalyser aggregationAnalyser;
+	private AlliterationAnalyser alliterationAnalyser;
 
 	/**
 	 * Instances are accessible only via getInstance method
@@ -60,6 +63,19 @@ public class CompLing {
 			this.aggregationAnalyser = new AggregationAnalyserImpl(this.poem);
 		}
 		return this.aggregationAnalyser;
+	}
+
+
+
+	public synchronized AlliterationAnalyser getAlliterationAnalyser() {
+		if (this.alliterationAnalyser == null) {
+			if (this.poem == null) {
+				this.poem = new PoemImpl(text);
+			}
+			this.alliterationAnalyser = new AlliterationAnalyserImpl(this.poem);
+		}
+		return this.alliterationAnalyser;
+
 	}
 
 	/**
@@ -99,6 +115,4 @@ public class CompLing {
 
 		return new CompLing(new TextImpl(text));
 	}
-
-
 }
