@@ -1,6 +1,6 @@
 package cz.compling.analysis;
 
-import cz.compling.analysis.analysator.frequency.WordFrequency;
+import cz.compling.analysis.analysator.frequency.IWordFrequency;
 
 /**
  *
@@ -20,6 +20,6 @@ public interface WordAnalysable {
 	 *
 	 * @return frequency of words in the text
 	 */
-	WordFrequency getWordFrequency();
+	IWordFrequency getWordFrequency();
 
 }

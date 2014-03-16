@@ -1,6 +1,4 @@
-package cz.compling.poem;
-
-import cz.compling.rules.TextModificationRule;
+package cz.compling.text.poem;
 
 import java.util.Collection;
 
@@ -27,15 +25,6 @@ public interface Poem {
 	 * @return poem as plain text
 	 */
 	String getPlainText();
-
-	/**
-	 * Apply rule to text of poem. Do not register it (one shot)
-	 *
-	 * @param rule rule to apply
-	 *
-	 * @return text of the poem after {@code rule} is applied
-	 */
-	String applyRule(TextModificationRule rule);
 
 	/**
 	 * Returns verses of the poem. Does not return empty (strophes separating) lines
@@ -66,4 +55,6 @@ public interface Poem {
 	 * @return text of the strophe as collection of verses
 	 */
 	Collection<Verse> getVersesOfStrophe(int strophe);
+
+	Poem applyRule(PoemModificationRule rule);
 }

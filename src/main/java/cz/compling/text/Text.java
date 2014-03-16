@@ -1,10 +1,7 @@
 package cz.compling.text;
 
 
-import cz.compling.rules.CharacterModificationRule;
-import cz.compling.rules.Rule;
-import cz.compling.rules.TextModificationRule;
-import cz.compling.rules.WordModificationRule;
+import cz.compling.rules.RuleHandler;
 
 import java.util.Collection;
 
@@ -21,7 +18,7 @@ import java.util.Collection;
  * <dd> 14.2.14 18:31</dd>
  * </dl>
  */
-public interface Text {
+public interface Text extends RuleHandler<TextModificationRule> {
 
 	/**
 	 * @return text
@@ -31,26 +28,8 @@ public interface Text {
 	/**
 	 * @return text separated by lines
 	 */
-	Collection<? extends  String> getLines();
+	Collection<Line> getLines();
 
-	/**
-	 * Register new {@code Rule} to manipulate with text
-	 */
-	void registerRule(Rule rule);
+	Text applyRule(TextModificationRule rule);
 
-	/**
-	 *  @return all registered {@code CharacterModificationRule}s
-	 */
-	Iterable<? extends CharacterModificationRule> getCharacterModificationRules();
-
-	/**
-	 * Apply {@code rule} to the text (respect all previously added rules). Does not register the {@code rule} (one shot)
-	 *
-	 * @param rule rule to apply
-	 *
-	 * @return text after all rules (including {@code rule}) are applied
-	 * */
-	String applyRule(TextModificationRule rule);
-
-	Iterable<? extends WordModificationRule> getWordModificationRules();
 }

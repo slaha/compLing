@@ -2,10 +2,10 @@ package cz.compling.analysis.analysator.poems.impl;
 
 import cz.compling.analysis.analysator.poems.IAlliteration;
 import cz.compling.model.Alliteration;
-import cz.compling.poem.Poem;
-import cz.compling.poem.PoemImpl;
-import cz.compling.poem.Verse;
 import cz.compling.text.TextImpl;
+import cz.compling.text.poem.Poem;
+import cz.compling.text.poem.PoemImpl;
+import cz.compling.text.poem.Verse;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 

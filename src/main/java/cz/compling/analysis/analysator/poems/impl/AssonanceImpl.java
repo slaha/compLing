@@ -1,10 +1,10 @@
 package cz.compling.analysis.analysator.poems.impl;
 
 import cz.compling.analysis.analysator.poems.IAssonance;
-import cz.compling.poem.Poem;
-import cz.compling.poem.PoemImpl;
 import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
+import cz.compling.text.poem.Poem;
+import cz.compling.text.poem.PoemImpl;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +36,10 @@ public class AssonanceImpl implements IAssonance {
 		this.poem = poem;
 		this.baseVocals = vocals;
 
+		for (int i = 0; i < baseVocals.length; i++) {
+			baseVocals[i] = baseVocals[i].toLowerCase();
+		}
+
 		//..sort from longest to shortest. If lengths are the same compare alphabetically
 		Arrays.sort(baseVocals, new Comparator<String>() {
 			@Override
@@ -47,6 +51,7 @@ public class AssonanceImpl implements IAssonance {
 				return diff;
 			}
 		});
+
 		assonance = new TIntIntHashMap();
 		compute();
 	}
@@ -77,7 +82,7 @@ public class AssonanceImpl implements IAssonance {
 		List<String> vocals = new ArrayList<String>();
 
 		//..using string builder because we will create a lot of substrings
-		final StringBuilder poemBuilder = new StringBuilder(poem.getPlainText());
+		final StringBuilder poemBuilder = new StringBuilder(poem.getPlainText().toLowerCase());
 		int indexOfAny;
 		boolean stop;
 		do {
@@ -87,7 +92,7 @@ public class AssonanceImpl implements IAssonance {
 				//..nothing found. Break the cycle
 				break;
 			} else {
-				//..make found occurrence the first thing from the string
+				//..make found occurrence the first thing in the string
 				poemBuilder.delete(0, indexOfAny);
 				final String poemString = poemBuilder.toString();
 				for (String baseVocal : baseVocals) {
@@ -107,7 +112,7 @@ public class AssonanceImpl implements IAssonance {
 	}
 
 	public static void main(String[] args) {
-		Text text = new TextImpl("Skakal pes přes ouves přes zelenou louku");
+		Text text = new TextImpl("Skakal pes přes Ouves přes zelenOu lOuku");
 		Poem poem = new PoemImpl(text);
 		IAssonance a = new AssonanceImpl(poem, new String[]{"y", "a", "o", "u", "i", "au", "e", "ou"});
 	}

@@ -1,8 +1,8 @@
 package cz.compling.analysis.analysator.impl;
 
 import cz.compling.analysis.analysator.WordFrequencyAnalyser;
-import cz.compling.analysis.analysator.frequency.WordFrequency;
-import cz.compling.analysis.analysator.frequency.impl.WordFrequencyImpl;
+import cz.compling.analysis.analysator.frequency.IWordFrequency;
+import cz.compling.analysis.analysator.frequency.words.WordFrequencyImpl;
 import cz.compling.text.Text;
 
 /**
@@ -25,7 +25,7 @@ public class WordFrequencyAnalyserImpl implements WordFrequencyAnalyser {
 	}
 
 	@Override
-	public WordFrequency getWordFrequency() {
+	public IWordFrequency getWordFrequency() {
 		return new WordFrequencyImpl(text);
 	}
 }

@@ -1,11 +1,10 @@
 package cz.compling.text;
 
-import cz.compling.rules.CharacterModificationRule;
-import cz.compling.rules.Rule;
-import cz.compling.rules.TextModificationRule;
-import cz.compling.rules.WordModificationRule;
+import cz.compling.rules.BaseRuleHandler;
+import cz.compling.rules.RuleHandler;
+import cz.compling.rules.RuleObserver;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -24,10 +23,7 @@ public class TextImpl implements Text {
 	/** Text to analyse. Should be encoded in utf-8 */
 	private final String plainText;
 
-	private String rulesAppliedText;
-
-	private final RuleHolder ruleHolder;
-
+	private final RuleHandler<TextModificationRule> ruleHandler;
 	/**
 	 * Create new instance.
 	 *
@@ -40,49 +36,85 @@ public class TextImpl implements Text {
 			throw new IllegalArgumentException("text cannot be null");
 		}
 		this.plainText = text;
-		this.ruleHolder = new RuleHolderImpl();
-
+		ruleHandler = new BaseRuleHandler<TextModificationRule>();
 	}
 
 	@Override
 	public String getPlainText() {
-
-		if (ruleHolder.anyModificationRule()) {
-			this.rulesAppliedText = plainText;
-			for (TextModificationRule rule : ruleHolder.getModificationRules()) {
-				this.rulesAppliedText = rule.modify(rulesAppliedText);
+		if (getRegisteredRules().iterator().hasNext()) {
+			TextImplInternal txt = new TextImplInternal(plainText);
+			for (TextModificationRule textModificationRule : getRegisteredRules()) {
+				String afterRule = textModificationRule.modify(txt);
+				txt = new TextImplInternal(afterRule);
 			}
-			return rulesAppliedText;
+			return txt.getPlainText();
 		}
+
 
 		return plainText;
 	}
 
 	@Override
-	public Collection<? extends String> getLines() {
-		return Arrays.asList(plainText.split("\\r?\\n"));
+	public Collection<Line> getLines() {
+		Collection<Line> lines = new ArrayList<Line>();
+		for (String line : plainText.split("\\r?\\n")) {
+			lines.add(new Line(line));
+		}
+		return lines;
 	}
 
 	@Override
-	public void registerRule(Rule rule) {
-		ruleHolder.add(rule);
-
+	public Text applyRule(TextModificationRule removeNonAlphabetCharacters) {
+		return new TextImpl(removeNonAlphabetCharacters.modify(this));
 	}
 
 	@Override
-	public Iterable<? extends CharacterModificationRule> getCharacterModificationRules() {
-		return ruleHolder.getCharacterModificationRules();
+	public Iterable<TextModificationRule> getRegisteredRules() {
+		return ruleHandler.getRegisteredRules();
 	}
 
 	@Override
-	public String applyRule(TextModificationRule rule) {
-		return rule.modify(getPlainText());
-
+	public void registerRule(TextModificationRule rule) {
+		ruleHandler.registerRule(rule);
 	}
 
 	@Override
-	public Iterable<? extends WordModificationRule> getWordModificationRules() {
-		return ruleHolder.getWordModificationRules();
+	public boolean removeRule(TextModificationRule rule) {
+		return ruleHandler.removeRule(rule);
 	}
 
+	@Override
+	public void registerRuleObserver(RuleObserver<TextModificationRule> observer) {
+		ruleHandler.registerRuleObserver(observer);
+	}
+
+	@Override
+	public boolean unregisterRuleObserver(RuleObserver<TextModificationRule> observer) {
+		return ruleHandler.unregisterRuleObserver(observer);
+	}
+
+	@Override
+	public Iterable<RuleObserver<TextModificationRule>> getRegisteredObserves() {
+		return ruleHandler.getRegisteredObserves();
+	}
+
+	/**
+	 * This class is used in {@code getPlainText} because of avoiding recursive calls (in lots of rules there is call to {@code getPlainText}.
+	 *
+	 * This class just simply returns plain text without applying rules
+	 */
+	private class TextImplInternal extends TextImpl {
+
+		private final String plainTextLocal;
+
+		public TextImplInternal(String text) {
+			super(text);
+			this.plainTextLocal = text;
+		}
+
+		@Override
+		public String getPlainText() {
+			return plainTextLocal;
+		}
+	}
 }

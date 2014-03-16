@@ -1,8 +1,8 @@
 package cz.compling.analysis.analysator.frequency.impl;
 
-import cz.compling.analysis.analysator.frequency.WordFrequency;
+import cz.compling.analysis.analysator.frequency.IWordFrequency;
+import cz.compling.analysis.analysator.frequency.words.WordFrequencyRule;
 import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImplTest;
-import cz.compling.rules.WordModificationRule;
 import cz.compling.utils.Reference;
 import cz.compling.utils.TrooveUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,31 +26,32 @@ import java.util.List;
  */
 public class WordFrequencyImplTest extends WordFrequencyAnalyserImplTest {
 
-	private static WordFrequency frequency;
+	private static IWordFrequency frequencyAnalyser;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
 		WordFrequencyAnalyserImplTest.setUp();
 
-		frequency = getAnalyser().getWordFrequency();
+		frequencyAnalyser = getAnalyser().getWordFrequency();
 	}
 	@Test
 	public void testGetCountOfWords() throws Exception {
-		int countOfWords = frequency.getCountOfWords();
+		int countOfWords = frequencyAnalyser.getWordFrequency().getCountOfWords();
+
 
 		Assert.assertEquals(909, countOfWords);
 	}
 
 	@Test
 	public void testGetFrequencyFor() throws Exception {
-		int havranFreq = frequency.getFrequencyFor("havran");
+		int havranFreq = frequencyAnalyser.getWordFrequency().getFrequencyFor("havran");
 
 		Assert.assertEquals(9, havranFreq);
 	}
 
 	@Test
 	public void testGetAllByFrequency() throws Exception {
-		List<Pair<String,Integer>> allByFrequency = frequency.getAllWordsByFrequency(TrooveUtils.SortOrder.DESCENDING);
+		List<Pair<String,Integer>> allByFrequency = frequencyAnalyser.getWordFrequency().getAllWordsByFrequency(TrooveUtils.SortOrder.DESCENDING);
 
 		int last = -1;
 		String lastWord = null;
@@ -72,14 +73,14 @@ public class WordFrequencyImplTest extends WordFrequencyAnalyserImplTest {
 
 	@Test
 	public void testGetAllWordsLengthsByFrequency() throws Exception {
-		List<Pair<Integer, Integer>> allWordsLengthsByFrequency = frequency.getAllWordsLengthsByFrequency(TrooveUtils.SortOrder.DESCENDING);
+		List<Pair<Integer, Integer>> allWordsLengthsByFrequency = frequencyAnalyser.getWordFrequency().getAllWordsLengthsByFrequency(TrooveUtils.SortOrder.DESCENDING);
 		Pair<Integer, Integer> pair = allWordsLengthsByFrequency.get(0);
 
 //		[ „‚\n][a-zA-ZěščřžýáíéĚŠČŘŽÝÁÍÉďťňůú]{5}[ \n!?,:;.] and s/ /  /g
 		Assert.assertEquals(new Pair<Integer, Integer>(5, 189), pair);
 
 		System.out.println(allWordsLengthsByFrequency);
-		WordModificationRule chRule = new WordModificationRule() {
+		WordFrequencyRule chRule = new WordFrequencyRule() {
 
 			@Override
 			public boolean modify(Reference<String> word, Reference<Integer> length) {
@@ -91,9 +92,9 @@ public class WordFrequencyImplTest extends WordFrequencyAnalyserImplTest {
 			}
 		};
 
-		getCompLing().registerRule(chRule);
-		WordFrequency wordFrequency = getCompLing().getWordFrequencyAnalyser().getWordFrequency();
-		List<Pair<Integer, Integer>> allWordsByFrequency = wordFrequency.getAllWordsLengthsByFrequency(TrooveUtils.SortOrder.DESCENDING);
+		frequencyAnalyser.registerRule(chRule);
+		IWordFrequency wordFrequency = getCompLing().getWordFrequencyAnalyser().getWordFrequency();
+		List<Pair<Integer, Integer>> allWordsByFrequency = wordFrequency.getWordFrequency().getAllWordsLengthsByFrequency(TrooveUtils.SortOrder.DESCENDING);
 		System.out.println(allWordsByFrequency);
 
 	}
@@ -101,7 +102,7 @@ public class WordFrequencyImplTest extends WordFrequencyAnalyserImplTest {
 	@Test
 	public void testGetFrequencyForAll() throws Exception {
 
-		Assert.assertEquals(189, frequency.getFrequencyFor(5));
+		Assert.assertEquals(189, frequencyAnalyser.getWordFrequency().getFrequencyFor(5));
 
 	}
 }

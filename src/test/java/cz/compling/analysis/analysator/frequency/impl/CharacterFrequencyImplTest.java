@@ -1,8 +1,10 @@
 package cz.compling.analysis.analysator.frequency.impl;
 
+import cz.compling.analysis.analysator.frequency.CharacterFrequencyRule;
+import cz.compling.analysis.analysator.frequency.ICharacterFrequency;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
-import cz.compling.rules.CharacterModificationRule;
-import cz.compling.rules.TextModificationRule;
+import cz.compling.text.Text;
+import cz.compling.text.TextModificationRule;
 import cz.compling.utils.Reference;
 import cz.compling.utils.TrooveUtils;
 import org.javatuples.Pair;
@@ -16,7 +18,7 @@ import java.util.Locale;
 
 /**
  *
- * TODO 
+ * TODO
  *
  * <dl>
  * <dt>Created by:</dt>
@@ -27,13 +29,13 @@ import java.util.Locale;
  */
 public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 
-	private static cz.compling.analysis.analysator.frequency.CharacterFrequency frequency;
+	private static ICharacterFrequency frequencyAnalyser;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
 		CharacterAnalyserImplTest.setUp();
 
-		frequency = getAnalyser().getCharacterFrequency();
+		frequencyAnalyser = getAnalyser().getCharacterFrequency();
 	}
 
 	@Test
@@ -44,29 +46,28 @@ public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 	@Test
 	public void testGetFrequencyFor1() throws Exception {
 
-		int aFr = frequency.getFrequencyFor('a');
+		int aFr = frequencyAnalyser.getCharacterFrequency().getFrequencyFor('a');
 		Assert.assertEquals(273, aFr);
 
-		int eFr = frequency.getFrequencyFor('e');
+		int eFr = frequencyAnalyser.getCharacterFrequency().getFrequencyFor('e');
 		Assert.assertEquals(299, eFr);
 
-		int xFr = frequency.getFrequencyFor('x');
+		int xFr = frequencyAnalyser.getCharacterFrequency().getFrequencyFor('x');
 		Assert.assertEquals(0, xFr);
 
-		TextModificationRule rule = new TextModificationRule() {
+		TextModificationRule toLowerCaseRule = new TextModificationRule() {
 			@Override
-			public String modify(String text) {
-				return text.toLowerCase(Locale.getDefault());
+			public String modify(Text text) {
+				return text.getPlainText().toLowerCase(Locale.getDefault());
 			}
 		};
 
-		getCompLing().registerRule(rule);
+		getCompLing().getText().registerRule(toLowerCaseRule);
 
-		cz.compling.analysis.analysator.frequency.CharacterFrequency frequency1 = getAnalyser().getCharacterFrequency();
-		aFr = frequency1.getFrequencyFor('a');
+		aFr = frequencyAnalyser.getCharacterFrequency().getFrequencyFor('a');
 		Assert.assertEquals(275, aFr);
 
-		CharacterModificationRule chRule = new CharacterModificationRule() {
+		CharacterFrequencyRule chRule = new CharacterFrequencyRule() {
 			@Override
 			public boolean modify(String text, Reference<String> putToFrequency, Reference<Integer> position) {
 				final int index = position.value;
@@ -79,16 +80,15 @@ public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 			}
 		};
 
-		getCompLing().registerRule(chRule);
-		frequency1 = getAnalyser().getCharacterFrequency();
-		int chFr = frequency1.getFrequencyFor("ch");
+		frequencyAnalyser.registerRule(chRule);
+		int chFr = frequencyAnalyser.getCharacterFrequency().getFrequencyFor("ch");
 		Assert.assertEquals(55, chFr);
 
-		aFr = frequency1.getFrequencyFor('a');
+		aFr = frequencyAnalyser.getCharacterFrequency().getFrequencyFor('a');
 		Assert.assertEquals(275, aFr);
 
 
-		CharacterModificationRule onlyCharactersRule = new CharacterModificationRule() {
+		CharacterFrequencyRule onlyCharactersRule = new CharacterFrequencyRule() {
 
 			@Override
 			public boolean modify(String text, Reference<String> putToFrequency, Reference<Integer> position) {
@@ -102,16 +102,15 @@ public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 			}
 		};
 
-		getCompLing().registerRule(onlyCharactersRule);
-		frequency1 = getAnalyser().getCharacterFrequency();
-		Assert.assertEquals(0, frequency1.getFrequencyFor("."));
-		Assert.assertEquals(0, frequency1.getFrequencyFor(","));
-		Assert.assertEquals(0, frequency1.getFrequencyFor("?"));
+		frequencyAnalyser.registerRule(onlyCharactersRule);
+		Assert.assertEquals(0, frequencyAnalyser.getCharacterFrequency().getFrequencyFor("."));
+		Assert.assertEquals(0, frequencyAnalyser.getCharacterFrequency().getFrequencyFor(","));
+		Assert.assertEquals(0, frequencyAnalyser.getCharacterFrequency().getFrequencyFor("?"));
 	}
 
 	@Test
 	public void testGetAllByFrequency() throws Exception {
-		List<Pair<String,Integer>> allByFrequencyDesc = frequency.getAllByFrequency(TrooveUtils.SortOrder.DESCENDING);
+		List<Pair<String,Integer>> allByFrequencyDesc = frequencyAnalyser.getCharacterFrequency().getAllByFrequency(TrooveUtils.SortOrder.DESCENDING);
 		int lastFreq = -1;
 		for (Pair<String, Integer> pair : allByFrequencyDesc) {
 			if (lastFreq < 0) {
@@ -124,7 +123,7 @@ public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 			}
 		}
 
-		List<Pair<String,Integer>> allByFrequencyAsc = frequency.getAllByFrequency(TrooveUtils.SortOrder.ASCENDING);
+		List<Pair<String,Integer>> allByFrequencyAsc = frequencyAnalyser.getCharacterFrequency().getAllByFrequency(TrooveUtils.SortOrder.ASCENDING);
 		lastFreq = -1;
 		for (Pair<String, Integer> pair : allByFrequencyAsc) {
 			if (lastFreq < 0) {

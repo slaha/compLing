@@ -1,4 +1,4 @@
-package cz.compling.poem;
+package cz.compling.text;
 
 import java.util.Arrays;
 
@@ -10,34 +10,34 @@ import java.util.Arrays;
  * <dt>Created by:</dt>
  * <dd>slaha</dd>
  * <dt>On:</dt>
- * <dd> 8.3.14 7:13</dd>
+ * <dd> 16.3.14 11:18</dd>
  * </dl>
  */
-public class Verse {
+public class Line {
 
-	private final String verse;
+	private final String line;
 
-	public Verse(String verse) {
-		this.verse = verse;
+	public Line(String line) {
+		this.line = line;
 	}
 
 	public Iterable<String> getWords() {
-		return Arrays.asList(verse.split("\\s+"));
+		return Arrays.asList(line.split("\\s+"));
 	}
 
 	@Override
 	public String toString() {
-		return verse;
+		return line;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 
-		if (o instanceof Verse) {
+		if (o instanceof Line) {
 
-			Verse verse1 = (Verse) o;
-			return this.verse.equals(verse1.verse);
+			Line line1 = (Line) o;
+			return this.line.equals(line1.line);
 
 		}
 		return false;
@@ -45,6 +45,6 @@ public class Verse {
 
 	@Override
 	public int hashCode() {
-		return verse.hashCode();
+		return line.hashCode();
 	}
 }

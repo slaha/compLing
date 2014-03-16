@@ -2,10 +2,10 @@ package cz.compling.analysis.analysator.poems.impl;
 
 import cz.compling.analysis.analysator.poems.IAggregation;
 import cz.compling.model.Aggregation;
-import cz.compling.poem.Poem;
-import cz.compling.poem.PoemImpl;
-import cz.compling.rules.TextModificationRule;
 import cz.compling.text.TextImpl;
+import cz.compling.text.poem.Poem;
+import cz.compling.text.poem.PoemImpl;
+import cz.compling.text.poem.PoemModificationRule;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
@@ -128,10 +128,11 @@ public class AggregationImpl implements IAggregation {
 	}
 
 	private String toOnlyLowercaseLetters() {
-		return poem.applyRule(new TextModificationRule() {
+		return poem.applyRule(new PoemModificationRule() {
 			@Override
-			public String modify(String text) {
+			public String modify(Poem poem) {
 				StringBuilder sb = new StringBuilder();
+				final String text = poem.getPlainText();
 				char last = 0;
 				for (char c : text.toCharArray()) {
 					if (Character.isLetter(c)) {
@@ -147,7 +148,7 @@ public class AggregationImpl implements IAggregation {
 				String decomposed = java.text.Normalizer.normalize(sb.toString(), Normalizer.Form.NFD);
 				return decomposed.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 			}
-		});
+		}).getPlainText();
 	}
 
 	public static void main(String[] args) {

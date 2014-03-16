@@ -3,6 +3,7 @@ package cz.compling.analysis.analysator.impl;
 import cz.compling.AbstTest;
 import cz.compling.analysis.analysator.WordFrequencyAnalyser;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * <dl>
@@ -26,5 +27,10 @@ public class WordFrequencyAnalyserImplTest extends AbstTest {
 		AbstTest.setUp();
 
 		analyser = getCompLing().getWordFrequencyAnalyser();
+	}
+
+	@Test
+	public void testDummy() {
+
 	}
 }

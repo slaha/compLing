@@ -3,7 +3,7 @@ package cz.compling.analysis.analysator.impl;
 import cz.compling.analysis.analysator.AggregationAnalyser;
 import cz.compling.analysis.analysator.poems.IAggregation;
 import cz.compling.analysis.analysator.poems.impl.AggregationImpl;
-import cz.compling.poem.Poem;
+import cz.compling.text.poem.Poem;
 
 /**
  *

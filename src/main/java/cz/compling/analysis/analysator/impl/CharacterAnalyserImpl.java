@@ -1,8 +1,8 @@
 package cz.compling.analysis.analysator.impl;
 
 import cz.compling.analysis.analysator.CharacterAnalyser;
-import cz.compling.analysis.analysator.frequency.CharacterFrequency;
-import cz.compling.analysis.analysator.frequency.impl.CharacterFrequencyImpl;
+import cz.compling.analysis.analysator.frequency.ICharacterFrequency;
+import cz.compling.analysis.analysator.frequency.character.CharacterFrequencyImpl;
 import cz.compling.text.Text;
 
 /**
@@ -30,7 +30,7 @@ public class CharacterAnalyserImpl implements CharacterAnalyser {
 	}
 
 	@Override
-	public CharacterFrequency getCharacterFrequency() {
+	public ICharacterFrequency getCharacterFrequency() {
 
 		return new CharacterFrequencyImpl(text);
 	}

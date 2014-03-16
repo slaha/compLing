@@ -1,4 +1,4 @@
-package cz.compling.rules;
+package cz.compling.analysis.analysator.frequency.words;
 
 import cz.compling.utils.Reference;
 
@@ -10,10 +10,10 @@ import cz.compling.utils.Reference;
  * <dt>Created by:</dt>
  * <dd>slaha</dd>
  * <dt>On:</dt>
- * <dd> 15.2.14 9:13</dd>
+ * <dd> 16.3.14 11:36</dd>
  * </dl>
  */
-public interface WordModificationRule extends Rule {
+public interface WordFrequencyRule {
 
 	boolean modify(Reference<String> word, Reference<Integer> length);
 }

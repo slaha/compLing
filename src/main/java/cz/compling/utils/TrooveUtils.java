@@ -1,7 +1,7 @@
 package cz.compling.utils;
 
+import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TObjectIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
@@ -36,6 +36,10 @@ public class TrooveUtils {
 			this.list = new ArrayList<PAIR>();
 		}
 
+		public void clear() {
+			list.clear();
+		}
+
 		/**
 		 * Converts frequency table to list
 		 */
@@ -50,7 +54,7 @@ public class TrooveUtils {
 			return this;
 		}
 
-		public Lists<K, PAIR> toList(TIntIntHashMap map) {
+		public Lists<K, PAIR> toList(TIntIntMap map) {
 
 			for (Object key : map.keys()) {
 				list.add(
@@ -70,7 +74,7 @@ public class TrooveUtils {
 		}
 
 		public List<PAIR> getList() {
-			return list;
+			return new ArrayList<PAIR>(list);
 		}
 
 		/**

@@ -8,11 +8,10 @@ import cz.compling.analysis.analysator.impl.AggregationAnalyserImpl;
 import cz.compling.analysis.analysator.impl.AlliterationAnalyserImpl;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImpl;
 import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImpl;
-import cz.compling.poem.Poem;
-import cz.compling.poem.PoemImpl;
-import cz.compling.rules.Rule;
 import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
+import cz.compling.text.poem.Poem;
+import cz.compling.text.poem.PoemImpl;
 
 /**
  *
@@ -98,10 +97,6 @@ public class CompLing {
 		return this.wordFrequencyAnalyser;
 	}
 
-	public void registerRule(Rule rule) {
-		text.registerRule(rule);
-	}
-
 	/**
 	 * Creates new instance of CompLing library.
 	 * @param text text to analyse. Cannot be null
@@ -114,5 +109,9 @@ public class CompLing {
 		}
 
 		return new CompLing(new TextImpl(text));
+	}
+
+	public Text getText() {
+		return text;
 	}
 }

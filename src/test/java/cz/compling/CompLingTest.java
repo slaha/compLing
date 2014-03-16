@@ -2,7 +2,11 @@ package cz.compling;
 
 import cz.compling.analysis.analysator.CharacterAnalyser;
 import cz.compling.analysis.analysator.frequency.impl.CharacterFrequencyImplTest;
+import cz.compling.analysis.analysator.frequency.impl.WordFrequencyImplTest;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
+import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImplTest;
+import cz.compling.analysis.analysator.poems.impl.AggregationImplTest;
+import cz.compling.analysis.analysator.poems.impl.AlliterationImplTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +24,11 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	CharacterAnalyserImplTest.class,
-	CharacterFrequencyImplTest.class
+	CharacterFrequencyImplTest.class,
+	WordFrequencyAnalyserImplTest.class,
+	WordFrequencyImplTest.class,
+	AggregationImplTest.class,
+	AlliterationImplTest.class
 })
 public class CompLingTest extends AbstTest {
 

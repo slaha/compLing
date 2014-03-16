@@ -1,7 +1,8 @@
-package cz.compling.poem;
+package cz.compling.text.poem;
 
-import cz.compling.rules.TextModificationRule;
+import cz.compling.text.Line;
 import cz.compling.text.Text;
+import cz.compling.text.TextImpl;
 import cz.compling.utils.Reference;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -37,8 +38,7 @@ public class PoemImpl implements Poem {
 	}
 
 	private void fillStrophes() {
-		Collection<? extends String> lines = text.getLines();
-
+		Collection<Line> lines = text.getLines();
 
 		final List<String> strophe = new ArrayList<String>();
 
@@ -57,10 +57,11 @@ public class PoemImpl implements Poem {
 			}
 		};
 
-		for (String verse : lines) {
-			if (StringUtils.isNoneBlank(verse)) {
+		for (Line verse : lines) {
+			final String verseString = verse.toString();
+			if (StringUtils.isNoneBlank(verseString)) {
 				//..not empty line → verse
-				strophe.add(verse);
+				strophe.add(verseString);
 
 			} else {
 
@@ -78,11 +79,6 @@ public class PoemImpl implements Poem {
 	@Override
 	public String getPlainText() {
 		return text.getPlainText();
-	}
-
-	@Override
-	public String applyRule(TextModificationRule rule) {
-		return text.applyRule(rule);
 	}
 
 	@Override
@@ -122,6 +118,13 @@ public class PoemImpl implements Poem {
 		}
 		String[] verses = strophes.get(strophe);
 		return toVerseCollection(verses);
+	}
+
+	@Override
+	public Poem applyRule(PoemModificationRule rule) {
+		String modifiedPoem = rule.modify(this);
+		Text text = new TextImpl(modifiedPoem);
+		return new PoemImpl(text);
 	}
 
 	private Collection<Verse> toVerseCollection(String[] verses) {
