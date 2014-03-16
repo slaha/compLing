@@ -1,4 +1,4 @@
-package cz.compling.analysis.analysator.frequency;
+package cz.compling.analysis.analysator.frequency.character;
 
 import cz.compling.model.CharacterFrequency;
 import cz.compling.rules.RuleHandler;

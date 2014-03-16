@@ -1,8 +1,8 @@
 package cz.compling.analysis.analysator.impl;
 
 import cz.compling.analysis.analysator.CharacterAnalyser;
-import cz.compling.analysis.analysator.frequency.ICharacterFrequency;
 import cz.compling.analysis.analysator.frequency.character.CharacterFrequencyImpl;
+import cz.compling.analysis.analysator.frequency.character.ICharacterFrequency;
 import cz.compling.text.Text;
 
 /**
@@ -22,11 +22,6 @@ public class CharacterAnalyserImpl implements CharacterAnalyser {
 
 	public CharacterAnalyserImpl(Text text) {
 		this.text = text;
-	}
-
-	@Override
-	public int getPlainTextLength() {
-		return text.getPlainText().length();
 	}
 
 	@Override

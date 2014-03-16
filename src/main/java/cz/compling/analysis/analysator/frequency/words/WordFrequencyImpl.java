@@ -1,6 +1,5 @@
 package cz.compling.analysis.analysator.frequency.words;
 
-import cz.compling.analysis.analysator.frequency.IWordFrequency;
 import cz.compling.model.WordFrequency;
 import cz.compling.rules.BaseRuleHandler;
 import cz.compling.rules.RuleHandler;

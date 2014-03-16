@@ -1,7 +1,7 @@
 package cz.compling.analysis.analysator.frequency.impl;
 
-import cz.compling.analysis.analysator.frequency.CharacterFrequencyRule;
-import cz.compling.analysis.analysator.frequency.ICharacterFrequency;
+import cz.compling.analysis.analysator.frequency.character.CharacterFrequencyRule;
+import cz.compling.analysis.analysator.frequency.character.ICharacterFrequency;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
 import cz.compling.text.Text;
 import cz.compling.text.TextModificationRule;

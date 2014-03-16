@@ -1,6 +1,6 @@
 package cz.compling.analysis;
 
-import cz.compling.analysis.analysator.frequency.IWordFrequency;
+import cz.compling.analysis.analysator.frequency.words.IWordFrequency;
 
 /**
  *

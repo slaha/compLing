@@ -1,7 +1,5 @@
 package cz.compling.analysis.analysator.frequency.character;
 
-import cz.compling.analysis.analysator.frequency.CharacterFrequencyRule;
-import cz.compling.analysis.analysator.frequency.ICharacterFrequency;
 import cz.compling.model.CharacterFrequency;
 import cz.compling.rules.BaseRuleHandler;
 import cz.compling.rules.RuleHandler;
@@ -40,7 +38,7 @@ public class CharacterFrequencyImpl implements ICharacterFrequency, RuleObserver
 		this.ruleHandler = new BaseRuleHandler<CharacterFrequencyRule>();
 		this.text = text;
 		text.registerRuleObserver(this);
-		this.frequency = new CharacterFrequency();
+		this.frequency = new CharacterFrequency(text.getPlainText().length());
 		
 		compute();
 	}
@@ -56,7 +54,7 @@ public class CharacterFrequencyImpl implements ICharacterFrequency, RuleObserver
 			position.value = index;
 			putToMap.value = String.valueOf(charAtIndex);
 			for (CharacterFrequencyRule rule : getRegisteredRules()) {
-				//..if rule matches, putToMap and position's values are set properly
+				//..if rule matches, putToMap and position's values are set properly within modify method
 				if (rule.modify(plainText, putToMap, position)) {
 					//..rule matches. Save returned position
 					index = position.value;

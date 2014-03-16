@@ -23,7 +23,13 @@ public class CharacterFrequency {
 	/** Frequency of characters */
 	private final TObjectIntMap<String> frequency;
 
-	public CharacterFrequency() {
+	private final int plainTextLength;
+	private int charactersCount;
+
+
+	public CharacterFrequency(int plainTextLength) {
+		this.plainTextLength = plainTextLength;
+		this.charactersCount = 0;
 		this.frequency = new TObjectIntHashMap<String>();
 	}
 
@@ -33,6 +39,26 @@ public class CharacterFrequency {
 
 	public void put(String value) {
 		frequency.adjustOrPutValue(value, 1, 1);
+		charactersCount++;
+	}
+
+
+	/**
+	 * Returns length of the text in characters. Counts every character
+	 *
+	 * @return length of the text in characters
+	 */
+	public int getPlainTextLength() {
+		return this.plainTextLength;
+	}
+
+	/**
+	 * Returns count of characters. Counts only characters that can be retrieved by calling {@code getFrequencyFor}
+	 *
+	 * @return
+	 */
+	public int getCharactersCount() {
+		return this.charactersCount;
 	}
 
 	public int getFrequencyFor(char character) {

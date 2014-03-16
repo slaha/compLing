@@ -1,6 +1,6 @@
 package cz.compling.analysis;
 
-import cz.compling.analysis.analysator.poems.IAggregation;
+import cz.compling.analysis.analysator.poems.aggregation.IAggregation;
 
 /**
  *

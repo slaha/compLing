@@ -2,11 +2,14 @@ package cz.compling.analysis.analysator.poems.impl;
 
 import cz.compling.AbstTest;
 import cz.compling.analysis.analysator.AggregationAnalyser;
-import cz.compling.analysis.analysator.poems.IAggregation;
+import cz.compling.analysis.analysator.poems.aggregation.AggregationRule;
+import cz.compling.analysis.analysator.poems.aggregation.IAggregation;
 import cz.compling.model.Aggregation;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.text.Normalizer;
 
 /**
  *
@@ -33,18 +36,18 @@ public class AggregationImplTest extends AbstTest{
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetAggregationFor0() throws Exception {
-		analyser.getAggregation().getAggregationFor(0);
+		analyser.getAggregation().getAggregation().getAggregationFor(0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetAggregationForMaxVal() throws Exception {
 		IAggregation aggregation = analyser.getAggregation();
-		aggregation.getAggregationFor(aggregation.getMaxDistance() + 1);
+		aggregation.getAggregation().getAggregationFor(aggregation.getAggregation().getMaxDistance() + 1);
 	}
 
 	@Test
 	public void testGetAggregationFor() throws Exception {
-		IAggregation IAggregation = analyser.getAggregation();
+		IAggregation iAggregation = analyser.getAggregation();
 
 		/*
 		1  - V půlnoc kdysi v soumrak čirý chorý bděl jsem sám a sirý,
@@ -61,7 +64,26 @@ public class AggregationImplTest extends AbstTest{
 		DOUBLE: no or ou ra ul = 5
 
 		 */
-		Aggregation aggregationFor = IAggregation.getAggregationFor(10);
+		/*
+		 * Apply rules to ignore diacritics
+		 */
+		AggregationRule diacriticsRule = new AggregationRule() {
+			@Override
+			public boolean matchesRule(String str) {
+				//string with diacritics will not match
+				return !str.matches("[a-zA-Z]+");
+			}
+
+			@Override
+			public String compareTo(String str) {
+				String normalized = Normalizer.normalize(str, Normalizer.Form.NFD);
+				return normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+			}
+		};
+
+		iAggregation.registerRule(diacriticsRule);
+
+		Aggregation.LineAggregation aggregationFor = iAggregation.getAggregation().getAggregationFor(10);
 
 		int singleSet1Size = aggregationFor.getSingleSet1Size();
 		Assert.assertEquals(45, singleSet1Size);
@@ -93,7 +115,7 @@ public class AggregationImplTest extends AbstTest{
 		SINGLE: aacccddeehiiijkmnooprssssuvvy = 29
 		DOUBLE: am ch ho iv ms se yc = 7
 		*/
-		aggregationFor = IAggregation.getAggregationFor(34);
+		aggregationFor = iAggregation.getAggregation().getAggregationFor(34);
 		singleSet2Size = aggregationFor.getSingleSet2Size();
 		Assert.assertEquals(36, singleSet2Size);
 		doubleSet2Size = aggregationFor.getDoubleSet2Size();
@@ -119,7 +141,7 @@ public class AggregationImplTest extends AbstTest{
 		SINGLE: aaacccddeehiiijkllmmnoprrrrssssvv = 33
 		DOUBLE: ch el se = 3
 	     */
-		aggregationFor = IAggregation.getAggregationFor(100);
+		aggregationFor = iAggregation.getAggregation().getAggregationFor(100);
 		singleSet2Size = aggregationFor.getSingleSet2Size();
 		Assert.assertEquals(43, singleSet2Size);
 		doubleSet2Size = aggregationFor.getDoubleSet2Size();
@@ -134,7 +156,7 @@ public class AggregationImplTest extends AbstTest{
 	@Test
 	public void testGetMaxDistance() throws Exception {
 		IAggregation IAggregation = analyser.getAggregation();
-		int maxDistance = IAggregation.getMaxDistance();
+		int maxDistance = IAggregation.getAggregation().getMaxDistance();
 
 		Assert.assertEquals(107, maxDistance);
 	}

@@ -7,6 +7,7 @@ import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
 import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImplTest;
 import cz.compling.analysis.analysator.poems.impl.AggregationImplTest;
 import cz.compling.analysis.analysator.poems.impl.AlliterationImplTest;
+import cz.compling.utils.TrooveUtilsListsTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+	TrooveUtilsListsTest.class,
+
 	CharacterAnalyserImplTest.class,
 	CharacterFrequencyImplTest.class,
 	WordFrequencyAnalyserImplTest.class,

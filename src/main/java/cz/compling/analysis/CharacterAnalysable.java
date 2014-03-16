@@ -1,6 +1,6 @@
 package cz.compling.analysis;
 
-import cz.compling.analysis.analysator.frequency.ICharacterFrequency;
+import cz.compling.analysis.analysator.frequency.character.ICharacterFrequency;
 
 /**
  *
@@ -14,13 +14,6 @@ import cz.compling.analysis.analysator.frequency.ICharacterFrequency;
  * </dl>
  */
 public interface CharacterAnalysable {
-
-	/**
-	 * Returns length of the text in characters. Counts every character
-	 *
-	 * @return length of the text in characters
-	 */
-	int getPlainTextLength();
 
 	/**
 	 * Returns frequency of characters in the text

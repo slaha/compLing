@@ -1,6 +1,6 @@
 package cz.compling.analysis.analysator.frequency.impl;
 
-import cz.compling.analysis.analysator.frequency.IWordFrequency;
+import cz.compling.analysis.analysator.frequency.words.IWordFrequency;
 import cz.compling.analysis.analysator.frequency.words.WordFrequencyRule;
 import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImplTest;
 import cz.compling.utils.Reference;

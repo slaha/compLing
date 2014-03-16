@@ -35,7 +35,7 @@ public class CharacterAnalyserImplTest extends AbstTest {
 
 	@Test
 	public void testGetPlainTextLength() throws Exception {
-		int length = analyser.getPlainTextLength();
+		int length = analyser.getCharacterFrequency().getCharacterFrequency().getPlainTextLength();
 
 		int realLength;
 		if (TestUtils.isLinux()) {
