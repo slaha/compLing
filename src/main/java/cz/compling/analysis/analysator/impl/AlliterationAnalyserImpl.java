@@ -1,8 +1,8 @@
 package cz.compling.analysis.analysator.impl;
 
 import cz.compling.analysis.analysator.AlliterationAnalyser;
-import cz.compling.analysis.analysator.poems.IAlliteration;
-import cz.compling.analysis.analysator.poems.impl.AlliterationImpl;
+import cz.compling.analysis.analysator.poems.alliteration.AlliterationImpl;
+import cz.compling.analysis.analysator.poems.alliteration.IAlliteration;
 import cz.compling.text.poem.Poem;
 
 /**

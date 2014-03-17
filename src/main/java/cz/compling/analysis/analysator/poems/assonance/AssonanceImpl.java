@@ -1,12 +1,10 @@
-package cz.compling.analysis.analysator.poems.impl;
+package cz.compling.analysis.analysator.poems.assonance;
 
-import cz.compling.analysis.analysator.poems.IAssonance;
+import cz.compling.model.Assonance;
 import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
 import cz.compling.text.poem.Poem;
 import cz.compling.text.poem.PoemImpl;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class AssonanceImpl implements IAssonance {
 	private final Poem poem;
 	private final String[] baseVocals;
 
-	private final TIntIntMap assonance;
+	private final Assonance assonance;
 
 	public AssonanceImpl(Poem poem, String[] vocals) {
 		this.poem = poem;
@@ -52,7 +50,7 @@ public class AssonanceImpl implements IAssonance {
 			}
 		});
 
-		assonance = new TIntIntHashMap();
+		assonance = new Assonance();
 		compute();
 	}
 
@@ -61,7 +59,7 @@ public class AssonanceImpl implements IAssonance {
 
 		final int steps = vocals.length / 2 + 1;
 
-		for (int k = 1; k < steps; k++) {
+		for (int k = 1; k <= steps; k++) {
 			assonance.put(k, assonanceFor(vocals, k));
 		}
 	}
@@ -115,6 +113,11 @@ public class AssonanceImpl implements IAssonance {
 		Text text = new TextImpl("Skakal pes přes Ouves přes zelenOu lOuku");
 		Poem poem = new PoemImpl(text);
 		IAssonance a = new AssonanceImpl(poem, new String[]{"y", "a", "o", "u", "i", "au", "e", "ou"});
+		System.out.println("" + a.getAssonance().getAssonanceFor(1));
 	}
 
+	@Override
+	public Assonance getAssonance() {
+		return assonance;
+	}
 }

@@ -7,6 +7,7 @@ import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
 import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImplTest;
 import cz.compling.analysis.analysator.poems.impl.AggregationImplTest;
 import cz.compling.analysis.analysator.poems.impl.AlliterationImplTest;
+import cz.compling.analysis.analysator.poems.impl.AssonanceImplTest;
 import cz.compling.utils.TrooveUtilsListsTest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,7 +32,8 @@ import org.junit.runners.Suite;
 	WordFrequencyAnalyserImplTest.class,
 	WordFrequencyImplTest.class,
 	AggregationImplTest.class,
-	AlliterationImplTest.class
+	AlliterationImplTest.class,
+	AssonanceImplTest.class
 })
 public class CompLingTest extends AbstTest {
 

@@ -1,4 +1,6 @@
-package cz.compling.analysis.analysator.poems;
+package cz.compling.analysis.analysator.poems.assonance;
+
+import cz.compling.model.Assonance;
 
 /**
  *
@@ -12,4 +14,6 @@ package cz.compling.analysis.analysator.poems;
  * </dl>
  */
 public interface IAssonance {
+
+	Assonance getAssonance();
 }

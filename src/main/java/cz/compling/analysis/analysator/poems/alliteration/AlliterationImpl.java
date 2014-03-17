@@ -1,13 +1,13 @@
-package cz.compling.analysis.analysator.poems.impl;
+package cz.compling.analysis.analysator.poems.alliteration;
 
-import cz.compling.analysis.analysator.poems.IAlliteration;
 import cz.compling.model.Alliteration;
+import cz.compling.rules.BaseRuleHandler;
+import cz.compling.rules.RuleHandler;
+import cz.compling.rules.RuleObserver;
 import cz.compling.text.TextImpl;
 import cz.compling.text.poem.Poem;
 import cz.compling.text.poem.PoemImpl;
 import cz.compling.text.poem.Verse;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.Collection;
 
@@ -26,58 +26,88 @@ public class AlliterationImpl implements IAlliteration {
 
 	private final Poem poem;
 
-	private final TIntObjectMap<Alliteration> alliteration;
+	private final Alliteration alliteration;
+
+	private final RuleHandler<AlliterationRule> ruleHandler;
 
 	private int numberOfVerses;
+	private boolean dirty;
 
 	public AlliterationImpl(Poem poem) {
 		this.poem = poem;
-		alliteration = new TIntObjectHashMap<Alliteration>();
+		alliteration = new Alliteration();
 		numberOfVerses = 0;
+		ruleHandler = new BaseRuleHandler<AlliterationRule>();
 		compute();
+		dirty = false;
 	}
 
 	private void compute() {
 		Collection<Verse> verses = poem.getVerses();
 
 		for (Verse verse : verses) {
-			Alliteration allit = new Alliteration(++numberOfVerses);
+			Alliteration.LineAlliteration allit = new Alliteration.LineAlliteration(++numberOfVerses);
 			for (String word : verse.getWords()) {
-				char firstChar = findFirstChar(word);
-				if (firstChar > 0) {
+				String firstChar = applyRules(word);
+				if (firstChar != null) {
 					allit.add(firstChar);
 				}
 			}
-			alliteration.put(numberOfVerses, allit.removeNotAlliterationChars());
+			alliteration.put(numberOfVerses, allit);
 		}
 	}
 
-	private char findFirstChar(String word) {
-		for (int i = 0; i < word.length(); i++) {
-			char c = word.charAt(i);
-			if (Character.isLetter(c)) {
-				return Character.toLowerCase(c);
+	private String applyRules(String word) {
+		try {
+			word = trimToFirstChar(word);
+			String toSave;
+
+			for (AlliterationRule alliterationRule : getRegisteredRules()) {
+				if ((toSave = alliterationRule.modify(word)) != null) {
+					//..rule matches, reference is filled by char(s)
+					return toSave.toLowerCase();
+				}
+			}
+			//..no rule, return first char
+			return String.valueOf(Character.toLowerCase(word.charAt(0)));
+		} catch (IllegalStateException ex) {
+			//..just ignore
+		}
+
+		return null;
+	}
+
+	private String trimToFirstChar(String word) {
+		word = word.trim();
+		final int length = word.length();
+		if (length == 0) {
+			throw new IllegalStateException("Param word is empty after trimming");
+		}
+
+		int firstCharIndex = 0;
+		while (!Character.isLetter(word.charAt(firstCharIndex))) {
+			firstCharIndex++;
+			if (firstCharIndex >= length) {
+				String msg = String.format("Cannot find firs character in '%s'", word);
+				throw new IllegalStateException(msg);
 			}
 		}
-		return 0;
+		return word.substring(firstCharIndex);
 	}
 
 	@Override
-	public Alliteration getAlliterationFor(int numberOfVerse) {
-		if (numberOfVerse <= 0 || numberOfVerse > getVerseCount()) {
-			String msg =
-				String.format("Param numberOfVerse must be bigger than 0 and lower than return value of getVerseCount() (=%d). Was %d.", getVerseCount(), numberOfVerse);
-			throw new IllegalArgumentException(msg);
+	public Alliteration getAlliteration() {
+		if (dirty) {
+			numberOfVerses = 0;
+			alliteration.clean();
+			compute();
+			dirty = false;
 		}
-		return alliteration.get(numberOfVerse);
-	}
-
-	@Override
-	public int getVerseCount() {
-		return numberOfVerses;
+		return alliteration;
 	}
 
 	public static void main(String[] args) {
+
 		String s = "V půlnoc kdysi v soumrak čirý chorý bděl jsem sám a sirý,\n" +
 			"v knihy staré, zapomněné ukláněl jsem bledou líc;\n" +
 			"skoro schvátilo mne spaní, an ruch lehký znenadání\n" +
@@ -203,9 +233,45 @@ public class AlliterationImpl implements IAlliteration {
 			"lampy zář jej obestírá jeho stín kol vrhajíc,\n" +
 			"a má duše z toho stínu nevzchopí se zoufajíc,\n" +
 			"    nevzchopí se — nikdy víc!\n";
+
 		IAlliteration aggregation1 = new AlliterationImpl(new PoemImpl(new TextImpl(s)));
-		for (int i = 1; i <= aggregation1.getVerseCount(); i++) {
-			System.out.println(aggregation1.getAlliterationFor(i));
+		for (int i = 1; i <= aggregation1.getAlliteration().getVerseCount(); i++) {
+			System.out.println(aggregation1.getAlliteration().getAlliterationFor(i));
 		}
+	}
+
+	@Override
+	public Iterable<AlliterationRule> getRegisteredRules() {
+		return ruleHandler.getRegisteredRules();
+	}
+
+	@Override
+	public void registerRule(AlliterationRule rule) {
+		ruleHandler.registerRule(rule);
+		dirty = true;
+	}
+
+	@Override
+	public boolean removeRule(AlliterationRule rule) {
+		if (ruleHandler.removeRule(rule)) {
+			dirty = true;
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void registerRuleObserver(RuleObserver<AlliterationRule> observer) {
+		ruleHandler.registerRuleObserver(observer);
+	}
+
+	@Override
+	public boolean unregisterRuleObserver(RuleObserver<AlliterationRule> observer) {
+		return ruleHandler.unregisterRuleObserver(observer);
+	}
+
+	@Override
+	public Iterable<RuleObserver<AlliterationRule>> getRegisteredObserves() {
+		return ruleHandler.getRegisteredObserves();
 	}
 }

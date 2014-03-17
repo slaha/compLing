@@ -8,6 +8,8 @@ import cz.compling.analysis.analysator.impl.AggregationAnalyserImpl;
 import cz.compling.analysis.analysator.impl.AlliterationAnalyserImpl;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImpl;
 import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImpl;
+import cz.compling.analysis.analysator.poems.assonance.AssonanceImpl;
+import cz.compling.analysis.analysator.poems.assonance.IAssonance;
 import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
 import cz.compling.text.poem.Poem;
@@ -43,6 +45,7 @@ public class CompLing {
 	/** Aggregation analyser. Can be null - the instance is created first time {@code AggregationAnalyser} is required */
 	private AggregationAnalyser aggregationAnalyser;
 	private AlliterationAnalyser alliterationAnalyser;
+	private IAssonance assonanceAnalyser;
 
 	/**
 	 * Instances are accessible only via getInstance method
@@ -113,5 +116,15 @@ public class CompLing {
 
 	public Text getText() {
 		return text;
+	}
+
+	public synchronized IAssonance geAssonanceAnalyser(String[] vocals) {
+		if (this.assonanceAnalyser == null) {
+			if (this.poem == null) {
+				this.poem = new PoemImpl(text);
+			}
+			this.assonanceAnalyser = new AssonanceImpl(poem, vocals);
+		}
+		return assonanceAnalyser;
 	}
 }

@@ -1,8 +1,13 @@
 package cz.compling.model;
 
-import gnu.trove.map.TCharIntMap;
-import gnu.trove.map.hash.TCharIntHashMap;
-import gnu.trove.procedure.TCharIntProcedure;
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
+import gnu.trove.procedure.TObjectIntProcedure;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  *
@@ -17,83 +22,121 @@ import gnu.trove.procedure.TCharIntProcedure;
  */
 public class Alliteration {
 
+	private final TIntObjectMap<LineAlliteration> alliteration;
+	private int numberOfVerses;
 
-	private final int numberOfVerse;
-
-	private int wordsInVerse;
-
-	private final TCharIntMap alliteration;
-
-	public Alliteration(int numberOfVerse) {
-		this.numberOfVerse = numberOfVerse;
-		this.wordsInVerse = 0;
-
-		alliteration = new TCharIntHashMap();
+	public Alliteration() {
+		alliteration = new TIntObjectHashMap<LineAlliteration>();
+		numberOfVerses = 0;
 	}
 
-	public Alliteration add(char firstChar) {
-		alliteration.adjustOrPutValue(firstChar, 1, 1);
-		wordsInVerse++;
-		return this;
+	public void clean() {
+		numberOfVerses = 0;
+		alliteration.clear();
 	}
 
-	public char[] getFirstCharactersOfWords() {
-		return alliteration.keys();
+	public int getVerseCount() {
+		return numberOfVerses;
 	}
 
-	public boolean hasAnyAlliteration() {
-		return getFirstCharactersOfWords().length > 0;
-	}
-	public int getAlliterationFor(char c) {
-		return alliteration.get(c);
-	}
-
-	public int getNumberOfVerse() {
-		return numberOfVerse;
+	public LineAlliteration getAlliterationFor(int numberOfVerse) {
+		if (numberOfVerse <= 0 || numberOfVerse > getVerseCount()) {
+			String msg =
+				String.format("Param numberOfVerse must be bigger than 0 and lower than return value of getVerseCount() (=%d). Was %d.", getVerseCount(), numberOfVerse);
+			throw new IllegalArgumentException(msg);
+		}
+		return alliteration.get(numberOfVerse);
 	}
 
-	public Alliteration removeNotAlliterationChars() {
-		alliteration.forEachEntry(new TCharIntProcedure() {
-			@Override
-			public boolean execute(char c, int i) {
-				if (i < 2) {
-					alliteration.remove(c);
+	public void put(int numberOfVerse, LineAlliteration lineAlliteration) {
+		alliteration.put(numberOfVerse, lineAlliteration.removeNotAlliterationChars());
+		numberOfVerses++;
+	}
+
+	public static class LineAlliteration {
+		private final int numberOfVerse;
+
+		private int wordsInVerse;
+
+		private final TObjectIntMap<String> alliteration;
+
+		public LineAlliteration(int numberOfVerse) {
+			this.numberOfVerse = numberOfVerse;
+			this.wordsInVerse = 0;
+
+			alliteration = new TObjectIntHashMap<String>();
+		}
+
+		public LineAlliteration add(String str) {
+			alliteration.adjustOrPutValue(str, 1, 1);
+			wordsInVerse++;
+			return this;
+		}
+
+		public Collection<String> getFirstCharactersOfWords() {
+			return Collections.unmodifiableCollection(alliteration.keySet());
+		}
+
+		public boolean hasAnyAlliteration() {
+			return getFirstCharactersOfWords().size() > 0;
+		}
+
+		public int getAlliterationFor(char c) {
+			return getAlliterationFor(String.valueOf(c));
+		}
+
+		public int getAlliterationFor(String str) {
+			return alliteration.get(str);
+		}
+
+
+		public int getNumberOfVerse() {
+			return numberOfVerse;
+		}
+
+		private LineAlliteration removeNotAlliterationChars() {
+			alliteration.forEachEntry(new TObjectIntProcedure<String>() {
+				@Override
+				public boolean execute(String c, int i) {
+					if (i < 2) {
+						alliteration.remove(c);
+					}
+					return true;
 				}
-				return true;
-			};
-		});
+			});
 
-		return this;
-	}
+			return this;
+		}
 
-	public int getCountOfWordsInVerse() {
-		return wordsInVerse;
-	}
+		public int getCountOfWordsInVerse() {
+			return wordsInVerse;
+		}
 
-	@Override
-	public String toString() {
-		return String.format("Verso no. %3d. Words in verse: %2d, alliteration: %s", numberOfVerse, wordsInVerse, alliteration.toString());
-	}
+		@Override
+		public String toString() {
+			return String.format("Verso no. %3d. Words in verse: %2d, alliteration: %s", numberOfVerse, wordsInVerse, alliteration.toString());
+		}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
 
-		Alliteration that = (Alliteration) o;
+			LineAlliteration that = (LineAlliteration) o;
 
-		if (numberOfVerse != that.numberOfVerse) return false;
-		if (wordsInVerse != that.wordsInVerse) return false;
-		if (!alliteration.equals(that.alliteration)) return false;
+			if (numberOfVerse != that.numberOfVerse) return false;
+			if (wordsInVerse != that.wordsInVerse) return false;
+			if (!alliteration.equals(that.alliteration)) return false;
 
-		return true;
-	}
+			return true;
+		}
 
-	@Override
-	public int hashCode() {
-		int result = numberOfVerse;
-		result = 31 * result + wordsInVerse;
-		result = 31 * result + alliteration.hashCode();
-		return result;
+		@Override
+		public int hashCode() {
+			int result = numberOfVerse;
+			result = 31 * result + wordsInVerse;
+			result = 31 * result + alliteration.hashCode();
+			return result;
+		}
 	}
 }

@@ -41,8 +41,6 @@ public class AggregationImpl implements IAggregation {
 	}
 
 	private void compute() {
-	//	final String onlyCharactersPoem = toOnlyLetters();
-//		final String[] lines = onlyCharactersPoem.split("\n");
 		Poem onlyLettersPoem = toOnlyLetters();
 		Collection<Verse> verses = onlyLettersPoem.getVerses();
 		final Verse[] lines = verses.toArray(new Verse[verses.size()]);
@@ -88,6 +86,14 @@ public class AggregationImpl implements IAggregation {
 		}
 	}
 
+	/**
+	 * Computes intersection of two sorted arrays of strings
+	 *
+	 * @param line1 first array
+	 * @param line2 second array
+	 *
+	 * @return number that indicates count of the same strings on the same indexes in the arrays
+	 */
 	private int intersection(String[] line1, String[] line2) {
 		int matches = 0;
 		int i1 = 0, i2 = 0;
@@ -138,21 +144,21 @@ public class AggregationImpl implements IAggregation {
 		return poem.applyRule(new PoemModificationRule() {
 			@Override
 			public String modify(Poem poem) {
-				StringBuilder sb = new StringBuilder();
-				final String text = poem.getPlainText();
-				char last = 0;
-				for (char c : text.toCharArray()) {
-					if (Character.isLetter(c)) {
-						//..we need to be lowercase
-						sb.append(Character.toLowerCase(c));
-					} else if (c == '\n' && last != '\n') {
-						//..put line separator but not more than one
-						sb.append(c);
-					}
-					last = c;
+			StringBuilder sb = new StringBuilder();
+			final String text = poem.getPlainText();
+			char last = 0;
+			for (char c : text.toCharArray()) {
+				if (Character.isLetter(c)) {
+					//..we need to be lowercase
+					sb.append(Character.toLowerCase(c));
+				} else if (c == '\n' && last != '\n') {
+					//..put line separator but not more than one
+					sb.append(c);
 				}
+				last = c;
+			}
 
-				return sb.toString();
+			return sb.toString();
 			}
 		});
 	}

@@ -79,7 +79,6 @@ public class WordFrequencyImplTest extends WordFrequencyAnalyserImplTest {
 //		[ „‚\n][a-zA-ZěščřžýáíéĚŠČŘŽÝÁÍÉďťňůú]{5}[ \n!?,:;.] and s/ /  /g
 		Assert.assertEquals(new Pair<Integer, Integer>(5, 189), pair);
 
-		System.out.println(allWordsLengthsByFrequency);
 		WordFrequencyRule chRule = new WordFrequencyRule() {
 
 			@Override
@@ -95,8 +94,6 @@ public class WordFrequencyImplTest extends WordFrequencyAnalyserImplTest {
 		frequencyAnalyser.registerRule(chRule);
 		IWordFrequency wordFrequency = getCompLing().getWordFrequencyAnalyser().getWordFrequency();
 		List<Pair<Integer, Integer>> allWordsByFrequency = wordFrequency.getWordFrequency().getAllWordsLengthsByFrequency(TrooveUtils.SortOrder.DESCENDING);
-		System.out.println(allWordsByFrequency);
-
 	}
 
 	@Test
