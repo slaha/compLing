@@ -1,7 +1,7 @@
 package cz.compling.analysis.analysator.impl;
 
 import cz.compling.AbstTest;
-import cz.compling.analysis.analysator.WordFrequencyAnalyser;
+import cz.compling.analysis.analysator.frequency.words.IWordFrequency;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,18 +15,18 @@ import org.junit.Test;
  */
 public class WordFrequencyAnalyserImplTest extends AbstTest {
 
-	protected static WordFrequencyAnalyser getAnalyser() {
+	protected static IWordFrequency getAnalyser() {
 		return analyser;
 	}
 
-	private static WordFrequencyAnalyser analyser;
+	private static IWordFrequency analyser;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
 
 		AbstTest.setUp();
 
-		analyser = getCompLing().getWordFrequencyAnalyser();
+		analyser = getCompLing().generalAnalysis().wordFrequency();
 	}
 
 	@Test

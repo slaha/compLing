@@ -2,7 +2,6 @@ package cz.compling.analysis.analysator.poems.impl;
 
 import cz.compling.AbstTest;
 import cz.compling.CompLing;
-import cz.compling.analysis.analysator.AlliterationAnalyser;
 import cz.compling.analysis.analysator.poems.alliteration.AlliterationRule;
 import cz.compling.analysis.analysator.poems.alliteration.IAlliteration;
 import cz.compling.model.Alliteration;
@@ -23,18 +22,18 @@ import org.junit.Test;
  */
 public class AlliterationImplTest extends AbstTest {
 
-	private static AlliterationAnalyser analyser;
+	private static IAlliteration analyser;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
 
 		AbstTest.setUp();
 
-		analyser = getCompLing().getAlliterationAnalyser();
+		analyser = getCompLing().poemAnalysis().alliteration();
 	}
 	@Test
 	public void testGetAlliterationFor() throws Exception {
-		IAlliteration iAlliteration = analyser.getAlliteration();
+		IAlliteration iAlliteration = analyser;
 
 		//..V půlnoc kdysi v soumrak čirý chorý bděl jsem sám a sirý,
 		Alliteration.LineAlliteration alliterationFor1 = iAlliteration.getAlliteration().getAlliterationFor(1);
@@ -73,7 +72,7 @@ public class AlliterationImplTest extends AbstTest {
 
 	@Test
 	public void testGetVerseCount() throws Exception {
-		IAlliteration iAlliteration = analyser.getAlliteration();
+		IAlliteration iAlliteration = analyser;
 
 		int verseCount = iAlliteration.getAlliteration().getVerseCount();
 
@@ -86,7 +85,7 @@ public class AlliterationImplTest extends AbstTest {
 		String poem = "Chceme do Chrudimi choditi častěji";
 
 		CompLing instance = CompLing.getInstance(poem);
-		IAlliteration alliteration = instance.getAlliterationAnalyser().getAlliteration();
+		IAlliteration alliteration = instance.poemAnalysis().alliteration();
 
 		AlliterationRule rule = new AlliterationRule() {
 			@Override

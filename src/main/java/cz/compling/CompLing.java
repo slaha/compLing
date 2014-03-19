@@ -1,17 +1,18 @@
 package cz.compling;
 
-import cz.compling.analysis.analysator.AggregationAnalyser;
-import cz.compling.analysis.analysator.AlliterationAnalyser;
 import cz.compling.analysis.analysator.CharacterAnalyser;
+import cz.compling.analysis.analysator.CharacterAnalyserImpl;
 import cz.compling.analysis.analysator.WordFrequencyAnalyser;
-import cz.compling.analysis.analysator.impl.AggregationAnalyserImpl;
-import cz.compling.analysis.analysator.impl.AlliterationAnalyserImpl;
-import cz.compling.analysis.analysator.impl.CharacterAnalyserImpl;
-import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImpl;
-import cz.compling.analysis.analysator.poems.assonance.AssonanceImpl;
+import cz.compling.analysis.analysator.WordFrequencyAnalyserImpl;
+import cz.compling.analysis.analysator.frequency.character.ICharacterFrequency;
+import cz.compling.analysis.analysator.frequency.words.IWordFrequency;
+import cz.compling.analysis.analysator.poems.*;
+import cz.compling.analysis.analysator.poems.aggregation.IAggregation;
+import cz.compling.analysis.analysator.poems.alliteration.IAlliteration;
 import cz.compling.analysis.analysator.poems.assonance.IAssonance;
 import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
+import cz.compling.text.TextModificationRule;
 import cz.compling.text.poem.Poem;
 import cz.compling.text.poem.PoemImpl;
 
@@ -33,71 +34,14 @@ public class CompLing {
 	/** Text to analyse */
 	private Text text;
 
-	/** Text as poem. Lazy loaded when it is required for the first time */
-	private Poem poem;
-
-	/** Character analyser. Can be null - the instance is created first time {@code CharacterAnalyser} is required */
-	private CharacterAnalyser characterAnalyser;
-
-	/** Word analyser. Can be null - the instance is created first time {@code WordFrequencyAnalyser} is required */
-	private WordFrequencyAnalyser wordFrequencyAnalyser;
-
-	/** Aggregation analyser. Can be null - the instance is created first time {@code AggregationAnalyser} is required */
-	private AggregationAnalyser aggregationAnalyser;
-	private AlliterationAnalyser alliterationAnalyser;
-	private IAssonance assonanceAnalyser;
+	private GeneralAnalysis generalAnalysis;
+	private PoemAnalysis poemAnalysis;
 
 	/**
 	 * Instances are accessible only via getInstance method
 	 */
 	private CompLing(Text text) {
 		this.text = text;
-	}
-
-	/**
-	 * Returns an instance of {@code AggregationAnalyser} which can perform analysis of aggregation in the poem
-	 */
-	public synchronized AggregationAnalyser getAggregationAnalyser() {
-		if (this.aggregationAnalyser == null) {
-			if (this.poem == null) {
-				this.poem = new PoemImpl(text);
-			}
-			this.aggregationAnalyser = new AggregationAnalyserImpl(this.poem);
-		}
-		return this.aggregationAnalyser;
-	}
-
-
-
-	public synchronized AlliterationAnalyser getAlliterationAnalyser() {
-		if (this.alliterationAnalyser == null) {
-			if (this.poem == null) {
-				this.poem = new PoemImpl(text);
-			}
-			this.alliterationAnalyser = new AlliterationAnalyserImpl(this.poem);
-		}
-		return this.alliterationAnalyser;
-
-	}
-
-	/**
-	 * Returns an instance of {@code CharacterAnalyser} which can perform detailed analysis of characters it the text
-	 */
-	public synchronized CharacterAnalyser getCharacterAnalyser() {
-		if (this.characterAnalyser == null) {
-			this.characterAnalyser = new CharacterAnalyserImpl(this.text);
-		}
-		return this.characterAnalyser;
-	}
-
-	/**
-	 * Returns an instance of {@code WordFrequencyAnalyser} which can perform detailed analysis of words it the text
-	 */
-	public synchronized WordFrequencyAnalyser getWordFrequencyAnalyser() {
-		if (this.wordFrequencyAnalyser == null) {
-			this.wordFrequencyAnalyser = new WordFrequencyAnalyserImpl(this.text);
-		}
-		return this.wordFrequencyAnalyser;
 	}
 
 	/**
@@ -114,17 +58,102 @@ public class CompLing {
 		return new CompLing(new TextImpl(text));
 	}
 
-	public Text getText() {
-		return text;
+	public void registerRule(TextModificationRule rule) {
+		text.registerRule(rule);
 	}
 
-	public synchronized IAssonance geAssonanceAnalyser(String[] vocals) {
-		if (this.assonanceAnalyser == null) {
-			if (this.poem == null) {
-				this.poem = new PoemImpl(text);
-			}
-			this.assonanceAnalyser = new AssonanceImpl(poem, vocals);
+	public PoemAnalysis poemAnalysis() {
+		if (this.poemAnalysis == null) {
+			this.poemAnalysis = new PoemAnalysis();
 		}
-		return assonanceAnalyser;
+		return poemAnalysis;
+	}
+
+	public GeneralAnalysis generalAnalysis() {
+		if (this.generalAnalysis == null) {
+			this.generalAnalysis = new GeneralAnalysis();
+		}
+		return generalAnalysis;
+	}
+
+	/**
+	 *
+	 */
+	public class GeneralAnalysis {
+
+
+		/** Character analyser. Can be null - the instance is created first time {@code CharacterAnalyser} is required */
+		private CharacterAnalyser characterAnalyser;
+
+		/** Word analyser. Can be null - the instance is created first time {@code WordFrequencyAnalyser} is required */
+		private WordFrequencyAnalyser wordFrequencyAnalyser;
+
+		/**
+		 * Returns an instance of {@code CharacterAnalyser} which can perform detailed analysis of characters it the text
+		 */
+		public synchronized ICharacterFrequency characterFrequency() {
+			if (this.characterAnalyser == null) {
+				this.characterAnalyser = new CharacterAnalyserImpl(text);
+			}
+			return this.characterAnalyser.getCharacterFrequency();
+		}
+
+		/**
+		 * Returns an instance of {@code WordFrequencyAnalyser} which can perform detailed analysis of words it the text
+		 */
+		public synchronized IWordFrequency wordFrequency() {
+			if (this.wordFrequencyAnalyser == null) {
+				this.wordFrequencyAnalyser = new WordFrequencyAnalyserImpl(text);
+			}
+			return this.wordFrequencyAnalyser.getWordFrequency();
+		}
+
+	}
+
+	/**
+	 *
+	 */
+	public class PoemAnalysis {
+
+		/** Text as poem. */
+		private Poem poem;
+
+		/** Aggregation analyser. Can be null - the instance is created first time {@code AggregationAnalyser} is required */
+		private AggregationAnalyser aggregationAnalyser;
+		private AlliterationAnalyser alliterationAnalyser;
+		private AssonanceAnalyser assonanceAnalyser;
+
+		public PoemAnalysis() {
+			this.poem = new PoemImpl(text);
+		}
+
+		/**
+		 * Returns an instance of {@code AggregationAnalyser} which can perform analysis of aggregation in the poem
+		 */
+		public synchronized IAggregation aggregation() {
+			if (this.aggregationAnalyser == null) {
+				this.aggregationAnalyser = new AggregationAnalyserImpl(this.poem);
+			}
+			return this.aggregationAnalyser.getAggregation();
+		}
+
+
+
+		public synchronized IAlliteration alliteration() {
+			if (this.alliterationAnalyser == null) {
+				this.alliterationAnalyser = new AlliterationAnalyserImpl(this.poem);
+			}
+			return this.alliterationAnalyser.getAlliteration();
+
+		}
+
+
+		public synchronized IAssonance assonance(String[] vocals) {
+			if (this.assonanceAnalyser == null) {
+				this.assonanceAnalyser = new AssonanceAnalyserImpl(poem);
+			}
+			return assonanceAnalyser.getAssonance(vocals);
+		}
+
 	}
 }

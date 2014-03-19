@@ -30,7 +30,7 @@ public class AssonanceImplTest extends AbstTest {
 
 		AbstTest.setUp();
 
-		analyser = getCompLing().geAssonanceAnalyser(new String[]{"a", "e", "i", "o", "u", "y", "á", "é", "í", "ó", "ů", "ú", "ý"});
+		analyser = getCompLing().poemAnalysis().assonance(new String[]{"a", "e", "i", "o", "u", "y", "á", "é", "í", "ó", "ů", "ú", "ý"});
 	}
 
 	@Test

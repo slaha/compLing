@@ -32,7 +32,7 @@ public class WordFrequencyImplTest extends WordFrequencyAnalyserImplTest {
 	public static void setUp() throws Exception {
 		WordFrequencyAnalyserImplTest.setUp();
 
-		frequencyAnalyser = getAnalyser().getWordFrequency();
+		frequencyAnalyser = getAnalyser();
 	}
 	@Test
 	public void testGetCountOfWords() throws Exception {
@@ -92,7 +92,7 @@ public class WordFrequencyImplTest extends WordFrequencyAnalyserImplTest {
 		};
 
 		frequencyAnalyser.registerRule(chRule);
-		IWordFrequency wordFrequency = getCompLing().getWordFrequencyAnalyser().getWordFrequency();
+		IWordFrequency wordFrequency = getCompLing().generalAnalysis().wordFrequency();
 		List<Pair<Integer, Integer>> allWordsByFrequency = wordFrequency.getWordFrequency().getAllWordsLengthsByFrequency(TrooveUtils.SortOrder.DESCENDING);
 	}
 

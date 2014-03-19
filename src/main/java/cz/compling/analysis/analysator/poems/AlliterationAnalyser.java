@@ -1,4 +1,4 @@
-package cz.compling.analysis.analysator;
+package cz.compling.analysis.analysator.poems;
 
 import cz.compling.analysis.AlliterationAnalysable;
 

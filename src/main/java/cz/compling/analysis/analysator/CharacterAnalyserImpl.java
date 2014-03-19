@@ -1,6 +1,5 @@
-package cz.compling.analysis.analysator.impl;
+package cz.compling.analysis.analysator;
 
-import cz.compling.analysis.analysator.CharacterAnalyser;
 import cz.compling.analysis.analysator.frequency.character.CharacterFrequencyImpl;
 import cz.compling.analysis.analysator.frequency.character.ICharacterFrequency;
 import cz.compling.text.Text;

@@ -1,6 +1,5 @@
-package cz.compling.analysis.analysator.impl;
+package cz.compling.analysis.analysator.poems;
 
-import cz.compling.analysis.analysator.AlliterationAnalyser;
 import cz.compling.analysis.analysator.poems.alliteration.AlliterationImpl;
 import cz.compling.analysis.analysator.poems.alliteration.IAlliteration;
 import cz.compling.text.poem.Poem;

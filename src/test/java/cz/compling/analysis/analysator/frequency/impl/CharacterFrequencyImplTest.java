@@ -35,7 +35,7 @@ public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 	public static void setUp() throws Exception {
 		CharacterAnalyserImplTest.setUp();
 
-		frequencyAnalyser = getAnalyser().getCharacterFrequency();
+		frequencyAnalyser = getAnalyser();
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class CharacterFrequencyImplTest extends CharacterAnalyserImplTest {
 			}
 		};
 
-		getCompLing().getText().registerRule(toLowerCaseRule);
+		getCompLing().registerRule(toLowerCaseRule);
 
 		aFr = frequencyAnalyser.getCharacterFrequency().getFrequencyFor('a');
 		Assert.assertEquals(275, aFr);

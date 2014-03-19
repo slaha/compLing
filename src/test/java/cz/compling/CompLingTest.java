@@ -1,6 +1,5 @@
 package cz.compling;
 
-import cz.compling.analysis.analysator.CharacterAnalyser;
 import cz.compling.analysis.analysator.frequency.impl.CharacterFrequencyImplTest;
 import cz.compling.analysis.analysator.frequency.impl.WordFrequencyImplTest;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
@@ -56,8 +55,8 @@ public class CompLingTest extends AbstTest {
 	@Test
 	public void getCharacterAnalyser() {
 
-		CharacterAnalyser characterAnalyser1 = getCompLing().getCharacterAnalyser();
-		CharacterAnalyser characterAnalyser2 = getCompLing().getCharacterAnalyser();
+		Object characterAnalyser1 = getCompLing().generalAnalysis().characterFrequency();
+		Object characterAnalyser2 = getCompLing().generalAnalysis().characterFrequency();
 
 		Assert.assertEquals(characterAnalyser1, characterAnalyser2);
 	}

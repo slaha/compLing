@@ -1,6 +1,6 @@
-package cz.compling.analysis.analysator;
+package cz.compling.analysis.analysator.poems;
 
-import cz.compling.analysis.AggregationAnalysable;
+import cz.compling.analysis.AssonanceAnalysable;
 
 /**
  *
@@ -13,5 +13,5 @@ import cz.compling.analysis.AggregationAnalysable;
  * <dd> 14.2.14 19:15</dd>
  * </dl>
  */
-public interface AggregationAnalyser extends AggregationAnalysable {
+public interface AssonanceAnalyser extends AssonanceAnalysable {
 }

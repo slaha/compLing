@@ -1,7 +1,6 @@
 package cz.compling.analysis.analysator.poems.impl;
 
 import cz.compling.AbstTest;
-import cz.compling.analysis.analysator.AggregationAnalyser;
 import cz.compling.analysis.analysator.poems.aggregation.AggregationRule;
 import cz.compling.analysis.analysator.poems.aggregation.IAggregation;
 import cz.compling.model.Aggregation;
@@ -24,30 +23,30 @@ import java.text.Normalizer;
  */
 public class AggregationImplTest extends AbstTest{
 
-	private static AggregationAnalyser analyser;
+	private static IAggregation analyser;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
 
 		AbstTest.setUp();
 
-		analyser = getCompLing().getAggregationAnalyser();
+		analyser = getCompLing().poemAnalysis().aggregation();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetAggregationFor0() throws Exception {
-		analyser.getAggregation().getAggregation().getAggregationFor(0);
+		analyser.getAggregation().getAggregationFor(0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetAggregationForMaxVal() throws Exception {
-		IAggregation aggregation = analyser.getAggregation();
+		IAggregation aggregation = analyser;
 		aggregation.getAggregation().getAggregationFor(aggregation.getAggregation().getMaxDistance() + 1);
 	}
 
 	@Test
 	public void testGetAggregationFor() throws Exception {
-		IAggregation iAggregation = analyser.getAggregation();
+		IAggregation iAggregation = analyser;
 
 		/*
 		1  - V půlnoc kdysi v soumrak čirý chorý bděl jsem sám a sirý,
@@ -155,7 +154,7 @@ public class AggregationImplTest extends AbstTest{
 
 	@Test
 	public void testGetMaxDistance() throws Exception {
-		IAggregation IAggregation = analyser.getAggregation();
+		IAggregation IAggregation = analyser;
 		int maxDistance = IAggregation.getAggregation().getMaxDistance();
 
 		Assert.assertEquals(107, maxDistance);
