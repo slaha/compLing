@@ -1,6 +1,6 @@
 package cz.compling.analysis.analysator;
 
-import cz.compling.analysis.CharacterAnalysable;
+import cz.compling.analysis.general.CharacterAnalysable;
 
 /**
  *

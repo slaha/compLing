@@ -1,6 +1,7 @@
 package cz.compling.text.poem;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -31,7 +32,7 @@ public interface Poem {
 	 *
 	 * @return verses of the poem
 	 */
-	Collection<Verse> getVerses();
+	List<Verse> getVerses();
 
 	/**
 	 * @return count of strophes in the poem

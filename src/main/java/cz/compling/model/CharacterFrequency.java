@@ -38,8 +38,19 @@ public class CharacterFrequency {
 	}
 
 	public void put(String value) {
+		value = applyWhiteSpaceRule(value);
+
 		frequency.adjustOrPutValue(value, 1, 1);
 		charactersCount++;
+	}
+
+	private String applyWhiteSpaceRule(String value) {
+		if ("\n".equals(value)) {
+			value = "\\n";
+		} else if (" ".equals(value)) {
+			value = "' '";
+		}
+		return value;
 	}
 
 
@@ -66,10 +77,10 @@ public class CharacterFrequency {
 	}
 
 	public int getFrequencyFor(String freqFor) {
-		if (freqFor == null || freqFor.trim().isEmpty()) {
-			throw new IllegalArgumentException("getFrequencyFor cannot be called with NULL or empty or whitespaces only argument");
+		if (freqFor == null || freqFor.isEmpty()) {
+			throw new IllegalArgumentException("getFrequencyFor cannot be called with NULL or empty only argument");
 		}
-		return frequency.get(freqFor);
+		return frequency.get(applyWhiteSpaceRule(freqFor));
 	}
 	/**
 	 * Returns sorted list of frequencies of characters

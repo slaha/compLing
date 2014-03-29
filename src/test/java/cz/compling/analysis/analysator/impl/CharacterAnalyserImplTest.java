@@ -1,7 +1,6 @@
 package cz.compling.analysis.analysator.impl;
 
 import cz.compling.AbstTest;
-import cz.compling.TestUtils;
 import cz.compling.analysis.analysator.frequency.character.ICharacterFrequency;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -37,13 +36,7 @@ public class CharacterAnalyserImplTest extends AbstTest {
 	public void testGetPlainTextLength() throws Exception {
 		int length = analyser.getCharacterFrequency().getPlainTextLength();
 
-		int realLength;
-		if (TestUtils.isLinux()) {
-			realLength = TestUtils.fileSize(AbstTest.FILE, TEXT_LENGTH);
-		} else {
-			realLength = TEXT_LENGTH;
-		}
-		Assert.assertEquals(realLength, length);
+		Assert.assertEquals(TEXT_LENGTH, length);
 
 	}
 }

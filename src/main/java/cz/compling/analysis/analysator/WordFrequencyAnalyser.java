@@ -1,6 +1,6 @@
 package cz.compling.analysis.analysator;
 
-import cz.compling.analysis.WordAnalysable;
+import cz.compling.analysis.general.WordAnalysable;
 
 /**
  *

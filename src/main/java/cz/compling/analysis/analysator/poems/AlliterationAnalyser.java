@@ -1,6 +1,6 @@
 package cz.compling.analysis.analysator.poems;
 
-import cz.compling.analysis.AlliterationAnalysable;
+import cz.compling.analysis.poem.AlliterationAnalysable;
 
 /**
  *

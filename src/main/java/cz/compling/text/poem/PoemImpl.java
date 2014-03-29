@@ -82,8 +82,8 @@ public class PoemImpl implements Poem {
 	}
 
 	@Override
-	public Collection<Verse> getVerses() {
-		Collection<Verse> verses = new ArrayList<Verse>();
+	public List<Verse> getVerses() {
+		List<Verse> verses = new ArrayList<Verse>();
 
 		for (int i = 1; i <= getCountOfStrophes(); i++) {
 			String[] versesOfStrophe = strophes.get(i);

@@ -1,6 +1,6 @@
 package cz.compling.analysis.analysator.poems;
 
-import cz.compling.analysis.poem.AssonanceAnalysable;
+import cz.compling.analysis.poem.VerseAnalysable;
 
 /**
  *
@@ -13,5 +13,5 @@ import cz.compling.analysis.poem.AssonanceAnalysable;
  * <dd> 14.2.14 19:15</dd>
  * </dl>
  */
-public interface AssonanceAnalyser extends AssonanceAnalysable {
+public interface VerseAnalyser extends VerseAnalysable {
 }

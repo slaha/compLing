@@ -10,6 +10,7 @@ import cz.compling.analysis.analysator.poems.*;
 import cz.compling.analysis.analysator.poems.aggregation.IAggregation;
 import cz.compling.analysis.analysator.poems.alliteration.IAlliteration;
 import cz.compling.analysis.analysator.poems.assonance.IAssonance;
+import cz.compling.analysis.analysator.poems.verses.IVerses;
 import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
 import cz.compling.text.TextModificationRule;
@@ -122,9 +123,17 @@ public class CompLing {
 		private AggregationAnalyser aggregationAnalyser;
 		private AlliterationAnalyser alliterationAnalyser;
 		private AssonanceAnalyser assonanceAnalyser;
+		private VerseAnalyser verseAnalyser;
 
 		public PoemAnalysis() {
 			this.poem = new PoemImpl(text);
+		}
+
+		public synchronized IVerses verses() {
+			if (this.verseAnalyser == null) {
+				this.verseAnalyser = new VersesAnalyserImpl(this.poem);
+			}
+			return this.verseAnalyser.getVerses();
 		}
 
 		/**

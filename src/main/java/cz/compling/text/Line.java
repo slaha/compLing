@@ -1,6 +1,9 @@
 package cz.compling.text;
 
-import java.util.Arrays;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,8 +24,27 @@ public class Line {
 		this.line = line;
 	}
 
-	public Iterable<String> getWords() {
-		return Arrays.asList(line.split("\\s+"));
+	public List<String> getWords() {
+		List<String> words = new ArrayList<String>();
+		StringBuilder sb = new StringBuilder();
+		String word;
+		for (String chunk : line.trim().split("\\s+")) {
+			removeNonAlpha(chunk, sb);
+			if (StringUtils.isNotBlank((word = sb.toString())) ) {
+				words.add(word);
+			}
+		}
+
+		return words;
+	}
+
+	private void removeNonAlpha(String chunk, StringBuilder builder) {
+		builder.setLength(0);
+		for (char c : chunk.toCharArray()) {
+			if (Character.isLetter(c)) {
+				builder.append(c);
+			}
+		}
 	}
 
 	@Override
@@ -46,5 +68,9 @@ public class Line {
 	@Override
 	public int hashCode() {
 		return line.hashCode();
+	}
+
+	public char[] getCharacters() {
+		return line.trim().toCharArray();
 	}
 }
