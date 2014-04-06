@@ -2,7 +2,7 @@ package cz.compling.analysis.analysator.frequency.impl;
 
 import cz.compling.analysis.analysator.frequency.words.IWordFrequency;
 import cz.compling.analysis.analysator.frequency.words.WordFrequencyRule;
-import cz.compling.analysis.analysator.impl.WordFrequencyAnalyserImplTest;
+import cz.compling.analysis.analysator.impl.WordAnalyserImplTest;
 import cz.compling.utils.Reference;
 import cz.compling.utils.TrooveUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,13 +24,13 @@ import java.util.List;
  * <dd> 1.3.14 20:07</dd>
  * </dl>
  */
-public class WordFrequencyImplTest extends WordFrequencyAnalyserImplTest {
+public class WordFrequencyImplTest extends WordAnalyserImplTest {
 
 	private static IWordFrequency frequencyAnalyser;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
-		WordFrequencyAnalyserImplTest.setUp();
+		WordAnalyserImplTest.setUp();
 
 		frequencyAnalyser = getAnalyser();
 	}

@@ -1,68 +1,65 @@
 package cz.compling.analysis.analysator.frequency.words;
 
-import cz.compling.model.WordFrequency;
 import cz.compling.model.Words;
 import cz.compling.rules.BaseRuleHandler;
 import cz.compling.rules.RuleHandler;
 import cz.compling.rules.RuleObserver;
 import cz.compling.text.Text;
-import cz.compling.utils.Reference;
+import cz.compling.text.TextModificationRule;
 
 /**
  *
- * TODO 
+ * TODO
  *
  * <dl>
  * <dt>Created by:</dt>
  * <dd>slaha</dd>
  * <dt>On:</dt>
- * <dd> 1.3.14 11:19</dd>
+ * <dd> 6.4.14 12:18</dd>
  * </dl>
  */
-public class WordFrequencyImpl implements IWordFrequency {
+public class WordsImpl implements IWords {
 
-	/** Text to analyse */
 	private final Text text;
-
+	private final RuleHandler<WordFrequencyRule> ruleHandler;
 	private final Words words;
 
-	/** Frequency of words (word is key, frequency is value) */
-	private final WordFrequency frequency;
-
-	private final RuleHandler<WordFrequencyRule> ruleHandler;
-
-	public WordFrequencyImpl(Text text, IWords words) {
+	public WordsImpl(Text text) {
 		this.text = text;
-		this.words = words.getWords();
-		frequency = new WordFrequency();
-		ruleHandler = new BaseRuleHandler<WordFrequencyRule>();
+		this.ruleHandler = new BaseRuleHandler<WordFrequencyRule>();
+		this.words = new Words();
+
 		compute();
 	}
 
 	private void compute() {
-
-		final Reference<String> word = new Reference<String>();
-		final Reference<Integer> length = new Reference<Integer>();
-		for (String nextWord : words) {
-			word.value = nextWord;
-			length.value = nextWord.length();
-			applyRules(word, length);
-			frequency.put(word.value, length.value);
-		}	
-	}
-
-	private void applyRules(Reference<String> word, Reference<Integer> length) {
-
-		for (WordFrequencyRule rule : getRegisteredRules()) {
-			if (rule.modify(word, length)) {
-				return;
+		//..first we have to remove all non-alphabet characters.
+		//..All other characters are replaced by space
+		TextModificationRule removeNonAlphabetCharacters = new TextModificationRule() {
+			@Override
+			public String modify(Text text) {
+				String plainText = text.getPlainText();
+				StringBuilder sb = new StringBuilder(plainText.length());
+				for (char c : plainText.toCharArray()) {
+					sb.append(Character.isLetter(c) ? c : ' ');
+				}
+				return sb.toString().trim();
 			}
+		};
+		final String onlyAlphabetText = text.applyRule(removeNonAlphabetCharacters).getPlainText();
+
+		//..Split by space(s). Used String.split because javadoc to StringTokenizer says "its use is discouraged in new code"
+		String[] words = onlyAlphabetText.split("\\s+");
+
+		for (String word : words) {
+			this.words.add(word);
 		}
+
 	}
 
 	@Override
-	public WordFrequency getWordFrequency() {
-		return frequency;
+	public Words getWords() {
+		return words;
 	}
 
 	@Override
@@ -83,6 +80,7 @@ public class WordFrequencyImpl implements IWordFrequency {
 	@Override
 	public void registerRuleObserver(RuleObserver<WordFrequencyRule> observer) {
 		ruleHandler.registerRuleObserver(observer);
+
 	}
 
 	@Override

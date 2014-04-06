@@ -13,7 +13,7 @@ import org.junit.Test;
  * <dd> 14.2.14 19:22</dd>
  * </dl>
  */
-public class WordFrequencyAnalyserImplTest extends AbstTest {
+public class WordAnalyserImplTest extends AbstTest {
 
 	protected static IWordFrequency getAnalyser() {
 		return analyser;

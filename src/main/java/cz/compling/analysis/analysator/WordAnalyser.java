@@ -13,5 +13,5 @@ import cz.compling.analysis.general.WordAnalysable;
  * <dd> 14.2.14 19:15</dd>
  * </dl>
  */
-public interface WordFrequencyAnalyser extends WordAnalysable {
+public interface WordAnalyser extends WordAnalysable {
 }

@@ -2,10 +2,11 @@ package cz.compling;
 
 import cz.compling.analysis.analysator.CharacterAnalyser;
 import cz.compling.analysis.analysator.CharacterAnalyserImpl;
-import cz.compling.analysis.analysator.WordFrequencyAnalyser;
-import cz.compling.analysis.analysator.WordFrequencyAnalyserImpl;
+import cz.compling.analysis.analysator.WordAnalyser;
+import cz.compling.analysis.analysator.WordAnalyserImpl;
 import cz.compling.analysis.analysator.frequency.character.ICharacterFrequency;
 import cz.compling.analysis.analysator.frequency.words.IWordFrequency;
+import cz.compling.analysis.analysator.frequency.words.IWords;
 import cz.compling.analysis.analysator.poems.*;
 import cz.compling.analysis.analysator.poems.aggregation.IAggregation;
 import cz.compling.analysis.analysator.poems.alliteration.IAlliteration;
@@ -87,7 +88,7 @@ public class CompLing {
 		private CharacterAnalyser characterAnalyser;
 
 		/** Word analyser. Can be null - the instance is created first time {@code WordFrequencyAnalyser} is required */
-		private WordFrequencyAnalyser wordFrequencyAnalyser;
+		private WordAnalyser wordAnalyser;
 
 		/**
 		 * Returns an instance of {@code CharacterAnalyser} which can perform detailed analysis of characters it the text
@@ -103,12 +104,18 @@ public class CompLing {
 		 * Returns an instance of {@code WordFrequencyAnalyser} which can perform detailed analysis of words it the text
 		 */
 		public synchronized IWordFrequency wordFrequency() {
-			if (this.wordFrequencyAnalyser == null) {
-				this.wordFrequencyAnalyser = new WordFrequencyAnalyserImpl(text);
+			if (this.wordAnalyser == null) {
+				this.wordAnalyser = new WordAnalyserImpl(text);
 			}
-			return this.wordFrequencyAnalyser.getWordFrequency();
+			return this.wordAnalyser.getWordFrequency();
 		}
 
+		public synchronized IWords getWords() {
+			if (this.wordAnalyser == null) {
+				this.wordAnalyser = new WordAnalyserImpl(text);
+			}
+			return wordAnalyser.getWords();
+		}
 	}
 
 	/**
