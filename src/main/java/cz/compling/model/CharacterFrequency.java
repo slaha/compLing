@@ -3,6 +3,7 @@ package cz.compling.model;
 import cz.compling.utils.TrooveUtils;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
+import org.apache.commons.lang3.StringUtils;
 import org.javatuples.Pair;
 
 import java.util.List;
@@ -47,8 +48,10 @@ public class CharacterFrequency {
 	private String applyWhiteSpaceRule(String value) {
 		if ("\n".equals(value)) {
 			value = "\\n";
-		} else if (" ".equals(value)) {
-			value = "' '";
+		} else if ("\t".equals(value)) {
+			value = "\\t";
+		} else if (StringUtils.isWhitespace(value)) {
+			value = "'" + value + "'";
 		}
 		return value;
 	}
