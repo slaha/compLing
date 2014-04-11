@@ -124,7 +124,7 @@ public class CompLing {
 	public class PoemAnalysis {
 
 		/** Text as poem. */
-		private Poem poem;
+		public Poem poem;
 
 		/** Aggregation analyser. Can be null - the instance is created first time {@code AggregationAnalyser} is required */
 		private AggregationAnalyser aggregationAnalyser;

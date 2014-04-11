@@ -25,13 +25,20 @@ public class Line {
 	}
 
 	public List<String> getWords() {
+		return getWords(true);
+	}
+	public List<String> getWords(boolean onlyAlpha) {
 		List<String> words = new ArrayList<String>();
 		StringBuilder sb = new StringBuilder();
 		String word;
 		for (String chunk : line.trim().split("\\s+")) {
-			removeNonAlpha(chunk, sb);
-			if (StringUtils.isNotBlank((word = sb.toString())) ) {
-				words.add(word);
+			if (onlyAlpha) {
+				removeNonAlpha(chunk, sb);
+				if (StringUtils.isNotBlank((word = sb.toString()))) {
+					words.add(word);
+				}
+			} else {
+				words.add(chunk);
 			}
 		}
 
