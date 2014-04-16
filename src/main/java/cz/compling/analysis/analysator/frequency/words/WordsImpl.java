@@ -5,7 +5,6 @@ import cz.compling.rules.BaseRuleHandler;
 import cz.compling.rules.RuleHandler;
 import cz.compling.rules.RuleObserver;
 import cz.compling.text.Text;
-import cz.compling.text.TextModificationRule;
 
 /**
  *
@@ -35,18 +34,7 @@ public class WordsImpl implements IWords {
 	private void compute() {
 		//..first we have to remove all non-alphabet characters.
 		//..All other characters are replaced by space
-		TextModificationRule removeNonAlphabetCharacters = new TextModificationRule() {
-			@Override
-			public String modify(Text text) {
-				String plainText = text.getPlainText();
-				StringBuilder sb = new StringBuilder(plainText.length());
-				for (char c : plainText.toCharArray()) {
-					sb.append(Character.isLetter(c) ? c : ' ');
-				}
-				return sb.toString().trim();
-			}
-		};
-		final String onlyAlphabetText = text.applyRule(removeNonAlphabetCharacters).getPlainText();
+		final String onlyAlphabetText = text.applyRule(IWords.SPLIT_TO_WORDS).getPlainText();
 
 		//..Split by space(s). Used String.split because javadoc to StringTokenizer says "its use is discouraged in new code"
 		String[] words = onlyAlphabetText.split("\\s+");

@@ -31,4 +31,15 @@ public class Words implements Iterable<String> {
 	public void add(String word) {
 		words.add(word);
 	}
+
+	public String getWord(int number) {
+		if (number < 0 || number >= getCountOfWords()) {
+			throw new IllegalArgumentException("Param number must be >= 0 and < than " + getCountOfWords() + ". Was " + number);
+		}
+		return words.get(number);
+	}
+
+	private int getCountOfWords() {
+		return words.size();
+	}
 }
