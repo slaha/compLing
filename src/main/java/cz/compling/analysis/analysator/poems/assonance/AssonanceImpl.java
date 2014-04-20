@@ -32,7 +32,8 @@ public class AssonanceImpl implements IAssonance {
 
 	public AssonanceImpl(Poem poem, String[] vocals) {
 		this.poem = poem;
-		this.baseVocals = vocals;
+		this.baseVocals = new String[vocals.length];
+		System.arraycopy(vocals, 0, baseVocals, 0, vocals.length);
 
 		for (int i = 0; i < baseVocals.length; i++) {
 			baseVocals[i] = baseVocals[i].toLowerCase();
