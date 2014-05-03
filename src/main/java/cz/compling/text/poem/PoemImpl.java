@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,20 +28,20 @@ public class PoemImpl implements Poem {
 
 	private final Text text;
 
-	private final TIntObjectMap<String[]> strophes;
+	private final TIntObjectMap<Strophe> strophes;
 
 	private int countOfStrophes;
 
 	public PoemImpl(Text text) {
 		this.text = text;
-		strophes = new TIntObjectHashMap<String[]>();
+		strophes = new TIntObjectHashMap<Strophe>();
 		fillStrophes();
 	}
 
 	private void fillStrophes() {
 		Collection<Line> lines = text.getLines();
 
-		final List<String> strophe = new ArrayList<String>();
+	final List<Verse> verses = new ArrayList<Verse>();
 
 		final Reference<Integer> currentStrophe = new Reference<Integer>(1);
 
@@ -48,11 +49,11 @@ public class PoemImpl implements Poem {
 
 			@Override
 			public void run() {
-				if (!strophe.isEmpty()) {
-					//..save strophe to strophes
-					strophes.put(currentStrophe.value, strophe.toArray(new String[strophe.size()]));
+				if (!verses.isEmpty()) {
+					//..save verses to strophes
+					strophes.put(currentStrophe.value, new StropheImpl(currentStrophe.value, new ArrayList<Verse>(verses)));
 					currentStrophe.value++;
-					strophe.clear();
+					verses.clear();
 				}
 			}
 		};
@@ -61,16 +62,16 @@ public class PoemImpl implements Poem {
 			final String verseString = verse.toString();
 			if (StringUtils.isNoneBlank(verseString)) {
 				//..not empty line → verse
-				strophe.add(verseString);
+				verses.add(new Verse(verse));
 
 			} else {
 
-				//..empty line → new strophe
+				//..empty line → new verses
 				addToStrophes.run();
 			}
 		}
 
-		//..add last strophe
+		//..add last verses
 		addToStrophes.run();
 
 		countOfStrophes = currentStrophe.value - 1;
@@ -86,8 +87,8 @@ public class PoemImpl implements Poem {
 		List<Verse> verses = new ArrayList<Verse>();
 
 		for (int i = 1; i <= getCountOfStrophes(); i++) {
-			String[] versesOfStrophe = strophes.get(i);
-			toVerseCollection(verses, versesOfStrophe);
+			Strophe strophe = strophes.get(i);
+			verses.addAll(strophe.getVerses());
 		}
 		
 		return verses;
@@ -111,13 +112,19 @@ public class PoemImpl implements Poem {
 	}
 
 	@Override
+	public Collection<Strophe> getStrophes() {
+		final List<Strophe> str = new ArrayList<Strophe>(strophes.valueCollection());
+		Collections.sort(str);
+		return Collections.unmodifiableList(str);
+	}
+
+	@Override
 	public Collection<Verse> getVersesOfStrophe(int strophe) {
 		if (strophe < 1 || strophe > getCountOfStrophes()) {
 			String msg = String.format("Param strophe cannot be less than 1 or bigger than getCountOfStrophes()=%d. Was %d", getCountOfStrophes(), strophe);
 			throw new IllegalArgumentException(msg);
 		}
-		String[] verses = strophes.get(strophe);
-		return toVerseCollection(verses);
+		return strophes.get(strophe).getVerses();
 	}
 
 	@Override
@@ -125,16 +132,5 @@ public class PoemImpl implements Poem {
 		String modifiedPoem = rule.modify(this);
 		Text text = new TextImpl(modifiedPoem);
 		return new PoemImpl(text);
-	}
-
-	private Collection<Verse> toVerseCollection(String[] verses) {
-		return toVerseCollection(new ArrayList<Verse>(), verses);
-	}
-
-	private Collection<Verse> toVerseCollection(Collection<Verse> collection, String[] verses) {
-		for (String verse : verses) {
-			collection.add(new Verse(verse));
-		}
-		return collection;
 	}
 }

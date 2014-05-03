@@ -48,6 +48,7 @@ public interface Poem {
 	 */
 	String getStrophe(int strophe);
 
+	Collection<Strophe> getStrophes();
 	/**
 	 * Returns text of the {@code strophe}<sup>th</sup> strophe of the poem as collection of verses.
 	 *

@@ -57,8 +57,9 @@ public class TextImpl implements Text {
 	@Override
 	public Collection<Line> getLines() {
 		Collection<Line> lines = new ArrayList<Line>();
+		int lineNumber = 0;
 		for (String line : plainText.split("\\r?\\n")) {
-			lines.add(new Line(line));
+			lines.add(new Line(++lineNumber, line));
 		}
 		return lines;
 	}

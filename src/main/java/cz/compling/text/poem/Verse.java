@@ -16,7 +16,11 @@ import cz.compling.text.Line;
 public class Verse extends Line {
 
 
-	public Verse(String verse) {
-		super(verse);
+	public Verse(int number, String verse) {
+		super(number, verse);
+	}
+
+	public Verse(Line verse) {
+		this(verse.getNumber(), verse.toString());
 	}
 }

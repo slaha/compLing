@@ -1,0 +1,83 @@
+package cz.compling.model.denotation;
+
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+/**
+*
+* TODO
+*
+* <dl>
+* <dt>Created by:</dt>
+* <dd>slaha</dd>
+* <dt>On:</dt>
+* <dd> 1.5.14 17:46</dd>
+* </dl>
+*/
+class SpikesHolder {
+	/**
+	 * Key: number of spike
+	 * value: spike
+	 */
+	private final TIntObjectMap<Spike> spikes;
+
+	/** no. of current spike (used for creating new spike) */
+	private int currentSpike;
+
+	SpikesHolder() {
+		spikes = new TIntObjectHashMap<Spike>();
+}
+
+	int createNewSpike() {
+		Spike spike = new Spike(++currentSpike);
+		spikes.put(currentSpike, spike);
+		return currentSpike;
+	}
+
+	int removeSpike(int number) {
+		Spike spike = spikes.remove(number);
+		if (spike == null) {
+			throw new SpikeNotFoundException("Spike with number " + number + " does not exist");
+		}
+
+		return spike.onRemove();
+	}
+
+	/**
+	 * Checks if there is at least one Spike
+	 */
+	boolean hasSpikes() {
+		return !spikes.isEmpty();
+	}
+
+	/**
+	 * @return all Spikes as sorted array (by Spike's number)
+	 */
+	Spike[] getSpikes() {
+		Spike[] values = spikes.values(new Spike[spikes.size()]);
+		Arrays.sort(values, new Comparator<Spike>() {
+			@Override
+			public int compare(Spike o1, Spike o2) {
+				return o1.getNumber() - o2.getNumber();
+			}
+		});
+		return values;
+	}
+
+	public Spike getSpike(int number) {
+		Spike s = spikes.get(number);
+		if (s == null) {
+			throw new SpikeNotFoundException("Spike with number " + number + " does not exist");
+		}
+
+		return s;
+	}
+
+	public boolean containsSpike(int number) {
+		return spikes.containsKey(number);
+	}
+
+}

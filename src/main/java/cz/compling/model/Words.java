@@ -39,7 +39,7 @@ public class Words implements Iterable<String> {
 		return words.get(number);
 	}
 
-	private int getCountOfWords() {
+	public int getCountOfWords() {
 		return words.size();
 	}
 }

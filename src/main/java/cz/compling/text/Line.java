@@ -16,11 +16,13 @@ import java.util.List;
  * <dd> 16.3.14 11:18</dd>
  * </dl>
  */
-public class Line {
+public class Line implements Comparable<Line> {
 
+	private final int number;
 	private final String line;
 
-	public Line(String line) {
+	public Line(int number, String line) {
+		this.number = number;
 		this.line = line;
 	}
 
@@ -79,5 +81,14 @@ public class Line {
 
 	public char[] getCharacters() {
 		return line.trim().toCharArray();
+	}
+
+	@Override
+	public int compareTo(Line o) {
+		return this.getNumber() - o.getNumber();
+	}
+
+	public int getNumber() {
+		return number;
 	}
 }

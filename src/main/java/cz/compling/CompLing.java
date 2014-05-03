@@ -11,6 +11,7 @@ import cz.compling.analysis.analysator.poems.*;
 import cz.compling.analysis.analysator.poems.aggregation.IAggregation;
 import cz.compling.analysis.analysator.poems.alliteration.IAlliteration;
 import cz.compling.analysis.analysator.poems.assonance.IAssonance;
+import cz.compling.analysis.analysator.poems.denotation.IDenotation;
 import cz.compling.analysis.analysator.poems.verses.IVerses;
 import cz.compling.text.Text;
 import cz.compling.text.TextImpl;
@@ -130,6 +131,7 @@ public class CompLing {
 		private AggregationAnalyser aggregationAnalyser;
 		private AlliterationAnalyser alliterationAnalyser;
 		private AssonanceAnalyser assonanceAnalyser;
+		private DenotationAnalyser denotationAnalyser;
 		private VerseAnalyser verseAnalyser;
 
 		public PoemAnalysis() {
@@ -169,6 +171,13 @@ public class CompLing {
 				this.assonanceAnalyser = new AssonanceAnalyserImpl(poem);
 			}
 			return assonanceAnalyser.getAssonance(vocals);
+		}
+
+		public synchronized IDenotation denotationAnalysis() {
+			if (this.denotationAnalyser == null) {
+				this.denotationAnalyser = new DenotationAnalyserImpl(poem, generalAnalysis().getWords().getWords());
+			}
+			return denotationAnalyser.getDenotation();
 		}
 
 	}
