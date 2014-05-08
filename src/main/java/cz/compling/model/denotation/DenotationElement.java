@@ -42,9 +42,18 @@ public class DenotationElement {
 		return String.valueOf(number);
 	}
 
-	public void onAddToSpike(Spike spike, String input) {
+	void onAddToSpike(Spike spike, String input) {
 		this.spike = spike;
 		this.text = input;
+	}
+
+	void onRemoveFromSpike(Spike spike) {
+		if (spike == this.spike) {
+			this.spike = null;
+			this.text = null;
+		} else {
+			throw new IllegalArgumentException("Illegal call to onRemoveFromSpike. Current spike" + this.spike + ", arg. spike " + spike);
+		}
 	}
 
 	public void onAddToSpike(Spike spike) {
@@ -53,10 +62,6 @@ public class DenotationElement {
 
 	public int getNumber() {
 		return number;
-	}
-
-	void setSpike(Spike spike) {
-		this.spike = spike;
 	}
 
 	DenotationElement duplicate() {

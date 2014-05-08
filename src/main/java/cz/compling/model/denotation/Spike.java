@@ -37,7 +37,8 @@ public class Spike {
 	}
 
 	public void remove(DenotationWord word) {
-		words.remove(word);
+		final DenotationWord remove = words.remove(word);
+		remove.onRemoveFromSpike(this);
 	}
 
 	public HashMap<DenotationWord, DenotationWord> getWords() {
@@ -55,9 +56,9 @@ public class Spike {
 		return lowestWordNumber;
 	}
 
-	public void addWord(DenotationWord word) {
+	public void addWord(DenotationWord word, String input) {
 		this.words.put(word, word);
-
+		word.onAddToSpike(this, input);
 	}
 
 	/**

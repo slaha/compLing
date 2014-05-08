@@ -188,9 +188,7 @@ public class DenotationWord {
 	}
 
 	void removeElement(DenotationElement element) {
-		if (element.isInSpike()) {
-			element.setSpike(null);
-		}
+		element.onRemoveFromSpike(element.getSpike());
 		denotationElements.remove(denotationElements.size() - 1);
 	}
 
@@ -214,4 +212,23 @@ public class DenotationWord {
 		}
 		throw new IllegalStateException("Word " + this + " (number " + getNumber() + ") has no free element with number " + elementNumber);
 	}
+
+	void onRemoveFromSpike(Spike spike) {
+		getElementForSpike(spike).onRemoveFromSpike(spike);
+	}
+
+	void onAddToSpike(Spike spike, String input) {
+		getFreeElement().onAddToSpike(spike, input);
+
+	}
+	private DenotationElement getElementForSpike(Spike spike) {
+		for (DenotationElement element : denotationElements) {
+			if (element.getSpike() == spike) {
+				return element;
+			}
+		}
+		throw new IllegalArgumentException("Cannot found element for spike "  + spike + ". Word " + this + " has only elements " + denotationElements);
+	}
+
+
 }

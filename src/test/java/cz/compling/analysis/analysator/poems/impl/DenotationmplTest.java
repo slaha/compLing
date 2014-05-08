@@ -79,7 +79,7 @@ public class DenotationmplTest extends AbstTest {
 		DenotationWord word2 = analyser.getWord(2);
 		analyser.joinWords(2, 3);
 		analyser.joinWords(word.getNumber(), analyser.getWord(2).getNumber());
-		spike.addWord(word);
+		spike.addWord(word, null);
 
 		for (int i = 1; i <= analyser.getCountOfWords(); i++) {
 			Assert.assertNotNull(analyser.getWord(i));
