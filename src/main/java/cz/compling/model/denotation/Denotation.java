@@ -40,13 +40,21 @@ public class Denotation {
 		return spikesHolder.getSpike(number);
 	}
 
-	public boolean constainsSpike(int number) {
+	public boolean containsSpike(int number) {
 		return spikesHolder.containsSpike(number);
 	}
 
 	public DenotationWord getWord(int number) {
 		return denotationPoem.getWord(number);
 
+	}
+
+	public void clearAllWords() {
+		denotationPoem.clearAllWords();
+	}
+
+	public void addNewWord(int number, DenotationWord word) {
+		denotationPoem.putWord(number, word);
 	}
 
 	public int getCountOfWords() {

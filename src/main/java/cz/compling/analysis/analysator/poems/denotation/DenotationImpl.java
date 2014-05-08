@@ -35,7 +35,7 @@ public class DenotationImpl implements IDenotation {
 
 	@Override
 	public boolean containsSpike(int number) {
-		return denotation.constainsSpike(number);
+		return denotation.containsSpike(number);
 	}
 
 	@Override
@@ -66,7 +66,6 @@ public class DenotationImpl implements IDenotation {
 	@Override
 	public void addNewElementTo(int denotationWordNumber) {
 		denotation.addElementTo(denotationWordNumber);
-
 	}
 
 	@Override
@@ -95,5 +94,16 @@ public class DenotationImpl implements IDenotation {
 	@Override
 	public void ignoreWord(int number, boolean ignored) {
 		denotation.ignoreWord(number, ignored);
+	}
+
+	@Override
+	public void clearAllWords() {
+		denotation.clearAllWords();
+	}
+
+	@Override
+	public void addNewWord(int number, DenotationWord word) {
+		denotation.addNewWord(number, word);
+
 	}
 }

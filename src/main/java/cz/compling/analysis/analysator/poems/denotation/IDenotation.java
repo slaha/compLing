@@ -61,4 +61,8 @@ public interface IDenotation {
 	void split(int wordNumber, int wordToSplitNumber);
 
 	void ignoreWord(int number, boolean ignored);
+
+	void clearAllWords();
+
+	void addNewWord(int number, DenotationWord word);
 }

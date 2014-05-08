@@ -19,12 +19,10 @@ import gnu.trove.map.hash.TIntObjectHashMap;
  * </dl>
  */
 class DenotationPoem {
-	private final Poem poem;
 	private final TIntObjectMap<DenotationWord> words;
 	private final int countOfWords;
 
 	DenotationPoem(Poem poem, Words words) {
-		this.poem = poem;
 		this.words = new TIntObjectHashMap<DenotationWord>(words.getCountOfWords());
 
 		int currentWordNumber = 0;
@@ -34,12 +32,9 @@ class DenotationPoem {
 			int verseNumber = 0;
 			for (Verse verse : strophe.getVerses()) {
 				verseNumber++;
-				for (String word: verse.getWords()) {
+				for (String word: verse.getWords(false)) {
 					currentWordNumber++;
-					this.words.put(
-						currentWordNumber,
-						new DenotationWord(word, currentWordNumber, verseNumber, stropheNumber)
-					);
+					putWord(currentWordNumber, new DenotationWord(word, currentWordNumber, verseNumber, stropheNumber));
 				}
 			}
 		}
@@ -62,5 +57,13 @@ class DenotationPoem {
 
 	TIntObjectMap<DenotationWord> getAllWords() {
 		return words;
+	}
+
+	public void clearAllWords() {
+		words.clear();
+	}
+
+	public void putWord(int number, DenotationWord word) {
+		this.words.put(number, word);
 	}
 }

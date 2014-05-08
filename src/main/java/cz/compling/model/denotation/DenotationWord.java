@@ -82,6 +82,10 @@ public class DenotationWord {
 		return word;
 	}
 
+	public String getWord() {
+		return word;
+	}
+
 	public boolean isIgnored() {
 		return ignored;
 	}
