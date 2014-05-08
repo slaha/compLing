@@ -33,8 +33,7 @@ class SpikesHolder {
 
 	int createNewSpike() {
 		Spike spike = new Spike(++currentSpike);
-		spikes.put(currentSpike, spike);
-		return currentSpike;
+		return addSpike(spike);
 	}
 
 	int removeSpike(int number) {
@@ -80,4 +79,11 @@ class SpikesHolder {
 		return spikes.containsKey(number);
 	}
 
+	int addSpike(Spike spike) {
+		spikes.put(spike.getNumber(), spike);
+		if (spike.getNumber() > currentSpike) {
+			currentSpike = spike.getNumber();
+		}
+		return spike.getNumber();
+	}
 }

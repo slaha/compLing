@@ -32,6 +32,10 @@ public class Denotation {
 		return spikesHolder.createNewSpike();
 	}
 
+	public int addSpike(Spike spike) {
+		return spikesHolder.addSpike(spike);
+	}
+
 	public int removeSpike(int number) {
 		return spikesHolder.removeSpike(number);
 	}
@@ -68,6 +72,12 @@ public class Denotation {
 	public void addElementTo(int denotationWordNumber) {
 		final DenotationWord word = getWord(denotationWordNumber);
 		word.addElement();
+		forEachValue(getIncrementaror(1), word.getNumber());
+	}
+
+	public void addElementTo(int denotationWordNumber, int elementNumber) {
+		final DenotationWord word = getWord(denotationWordNumber);
+		word.addElement(new DenotationElement(word, elementNumber));
 		forEachValue(getIncrementaror(1), word.getNumber());
 	}
 
@@ -108,7 +118,6 @@ public class Denotation {
 		word.setIgnored(ignored);
 		forEachValue(getIncrementaror(ignored ? -1: 1), word.getNumber());
 	}
-
 
 	private interface ForEachRunner {
 		void run(DenotationWord word);

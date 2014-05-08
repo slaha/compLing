@@ -26,6 +26,8 @@ public interface IDenotation {
 	 */
 	int createNewSpike();
 
+	int addSpike(Spike spike);
+
 	/**
 	 * Check if spike with number {@code number} exists
 	 * @param number the number of spike
@@ -51,6 +53,8 @@ public interface IDenotation {
 	Collection<Spike> getSpikes();
 
 	void addNewElementTo(int denotationWordNumber);
+
+	void addNewElementTo(int denotationWordNumber, int elementNumber);
 
 	void duplicateElement(int number, DenotationElement elementToDuplicate);
 

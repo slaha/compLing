@@ -176,6 +176,9 @@ public class DenotationWord {
 	}
 
 	void addElement() {
+		if (denotationElements.isEmpty()) {
+			throw new IllegalStateException("cannot add element to word " + this + " (nmbr. " + getNumber() + "). Word does not have any element now");
+		}
 		final int elementNumber = getLastElement().getNumber() + 1;
 		addElement(new DenotationElement(this, elementNumber));
 	}
@@ -199,5 +202,16 @@ public class DenotationWord {
 			element.increment(increment);
 		}
 
+	}
+
+	public DenotationElement getFreeElement(int elementNumber) {
+		for (DenotationElement element : denotationElements) {
+			if (element.getNumber() == elementNumber) {
+				if (!element.isInSpike()) {
+					return element;
+				}
+			}
+		}
+		throw new IllegalStateException("Word " + this + " (number " + getNumber() + ") has no free element with number " + elementNumber);
 	}
 }

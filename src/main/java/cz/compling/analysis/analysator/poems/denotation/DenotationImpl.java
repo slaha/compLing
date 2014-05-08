@@ -34,6 +34,12 @@ public class DenotationImpl implements IDenotation {
 	}
 
 	@Override
+	public int addSpike(Spike spike) {
+		return denotation.addSpike(spike);
+
+	}
+
+	@Override
 	public boolean containsSpike(int number) {
 		return denotation.containsSpike(number);
 	}
@@ -66,6 +72,11 @@ public class DenotationImpl implements IDenotation {
 	@Override
 	public void addNewElementTo(int denotationWordNumber) {
 		denotation.addElementTo(denotationWordNumber);
+	}
+
+	@Override
+	public void addNewElementTo(int denotationWordNumber, int elementNumber) {
+		denotation.addElementTo(denotationWordNumber, elementNumber);
 	}
 
 	@Override

@@ -66,4 +66,8 @@ public class DenotationElement {
 	public void increment(int increment) {
 		this.number += increment;
 	}
+
+	public String getText() {
+		return text;
+	}
 }
