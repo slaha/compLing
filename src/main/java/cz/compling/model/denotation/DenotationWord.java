@@ -219,8 +219,13 @@ public class DenotationWord {
 
 	void onAddToSpike(Spike spike, String input) {
 		getFreeElement().onAddToSpike(spike, input);
-
 	}
+
+	void onAddToSpike(Spike spike, String input, int elementNumber) {
+		getFreeElement(elementNumber).onAddToSpike(spike, input);
+	}
+
+
 	private DenotationElement getElementForSpike(Spike spike) {
 		for (DenotationElement element : denotationElements) {
 			if (element.getSpike() == spike) {
@@ -229,6 +234,4 @@ public class DenotationWord {
 		}
 		throw new IllegalArgumentException("Cannot found element for spike "  + spike + ". Word " + this + " has only elements " + denotationElements);
 	}
-
-
 }

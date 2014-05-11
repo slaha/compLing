@@ -1,7 +1,6 @@
 package cz.compling.model.denotation;
 
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  *
@@ -41,8 +40,16 @@ public class Spike {
 		remove.onRemoveFromSpike(this);
 	}
 
-	public HashMap<DenotationWord, DenotationWord> getWords() {
-		return words;
+	public Collection<DenotationWord> getWords() {
+		List<DenotationWord> denotationWords = new ArrayList<DenotationWord>(words.values());
+		Collections.sort(denotationWords, new Comparator<DenotationWord>() {
+			@Override
+			public int compare(DenotationWord o1, DenotationWord o2) {
+				return o1.getNumber() - o2.getNumber();
+			}
+		});
+
+		return denotationWords;
 	}
 
 	public int onRemove() {
@@ -59,6 +66,11 @@ public class Spike {
 	public void addWord(DenotationWord word, String input) {
 		this.words.put(word, word);
 		word.onAddToSpike(this, input);
+	}
+
+	public void addWord(DenotationWord word, String input, int elementNumber) {
+		this.words.put(word, word);
+		word.onAddToSpike(this, input ,elementNumber);
 	}
 
 	/**
