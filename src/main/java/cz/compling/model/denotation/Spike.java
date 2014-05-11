@@ -52,6 +52,10 @@ public class Spike {
 		return denotationWords;
 	}
 
+	public int size() {
+		return words.size();
+	}
+
 	public int onRemove() {
 		int lowestWordNumber = Integer.MAX_VALUE;
 		for (DenotationWord word : words.keySet()) {

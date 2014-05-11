@@ -2,10 +2,14 @@ package cz.compling.model.denotation;
 
 import cz.compling.model.Words;
 import cz.compling.text.poem.Poem;
+import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.procedure.TObjectProcedure;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -117,6 +121,95 @@ public class Denotation {
 		final DenotationWord word = getWord(number);
 		word.setIgnored(ignored);
 		forEachValue(getIncrementaror(ignored ? -1: 1), word.getNumber());
+	}
+
+	public double computeTopikalnost(Spike spike, double cardinalNumber) {
+		return ((double)spike.getWords().size()) / cardinalNumber;
+	}
+
+	private double getMaxDenotationElement() {
+
+		int lastWordIndex = denotationPoem.getCountOfWords();
+		DenotationWord lastWord = denotationPoem.getWord(lastWordIndex);
+		while (lastWord.getDenotationElements().isEmpty() && lastWordIndex > 1) {
+			lastWord = denotationPoem.getWord(--lastWordIndex);
+		}
+
+		final List<DenotationElement> elements = lastWord.getDenotationElements();
+		int max = elements.get(0).getNumber();
+		for (int i = 1; i < elements.size(); i++) {
+			int number = elements.get(i).getNumber();
+			if (number > max) {
+				max = number;
+			}
+		}
+		return max;
+	}
+
+	public double getTextCompactness() {
+		double n = spikesHolder.getSpikes().length;
+		double l = getMaxDenotationElement();
+		double numerator = 1d - (n / l);
+		double denominator = 1d - (1d / l);
+		return numerator / denominator;
+	}
+
+	private long[] calcSumAndN() {
+		final Spike[] spikes = spikesHolder.getSpikes();
+		TIntIntMap map = new TIntIntHashMap();
+		for (Spike spike : spikes) {
+			map.adjustOrPutValue(spike.size(), 1, 1);
+		}
+		long sum = 0;
+		long n = 0;
+		for (int key : map.keys()) {
+			sum += Math.pow(key, 2) * map.get(key);
+			n += key * map.get(key);
+		}
+		return new long[]{sum, n};
+	}
+
+	public double getTextCentralization() {
+		long[] values = calcSumAndN();
+		return getTextCentralization(values[0], values[1]);
+	}
+
+	public double getTextCentralization(long sum, long n) {
+		return ((double)sum) / Math.pow(n, 2);
+	}
+
+	public double getMacIntosh() {
+		long[] values = calcSumAndN();
+
+		double numerator = 1d - Math.sqrt(getTextCentralization(values[0], values[1]));
+		double denominator = 1d - (1d / values[1]);
+
+		return numerator / denominator;
+	}
+
+	public double getDiffusionFor(int spikeNumber) {
+		final Spike spike = spikesHolder.getSpike(spikeNumber);
+		final List<DenotationWord> words = new ArrayList<DenotationWord>(spike.getWords());
+		if (words.isEmpty()) {
+			return 0;
+		}
+		int elementMin = Integer.MAX_VALUE;
+		int elementMax = Integer.MIN_VALUE;
+		for (int indexOf = 0; indexOf < words.size(); indexOf++) {
+			final DenotationWord word = words.get(indexOf);
+			if (word.isIgnored() || word.isJoined() || word.getDenotationElements().isEmpty()) {
+				continue;
+			}
+			for (DenotationElement element : word.getDenotationElements()) {
+				if (element.getNumber() < elementMin) {
+					elementMin = element.getNumber();
+				}
+				if (element.getNumber() > elementMax) {
+					elementMax = element.getNumber();
+				}
+			}
+		}
+		return ( ((double)elementMax) - ((double)elementMin) ) / ((double)spike.size());
 	}
 
 	private interface ForEachRunner {

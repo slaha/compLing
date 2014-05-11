@@ -117,4 +117,31 @@ public class DenotationImpl implements IDenotation {
 		denotation.addNewWord(number, word);
 
 	}
+
+	@Override
+	public double computeTopikalnost(Spike spike, double cardinalNumber) {
+		return denotation.computeTopikalnost(spike, cardinalNumber);
+	}
+
+	@Override
+	public double getTextCompactness() {
+		return denotation.getTextCompactness();
+
+	}
+
+	@Override
+	public double getTextCentralization() {
+		return denotation.getTextCentralization();
+	}
+
+	@Override
+	public double getMacIntosh() {
+		return denotation.getMacIntosh();
+	}
+
+	@Override
+	public double getDiffusionFor(int spike) {
+		return denotation.getDiffusionFor(spike);
+
+	}
 }

@@ -69,4 +69,14 @@ public interface IDenotation {
 	void clearAllWords();
 
 	void addNewWord(int number, DenotationWord word);
+
+	double computeTopikalnost(Spike spike, double cardinalNumber);
+
+	double getTextCompactness();
+
+	double getTextCentralization();
+
+	double getMacIntosh();
+
+	double getDiffusionFor(int spike);
 }
