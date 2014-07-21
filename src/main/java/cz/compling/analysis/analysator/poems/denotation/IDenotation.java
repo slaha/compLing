@@ -1,10 +1,9 @@
 package cz.compling.analysis.analysator.poems.denotation;
 
-import cz.compling.model.denotation.DenotationElement;
-import cz.compling.model.denotation.DenotationWord;
-import cz.compling.model.denotation.Spike;
+import cz.compling.model.denotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -79,4 +78,10 @@ public interface IDenotation {
 	double getMacIntosh();
 
 	double getDiffusionFor(int spike);
+
+	List<DenotationWord> getAllWords();
+
+	List<Coincidence> getCoincidenceFor(int spikeNumber);
+
+	GuiPoemAsSpikeNumbers getPoemAsSpikeNumbers();
 }

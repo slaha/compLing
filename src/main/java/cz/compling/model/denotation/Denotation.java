@@ -26,10 +26,12 @@ public class Denotation {
 
 	private final SpikesHolder spikesHolder;
 	private final DenotationPoem denotationPoem;
+	private final DenotationMath denotationMath;
 
 	public Denotation(Poem poem, Words words) {
 		denotationPoem = new DenotationPoem(poem, words);
 		spikesHolder = new SpikesHolder();
+		denotationMath = new DenotationMath();
 	}
 
 	public int createNewSpike() {
@@ -127,6 +129,10 @@ public class Denotation {
 		return ((double)spike.getWords().size()) / cardinalNumber;
 	}
 
+	public List<DenotationWord> getAllWords() {
+		return new ArrayList<DenotationWord>(denotationPoem.getAllWords().valueCollection());
+	}
+
 	private double getMaxDenotationElement() {
 
 		int lastWordIndex = denotationPoem.getCountOfWords();
@@ -197,10 +203,13 @@ public class Denotation {
 		int elementMax = Integer.MIN_VALUE;
 		for (int indexOf = 0; indexOf < words.size(); indexOf++) {
 			final DenotationWord word = words.get(indexOf);
-			if (word.isIgnored() || word.isJoined() || word.getDenotationElements().isEmpty()) {
+			if (word.isIgnored()  || word.getDenotationElements().isEmpty()) {
 				continue;
 			}
 			for (DenotationElement element : word.getDenotationElements()) {
+				if (element.getSpike().getNumber() != spikeNumber) {
+					continue;
+				}
 				if (element.getNumber() < elementMin) {
 					elementMin = element.getNumber();
 				}
@@ -210,6 +219,33 @@ public class Denotation {
 			}
 		}
 		return ( ((double)elementMax) - ((double)elementMin) ) / ((double)spike.size());
+	}
+
+	public List<Coincidence> getCoincidenceFor(int spikeNumber) {
+		List<Coincidence> coincidences = new ArrayList<Coincidence>();
+
+		final GuiPoemAsSpikeNumbers poem = getPoemAsSpikeNumbers();
+		final int N = poem.getVersesCount();
+		final int M = poem.getVersesCountWith(spikeNumber);
+
+		final Spike baseSpike = getSpike(spikeNumber);
+
+		final List<Spike> spikes = new ArrayList<Spike>(getSpikes());
+		for (Spike anotherSpike : spikes) {
+			if (anotherSpike.getNumber() != spikeNumber) {
+				final int n = poem.getVersesCountWith(anotherSpike.getNumber());
+				final int x = poem.getVersesCountWithBoth(spikeNumber, anotherSpike.getNumber());
+				if (n > 0 && x > 0) {
+					double coincidenceResult = denotationMath.computeCoincidence(N, M, n, x);
+					coincidences.add(new Coincidence(baseSpike, anotherSpike, x, coincidenceResult));
+				}
+			}
+		}
+		return coincidences;
+	}
+
+	public GuiPoemAsSpikeNumbers getPoemAsSpikeNumbers() {
+		return new GuiPoemAsSpikeNumbers(getAllWords());
 	}
 
 	private interface ForEachRunner {

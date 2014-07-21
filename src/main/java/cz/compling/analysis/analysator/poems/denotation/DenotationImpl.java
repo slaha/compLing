@@ -1,13 +1,11 @@
 package cz.compling.analysis.analysator.poems.denotation;
 
 import cz.compling.model.Words;
-import cz.compling.model.denotation.Denotation;
-import cz.compling.model.denotation.DenotationElement;
-import cz.compling.model.denotation.DenotationWord;
-import cz.compling.model.denotation.Spike;
+import cz.compling.model.denotation.*;
 import cz.compling.text.poem.Poem;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -143,5 +141,20 @@ public class DenotationImpl implements IDenotation {
 	public double getDiffusionFor(int spike) {
 		return denotation.getDiffusionFor(spike);
 
+	}
+
+	@Override
+	public List<DenotationWord> getAllWords() {
+		return denotation.getAllWords();
+	}
+
+	@Override
+	public List<Coincidence> getCoincidenceFor(int spikeNumber) {
+		return denotation.getCoincidenceFor(spikeNumber);
+	}
+
+	@Override
+	public GuiPoemAsSpikeNumbers getPoemAsSpikeNumbers() {
+		return denotation.getPoemAsSpikeNumbers();
 	}
 }
