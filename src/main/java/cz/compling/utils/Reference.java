@@ -24,4 +24,9 @@ public class Reference<T> {
 	public Reference(T value) {
 		this.value = value;
 	}
+
+	@Override
+	public String toString() {
+		return String.valueOf(value);
+	}
 }

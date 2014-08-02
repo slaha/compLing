@@ -67,6 +67,9 @@ public class TrooveUtils {
 		}
 
 		public Lists<K, PAIR> sort(SortOrder order) {
+			if (order == null) {
+				return this;
+			}
 			Comparator<PAIR> comparator = createComparator(order);
 			Collections.sort(list, comparator);
 
