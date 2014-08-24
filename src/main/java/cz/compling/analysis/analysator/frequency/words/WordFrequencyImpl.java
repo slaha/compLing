@@ -7,6 +7,7 @@ import cz.compling.rules.RuleHandler;
 import cz.compling.rules.RuleObserver;
 import cz.compling.text.Text;
 import cz.compling.utils.Reference;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -20,6 +21,8 @@ import cz.compling.utils.Reference;
  * </dl>
  */
 public class WordFrequencyImpl implements IWordFrequency {
+
+	private boolean recompute = true;
 
 	/** Text to analyse */
 	private final Text text;
@@ -36,7 +39,6 @@ public class WordFrequencyImpl implements IWordFrequency {
 		this.words = words.getWords();
 		frequency = new WordFrequency();
 		ruleHandler = new BaseRuleHandler<WordFrequencyRule>();
-		compute();
 	}
 
 	private void compute() {
@@ -47,8 +49,11 @@ public class WordFrequencyImpl implements IWordFrequency {
 			word.value = nextWord;
 			length.value = nextWord.length();
 			applyRules(word, length);
-			frequency.put(word.value, length.value);
-		}	
+			if (StringUtils.isNotBlank(word.value) && length.value > 0) {
+				frequency.put(word.value, length.value);
+			}
+		}
+		recompute = false;
 	}
 
 	private void applyRules(Reference<String> word, Reference<Integer> length) {
@@ -62,6 +67,9 @@ public class WordFrequencyImpl implements IWordFrequency {
 
 	@Override
 	public WordFrequency getWordFrequency() {
+		if (recompute) {
+			compute();
+		}
 		return frequency;
 	}
 
@@ -73,11 +81,16 @@ public class WordFrequencyImpl implements IWordFrequency {
 	@Override
 	public void registerRule(WordFrequencyRule rule) {
 		ruleHandler.registerRule(rule);
+		recompute = true;
 	}
 
 	@Override
 	public boolean removeRule(WordFrequencyRule rule) {
-		return ruleHandler.removeRule(rule);
+		boolean removed = ruleHandler.removeRule(rule);
+		if (removed) {
+			recompute = true;
+		}
+		return removed;
 	}
 
 	@Override

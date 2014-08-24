@@ -105,7 +105,7 @@ public class CompLing {
 		 * Returns an instance of {@code WordFrequencyAnalyser} which can perform detailed analysis of words it the text
 		 */
 		public synchronized IWordFrequency wordFrequency() {
-			if (this.wordAnalyser == null) {
+				if (this.wordAnalyser == null) {
 				this.wordAnalyser = new WordAnalyserImpl(text);
 			}
 			return this.wordAnalyser.getWordFrequency();
