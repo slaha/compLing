@@ -4,9 +4,12 @@ import cz.compling.utils.TrooveUtils;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
+import org.apache.commons.lang3.ArrayUtils;
 import org.javatuples.Pair;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -25,15 +28,19 @@ public class WordFrequency {
 	private final TIntIntHashMap wordsByLength;
 	private int countOfWords;
 
+	private final Set<Integer> differentWordLengths;
+
 	public WordFrequency() {
 		this.frequency = new TObjectIntHashMap<String>();
 		this.wordsByLength = new TIntIntHashMap();
+		differentWordLengths = new HashSet<Integer>();
 		this.countOfWords = 0;
 	}
 
 	public void put(String word, int length) {
 		frequency.adjustOrPutValue(word, 1, 1);
 		wordsByLength.adjustOrPutValue(length, 1, 1);
+		differentWordLengths.add(length);
 		countOfWords++;
 	}
 
@@ -45,6 +52,17 @@ public class WordFrequency {
 	public int getCountOfWords()  {
 
 		return countOfWords;
+	}
+
+
+	/**
+	 * Returns count of different word lengths in text.
+	 *
+	 * @return count of different word lengths in text.
+	 */
+	public int getCountOfWordLengths()  {
+
+		return wordsByLength.size();
 	}
 
 	/**
@@ -76,6 +94,13 @@ public class WordFrequency {
 		return wordsByLength.get(length);
 	}
 
+	public double getRelativeFrequencyFor(int length) {
+		final int frequency = getFrequencyFor(length);
+		final int countOfWords = getCountOfWords();
+
+		return ( ((double)frequency) / ((double)countOfWords) );
+	}
+
 	/**
 	 * Returns list of all words with count of their occasions in the text
 	 *
@@ -102,5 +127,9 @@ public class WordFrequency {
 			.toList(wordsByLength)
 			.sort(order)
 			.getList();
+	}
+
+	public int[] getWordLengths() {
+		return ArrayUtils.toPrimitive(differentWordLengths.toArray(new Integer[differentWordLengths.size()]));
 	}
 }
