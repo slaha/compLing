@@ -94,11 +94,13 @@ public class WordFrequencyImplTest extends WordAnalyserImplTest {
 		frequencyAnalyser.registerRule(chRule);
 		IWordFrequency wordFrequency = getCompLing().generalAnalysis().wordFrequency();
 		List<Pair<Integer, Integer>> allWordsByFrequency = wordFrequency.getWordFrequency().getAllWordsLengthsByFrequency(TrooveUtils.SortOrder.DESCENDING);
+		frequencyAnalyser.removeRule(chRule);
 	}
 
 	@Test
 	public void testGetFrequencyForAll() throws Exception {
 
+		//..without the 'ch' rule
 		Assert.assertEquals(189, frequencyAnalyser.getWordFrequency().getFrequencyFor(5));
 
 	}

@@ -43,6 +43,8 @@ public class WordFrequencyImpl implements IWordFrequency {
 
 	private void compute() {
 
+		frequency.clear();
+
 		final Reference<String> word = new Reference<String>();
 		final Reference<Integer> length = new Reference<Integer>();
 		for (String nextWord : words) {

@@ -132,4 +132,12 @@ public class WordFrequency {
 	public int[] getWordLengths() {
 		return ArrayUtils.toPrimitive(differentWordLengths.toArray(new Integer[differentWordLengths.size()]));
 	}
+
+	public void clear() {
+		frequency.clear();
+		wordsByLength.clear();
+	    countOfWords = 0;
+
+
+	}
 }
