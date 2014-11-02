@@ -1,6 +1,5 @@
-package cz.compling.model.denotation;
+package cz.compling.model;
 
-import cz.compling.model.Alliteration;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 

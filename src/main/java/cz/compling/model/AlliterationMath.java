@@ -1,7 +1,5 @@
-package cz.compling.model.denotation;
+package cz.compling.model;
 
-import cz.compling.model.Alliteration;
-import cz.compling.model.CharacterFrequency;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 
 import java.util.Collection;
