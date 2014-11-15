@@ -16,7 +16,7 @@ import java.util.*;
 public class Spike {
 
 	/** number of Spike */
-	private final int number;
+	private int number;
 
 	/** Words in spike */
 	private final DenotationWordsMap words;
@@ -24,6 +24,10 @@ public class Spike {
 	public Spike(int number) {
 		this.number = number;
 		words = new DenotationWordsMap();
+	}
+
+	void setNumber(int number) {
+		this.number = number;
 	}
 
 	public int getNumber() {
@@ -61,6 +65,9 @@ public class Spike {
 		for (DenotationWord word : words.keySet()) {
 			if (word.getNumber() < lowestWordNumber) {
 				lowestWordNumber = word.getNumber();
+			}
+			if (word.isInSpike(this)) {
+				word.onRemoveFromSpike(this);
 			}
 		}
 		words.clear();

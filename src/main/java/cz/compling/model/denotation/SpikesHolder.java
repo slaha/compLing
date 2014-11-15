@@ -2,6 +2,7 @@ package cz.compling.model.denotation;
 
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.procedure.TIntObjectProcedure;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -36,12 +37,28 @@ class SpikesHolder {
 		return addSpike(spike);
 	}
 
-	int removeSpike(int number) {
+	int removeSpike(final int number) {
 		Spike spike = spikes.remove(number);
 		if (spike == null) {
 			throw new SpikeNotFoundException("Spike with number " + number + " does not exist");
 		}
-
+		currentSpike--;
+		if (currentSpike != number) {
+			final TIntObjectMap<Spike> newSpikes = new TIntObjectHashMap<Spike>();
+			spikes.forEachEntry(new TIntObjectProcedure<Spike>() {
+				@Override
+				public boolean execute(int key, Spike spike) {
+					if (key > number) {
+						final Spike s = spikes.remove(key);
+						s.setNumber(s.getNumber() - 1);
+						newSpikes.put(s.getNumber(), spike);
+					}
+					return true;
+				}
+			});
+			System.out.println(newSpikes);
+			spikes.putAll(newSpikes);
+		}
 		return spike.onRemove();
 	}
 
