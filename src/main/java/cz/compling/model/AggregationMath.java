@@ -1,19 +1,22 @@
 package cz.compling.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AggregationMath {
-	private final Aggregation[] aggregation;
+
+	private final int maximalShift;
+	private final Aggregations[] aggregations;
 	private final LeastSquares leastSquares;
 
-	public AggregationMath(Aggregation... aggregation) {
-		this.aggregation = aggregation;
+	public AggregationMath(int maximalShift, Aggregations... aggregations) {
+		this.maximalShift = maximalShift;
+		this.aggregations = aggregations;
 		this.leastSquares = new LeastSquares();
 	}
 
-	private double computeSimilarity(Aggregation agg, int shift) {
-		final Aggregation.LineAggregation aggregation = agg.getAggregationFor(shift);
+	private double computeSimilarity(Aggregations.Aggregation.LineAggregation  aggregation, int shift) {
 
 		double aNominator = Math.pow(aggregation.getSingleSetsIntersectionSize(), 2);
 		double aDenominator = aggregation.getSingleSet1Size() * aggregation.getSingleSet2Size();
@@ -29,11 +32,15 @@ public class AggregationMath {
 
 	public double computeAvgSimilarity(int shift) {
 		double sum = 0;
-		for (Aggregation a : aggregation) {
-			sum += computeSimilarity(a, shift);
+		int size = 0;
+		for (Aggregations aggs : aggregations) {
+			//..aggregations for each text
+			for (Aggregations.Aggregation.LineAggregation a : aggs.getAggregationsForShift(shift, maximalShift)) {
+				sum += computeSimilarity(a, shift);
+				size++;
+			}
 		}
-		float size = aggregation.length;
-		return sum / size;
+		return (sum / (double)size);
 	}
 
 	public double computeApproximatedSimilarity(int n, int shift) {
@@ -100,22 +107,28 @@ public class AggregationMath {
 			if (D < 0) {
 				double nominator = 0;
 				double denominator = 0;
-				double sumSi = 0;
 
+				double avgS = computeAvgS(n);
 				for (int i = 0; i < n; i++) {
 					double avgSi = averagesSi.get(i);
 					double expSi = expectedSi.get(i);
-					double d = Math.pow((avgSi - expSi), 2);
-					nominator += d;
-					sumSi += avgSi;
-					denominator += Math.pow(avgSi, 2);
+					double nn = Math.pow((avgSi - expSi), 2);
+					nominator += nn;
+
+					double dd = Math.pow((avgS - avgSi), 2);
+					denominator += dd;
 				}
-				sumSi = Math.pow(sumSi, 2);
-				sumSi /= averagesSi.size();
-				denominator -= sumSi;
 				this.D = 1 - (nominator / denominator);
 			}
 			return D;
+		}
+
+		private double computeAvgS(int n) {
+			double s = 0;
+			for (int i = 0; i < n; i++) {
+				s += averagesSi.get(i);
+			}
+			return s / (double)n;
 		}
 
 		private double computeLnLi(int n) {
@@ -156,5 +169,75 @@ public class AggregationMath {
 		public double getExpected(int shift) {
 			return expectedSi.get(shift - 1);
 		}
+	}
+
+	public static void main(String[] args) {
+		final String base = "přece stále žal mne soužil pro lenoru žal a trud".replaceAll(" ", "");
+		final char[] baseline = base.toCharArray();
+		final String shift = "děl jsem pane nebo paní promiňte jsem uleknut".replaceAll(" ", "");
+		final char[] shifted  = shift.toCharArray();
+
+		final String[] baseline2 = new String[baseline.length - 1];
+		for (int i = 0; i < baseline2.length; i++) {
+			baseline2[i] = "" + baseline[i] + baseline[i + 1];
+		}
+		final String[] shifted2 = new String[shifted.length - 1];
+		for (int i = 0; i < shifted2.length; i++) {
+			shifted2[i] = "" + shifted[i] + shifted[i + 1];
+		}
+
+		System.out.println("first single character's set size: " + baseline.length + "\n" +
+							"second single character's set size: " + shifted.length);
+
+		Arrays.sort(baseline);
+		Arrays.sort(shifted);
+
+		int size = 0, i1 = 0, i2 = 0;
+		try {
+			while (true) {
+				char c1 = baseline[i1];
+				char c2 = shifted[i2];
+
+				if (c1 == c2) {
+					i1++;
+					i2++;
+					size++;
+				} else if (c1 < c2) {
+					i1++;
+				} else {
+					i2++;
+				}
+			}
+		} catch (ArrayIndexOutOfBoundsException ignored) {}
+
+		System.out.println("size of single character intersection: " + size);
+
+		System.out.println("double char baseline size: " + baseline2.length + "\n" +
+			"double char shifted size: " + shifted2.length);
+
+		Arrays.sort(baseline2);
+		Arrays.sort(shifted2);
+
+		size = 0; i1 = 0; i2 = 0;
+		try {
+			while (true) {
+				String c1 = baseline2[i1];
+				String c2 = shifted2[i2];
+
+				int cmp = c1.compareTo(c2);
+
+				if (cmp == 0) {
+					i1++;
+					i2++;
+					size++;
+				} else if (cmp < 0) {
+					i1++;
+				} else {
+					i2++;
+				}
+			}
+		} catch (ArrayIndexOutOfBoundsException ignored) {}
+
+		System.out.println("size of double character intersection: " + size);
 	}
 }

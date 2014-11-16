@@ -60,7 +60,7 @@ public class PoemImpl implements Poem {
 
 		for (Line verse : lines) {
 			final String verseString = verse.toString();
-			if (StringUtils.isNoneBlank(verseString)) {
+			if (StringUtils.isNotBlank(verseString)) {
 				//..not empty line → verse
 				verses.add(new Verse(verse));
 

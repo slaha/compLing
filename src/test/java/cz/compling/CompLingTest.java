@@ -4,7 +4,7 @@ import cz.compling.analysis.analysator.frequency.impl.CharacterFrequencyImplTest
 import cz.compling.analysis.analysator.frequency.impl.WordFrequencyImplTest;
 import cz.compling.analysis.analysator.impl.CharacterAnalyserImplTest;
 import cz.compling.analysis.analysator.impl.WordAnalyserImplTest;
-import cz.compling.analysis.analysator.poems.impl.AggregationImplTest;
+import cz.compling.analysis.analysator.poems.impl.AggregationsImplTest;
 import cz.compling.analysis.analysator.poems.impl.AlliterationImplTest;
 import cz.compling.analysis.analysator.poems.impl.AssonanceImplTest;
 import cz.compling.utils.TrooveUtilsListsTest;
@@ -30,7 +30,7 @@ import org.junit.runners.Suite;
 	CharacterFrequencyImplTest.class,
 	WordAnalyserImplTest.class,
 	WordFrequencyImplTest.class,
-	AggregationImplTest.class,
+	AggregationsImplTest.class,
 	AlliterationImplTest.class,
 	AssonanceImplTest.class
 })

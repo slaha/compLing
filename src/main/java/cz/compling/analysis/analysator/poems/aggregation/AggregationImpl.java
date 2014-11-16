@@ -1,6 +1,6 @@
 package cz.compling.analysis.analysator.poems.aggregation;
 
-import cz.compling.model.Aggregation;
+import cz.compling.model.Aggregations;
 import cz.compling.rules.BaseRuleHandler;
 import cz.compling.rules.RuleHandler;
 import cz.compling.rules.RuleObserver;
@@ -28,19 +28,19 @@ public class AggregationImpl implements IAggregation {
 
 	private final Poem poem;
 
-	private final Aggregation aggregation;
+	private final Aggregations aggregations;
 
 	private boolean dirty;
 
 	public AggregationImpl(Poem poem) {
 		this.poem = poem;
 		ruleHandler = new BaseRuleHandler<AggregationRule>();
-		aggregation = new Aggregation();
-		compute();
+		aggregations = new Aggregations();
+		computeAll();
 		dirty = false;
 	}
 
-	private void compute() {
+	private void computeAll() {
 		Poem onlyLettersPoem = toOnlyLetters();
 		Collection<Verse> verses = onlyLettersPoem.getVerses();
 		final Verse[] lines = verses.toArray(new Verse[verses.size()]);
@@ -49,8 +49,17 @@ public class AggregationImpl implements IAggregation {
 			return;
 		}
 
-		final String[] line1single = createChunks(lines[0].toString(), 1);
-		final String[] line1double = createChunks(lines[0].toString(), 2);
+		for (int i = 0; i < lines.length - 1; i++) {
+			compute(i, lines);
+		}
+
+		aggregations.done();
+	}
+
+	private void compute(int baseLine, Verse[] lines) {
+		
+		final String[] line1single = createChunks(lines[baseLine].toString(), 1);
+		final String[] line1double = createChunks(lines[baseLine].toString(), 2);
 		applyRules(line1single);
 		applyRules(line1double);
 		Arrays.sort(line1single);
@@ -59,7 +68,8 @@ public class AggregationImpl implements IAggregation {
 		final int sizeA1 = line1single.length;
 		final int sizeB1 = line1double.length;
 
-		int currentLine = 1;
+		final Aggregations.Aggregation aggregation = aggregations.getAggregationForBaseLine(baseLine + 1);
+		int currentLine = baseLine + 1;
 		while (currentLine < lines.length) {
 			final String line = lines[currentLine].toString();
 
@@ -84,6 +94,8 @@ public class AggregationImpl implements IAggregation {
 
 			currentLine++;
 		}
+
+		aggregations.done(aggregation);
 	}
 
 	/**
@@ -200,11 +212,11 @@ public class AggregationImpl implements IAggregation {
 	}
 
 	@Override
-	public Aggregation getAggregation() {
+	public Aggregations getAggregations() {
 		if (dirty) {
-			aggregation.clear();
-			compute();
+			aggregations.clear();
+			computeAll();
 		}
-		return aggregation;
+		return aggregations;
 	}
 }

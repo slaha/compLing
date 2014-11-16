@@ -3,7 +3,7 @@ package cz.compling.analysis.analysator.poems.impl;
 import cz.compling.AbstTest;
 import cz.compling.analysis.analysator.poems.aggregation.AggregationRule;
 import cz.compling.analysis.analysator.poems.aggregation.IAggregation;
-import cz.compling.model.Aggregation;
+import cz.compling.model.Aggregations;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,7 +21,7 @@ import java.text.Normalizer;
  * <dd> 8.3.14 8:06</dd>
  * </dl>
  */
-public class AggregationImplTest extends AbstTest{
+public class AggregationsImplTest extends AbstTest{
 
 	private static IAggregation analyser;
 
@@ -35,13 +35,13 @@ public class AggregationImplTest extends AbstTest{
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetAggregationFor0() throws Exception {
-		analyser.getAggregation().getAggregationFor(0);
+		analyser.getAggregations().getAggregationForBaseLine(1).getAggregationFor(0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetAggregationForMaxVal() throws Exception {
 		IAggregation aggregation = analyser;
-		aggregation.getAggregation().getAggregationFor(aggregation.getAggregation().getMaxDistance() + 1);
+		aggregation.getAggregations().getAggregationForBaseLine(1).getAggregationFor(aggregation.getAggregations().getAggregationForBaseLine(1).getMaxDistance() + 1);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class AggregationImplTest extends AbstTest{
 
 		iAggregation.registerRule(diacriticsRule);
 
-		Aggregation.LineAggregation aggregationFor = iAggregation.getAggregation().getAggregationFor(10);
+		Aggregations.Aggregation.LineAggregation aggregationFor = iAggregation.getAggregations().getAggregationForBaseLine(1).getAggregationFor(10);
 
 		int singleSet1Size = aggregationFor.getSingleSet1Size();
 		Assert.assertEquals(45, singleSet1Size);
@@ -114,7 +114,7 @@ public class AggregationImplTest extends AbstTest{
 		SINGLE: aacccddeehiiijkmnooprssssuvvy = 29
 		DOUBLE: am ch ho iv ms se yc = 7
 		*/
-		aggregationFor = iAggregation.getAggregation().getAggregationFor(34);
+		aggregationFor = iAggregation.getAggregations().getAggregationForBaseLine(1).getAggregationFor(34);
 		singleSet2Size = aggregationFor.getSingleSet2Size();
 		Assert.assertEquals(36, singleSet2Size);
 		doubleSet2Size = aggregationFor.getDoubleSet2Size();
@@ -140,7 +140,7 @@ public class AggregationImplTest extends AbstTest{
 		SINGLE: aaacccddeehiiijkllmmnoprrrrssssvv = 33
 		DOUBLE: ch el se = 3
 	     */
-		aggregationFor = iAggregation.getAggregation().getAggregationFor(100);
+		aggregationFor = iAggregation.getAggregations().getAggregationForBaseLine(1).getAggregationFor(100);
 		singleSet2Size = aggregationFor.getSingleSet2Size();
 		Assert.assertEquals(43, singleSet2Size);
 		doubleSet2Size = aggregationFor.getDoubleSet2Size();
@@ -155,7 +155,7 @@ public class AggregationImplTest extends AbstTest{
 	@Test
 	public void testGetMaxDistance() throws Exception {
 		IAggregation IAggregation = analyser;
-		int maxDistance = IAggregation.getAggregation().getMaxDistance();
+		int maxDistance = IAggregation.getAggregations().getAggregationForBaseLine(1).getMaxDistance();
 
 		Assert.assertEquals(107, maxDistance);
 	}

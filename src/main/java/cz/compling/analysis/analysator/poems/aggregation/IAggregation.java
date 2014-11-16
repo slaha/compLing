@@ -1,6 +1,6 @@
 package cz.compling.analysis.analysator.poems.aggregation;
 
-import cz.compling.model.Aggregation;
+import cz.compling.model.Aggregations;
 import cz.compling.rules.RuleHandler;
 
 /**
@@ -16,5 +16,5 @@ import cz.compling.rules.RuleHandler;
  */
 public interface IAggregation extends RuleHandler<AggregationRule>{
 
-	Aggregation getAggregation();
+	Aggregations getAggregations();
 }
