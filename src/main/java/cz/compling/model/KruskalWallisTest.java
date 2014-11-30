@@ -12,6 +12,7 @@ public class KruskalWallisTest {
 
 	final double[][] rankedValues;
 	private final double q;
+	private final int n;
 
 	public KruskalWallisTest(TestData testData) {
 
@@ -35,6 +36,7 @@ public class KruskalWallisTest {
 		Collections.sort(values);
 		doRanks(values);
 		doSums();
+		this.n = computeN();
 		this.q = computeQ();
 	}
 
@@ -51,10 +53,7 @@ public class KruskalWallisTest {
 	}
 
 	private double computeQ() {
-		int n = getN();
 		double fraction = 12d / (n * ( n + 1) );
-
-		int k = rankedValues.length;
 
 		double q = 0;
 		for (final double[] r : rankedValues) {
@@ -73,11 +72,15 @@ public class KruskalWallisTest {
 
 	}
 
-	private int getN() {
+	private int computeN() {
 		int n = 0;
 		for (double[] r: rankedValues) {
 			n += r[r.length - 2];
 		}
+		return n;
+	}
+
+	public int getN() {
 		return n;
 	}
 
