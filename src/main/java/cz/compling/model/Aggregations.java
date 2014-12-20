@@ -88,6 +88,7 @@ public class Aggregations {
 			aggregation.put(shift,
 				new LineAggregation(
 					shift,
+					baseLine,
 					intersection1,
 					sizeA1,
 					length,
@@ -118,10 +119,12 @@ public class Aggregations {
 
 		public static class LineAggregation {
 			final Sextet<Integer, Integer, Integer, Integer, Integer, Integer> data;
-			private final int shift;
+			public final int shift;
+			public final int baseLine;
 
-			public LineAggregation(int shift, int intersectionA, int sizeA1, int sizeA2, int intersectionB, int sizeB1, int sizeB2) {
+			public LineAggregation(int shift, int baseLine, int intersectionA, int sizeA1, int sizeA2, int intersectionB, int sizeB1, int sizeB2) {
 				this.shift = shift;
+				this.baseLine = baseLine;
 				data =
 					new Sextet<Integer, Integer, Integer, Integer, Integer, Integer>(
 						intersectionA, sizeA1, sizeA2,
