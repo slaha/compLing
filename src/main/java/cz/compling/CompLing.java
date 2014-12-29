@@ -35,7 +35,7 @@ import cz.compling.text.poem.PoemImpl;
 public class CompLing {
 
 	/** Text to analyse */
-	private Text text;
+	private final Text text;
 
 	private GeneralAnalysis generalAnalysis;
 	private PoemAnalysis poemAnalysis;
@@ -92,7 +92,7 @@ public class CompLing {
 		private WordAnalyser wordAnalyser;
 
 		/**
-		 * Returns an instance of {@code CharacterAnalyser} which can perform detailed analysis of characters it the text
+		 * Returns an instance of {@link CharacterAnalyser} which can perform detailed analysis of characters it the text
 		 */
 		public synchronized ICharacterFrequency characterFrequency() {
 			if (this.characterAnalyser == null) {
@@ -111,6 +111,7 @@ public class CompLing {
 			return this.wordAnalyser.getWordFrequency();
 		}
 
+
 		public synchronized IWords getWords() {
 			if (this.wordAnalyser == null) {
 				this.wordAnalyser = new WordAnalyserImpl(text);
@@ -124,8 +125,7 @@ public class CompLing {
 	 */
 	public class PoemAnalysis {
 
-		/** Text as poem. */
-		public Poem poem;
+		private final Poem poem;
 
 		/** Aggregation analyser. Can be null - the instance is created first time {@code AggregationAnalyser} is required */
 		private AggregationAnalyser aggregationAnalyser;
@@ -140,7 +140,7 @@ public class CompLing {
 
 		public synchronized IVerses verses() {
 			if (this.verseAnalyser == null) {
-				this.verseAnalyser = new VersesAnalyserImpl(this.poem);
+				this.verseAnalyser = new VersesAnalyserImpl(this.getPoem());
 			}
 			return this.verseAnalyser.getVerses();
 		}
@@ -150,7 +150,7 @@ public class CompLing {
 		 */
 		public synchronized IAggregation aggregation() {
 			if (this.aggregationAnalyser == null) {
-				this.aggregationAnalyser = new AggregationAnalyserImpl(this.poem);
+				this.aggregationAnalyser = new AggregationAnalyserImpl(this.getPoem());
 			}
 			return this.aggregationAnalyser.getAggregation();
 		}
@@ -159,7 +159,7 @@ public class CompLing {
 
 		public synchronized IAlliteration alliteration() {
 			if (this.alliterationAnalyser == null) {
-				this.alliterationAnalyser = new AlliterationAnalyserImpl(this.poem);
+				this.alliterationAnalyser = new AlliterationAnalyserImpl(this.getPoem());
 			}
 			return this.alliterationAnalyser.getAlliteration();
 
@@ -168,17 +168,21 @@ public class CompLing {
 
 		public synchronized IAssonance assonance(String[] vocals) {
 			if (this.assonanceAnalyser == null) {
-				this.assonanceAnalyser = new AssonanceAnalyserImpl(poem);
+				this.assonanceAnalyser = new AssonanceAnalyserImpl(getPoem());
 			}
 			return assonanceAnalyser.getAssonance(vocals);
 		}
 
 		public synchronized IDenotation denotationAnalysis() {
 			if (this.denotationAnalyser == null) {
-				this.denotationAnalyser = new DenotationAnalyserImpl(poem, generalAnalysis().getWords().getWords());
+				this.denotationAnalyser = new DenotationAnalyserImpl(getPoem(), generalAnalysis().getWords().getWords());
 			}
 			return denotationAnalyser.getDenotation();
 		}
 
+		/** Text as poem. */
+		public Poem getPoem() {
+			return poem;
+		}
 	}
 }
