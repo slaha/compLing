@@ -139,6 +139,15 @@ public class DenotationWord {
 		return false;
 	}
 
+	public DenotationElement getElementInSpike(Spike spike) {
+		for (DenotationElement denotationElement : denotationElements) {
+			if (denotationElement.getSpike() == spike) {
+				return denotationElement;
+			}
+		}
+		throw new IllegalStateException("Denotation word" + this + " is not in spike " + spike);
+	}
+
 	public boolean hasFreeElement() {
 		for (DenotationElement element : denotationElements) {
 			if (!element.isInSpike()) {

@@ -65,7 +65,7 @@ public class DenotationElement {
 	}
 
 	DenotationElement duplicate() {
-		return new DenotationElement(this.denotationWord, this.number);
+		return new DenotationElement(this.denotationWord, this.number, this.text);
 	}
 
 	public void increment(int increment) {
