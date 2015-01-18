@@ -55,7 +55,7 @@ public interface IDenotation {
 
 	void addNewElementTo(int denotationWordNumber, int elementNumber);
 
-	void duplicateElement(int number, DenotationElement elementToDuplicate);
+	DenotationElement duplicateElement(int number, DenotationElement elementToDuplicate);
 
 	void removeElement(int number, DenotationElement element);
 

@@ -57,7 +57,7 @@ public class DenotationElement {
 	}
 
 	public void onAddToSpike(Spike spike) {
-		onAddToSpike(spike, null);
+		onAddToSpike(spike, this.text);
 	}
 
 	public int getNumber() {

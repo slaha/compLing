@@ -78,9 +78,8 @@ public class DenotationImpl implements IDenotation {
 	}
 
 	@Override
-	public void duplicateElement(int number, DenotationElement elementToDuplicate) {
-		denotation.duplicateElement(number, elementToDuplicate);
-
+	public DenotationElement duplicateElement(int number, DenotationElement elementToDuplicate) {
+		return denotation.duplicateElement(number, elementToDuplicate);
 	}
 
 	@Override

@@ -87,10 +87,12 @@ public class Denotation {
 		forEachValue(getIncrementaror(1), word.getNumber());
 	}
 
-	public void duplicateElement(int denotationWordNumber, DenotationElement elementToDuplicate) {
+	public DenotationElement duplicateElement(int denotationWordNumber, DenotationElement elementToDuplicate) {
 		final DenotationWord word = getWord(denotationWordNumber);
-		word.addElement(elementToDuplicate.duplicate());
+		final DenotationElement duplicate = elementToDuplicate.duplicate();
+		word.addElement(duplicate);
 		forEachValue(getIncrementaror(1), word.getNumber());
+		return duplicate;
 	}
 
 	public void removeElement(int denotationWordNumber, DenotationElement element) {
