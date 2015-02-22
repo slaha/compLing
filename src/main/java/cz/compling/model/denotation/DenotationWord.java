@@ -130,6 +130,15 @@ public class DenotationWord {
 		return false;
 	}
 
+	public boolean areAllSpikesAssigned() {
+		for (DenotationElement denotationElement : denotationElements) {
+			if (!denotationElement.isInSpike()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public boolean isInSpike(Spike spike) {
 		for (DenotationElement denotationElement : denotationElements) {
 			if (denotationElement.getSpike() == spike) {

@@ -59,7 +59,9 @@ public class GuiPoemAsSpikeNumbers {
 			final List<DenotationElement> elements = new ArrayList<DenotationElement>(word.getDenotationElements());
 			Collections.sort(elements, ELEMENT_COMPARATOR);
 			for (DenotationElement element : elements) {
-				addElement(element, word);
+				if (element.getSpike() != null) {
+					addElement(element, word);
+				}
 			}
 		}
 
