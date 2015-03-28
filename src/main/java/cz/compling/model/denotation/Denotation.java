@@ -250,6 +250,21 @@ public class Denotation {
 		return new GuiPoemAsSpikeNumbers(getAllWords());
 	}
 
+	public List<Coincidence> getDeterministicFor(int spikeNumber) {
+		final List<Coincidence> coincidences = getCoincidenceFor(spikeNumber);
+		final Spike baseSpike = getSpike(spikeNumber);
+		for (DenotationWord denotationWord : baseSpike.getWords()) {
+			for (DenotationElement denotationElement : denotationWord.getDenotationElements()) {
+				final Spike spike = denotationElement.getSpike();
+				if (spike != null && spike.getNumber() != spikeNumber) {
+					coincidences.add(new Determination(baseSpike, spike));
+					System.out.println("Adding edge between nodes '" + baseSpike + "' and '" + spike + "' because deterministic. DenotationElement=" + denotationElement);
+				}
+			}
+		}
+		return coincidences;
+	}
+
 	private interface ForEachRunner {
 		void run(DenotationWord word);
 	}

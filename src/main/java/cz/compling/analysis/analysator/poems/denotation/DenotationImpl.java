@@ -153,6 +153,11 @@ public class DenotationImpl implements IDenotation {
 	}
 
 	@Override
+	public List<Coincidence> getDeterministicFor(int spikeNumber) {
+		return denotation.getDeterministicFor(spikeNumber);
+	}
+
+	@Override
 	public GuiPoemAsSpikeNumbers getPoemAsSpikeNumbers() {
 		return denotation.getPoemAsSpikeNumbers();
 	}

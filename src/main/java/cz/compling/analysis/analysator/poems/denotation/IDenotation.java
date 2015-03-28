@@ -83,5 +83,7 @@ public interface IDenotation {
 
 	List<Coincidence> getCoincidenceFor(int spikeNumber);
 
+	List<Coincidence> getDeterministicFor(int spikeNumber);
+
 	GuiPoemAsSpikeNumbers getPoemAsSpikeNumbers();
 }
