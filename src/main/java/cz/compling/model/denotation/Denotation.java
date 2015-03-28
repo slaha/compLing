@@ -258,7 +258,6 @@ public class Denotation {
 				final Spike spike = denotationElement.getSpike();
 				if (spike != null && spike.getNumber() != spikeNumber) {
 					coincidences.add(new Determination(baseSpike, spike));
-					System.out.println("Adding edge between nodes '" + baseSpike + "' and '" + spike + "' because deterministic. DenotationElement=" + denotationElement);
 				}
 			}
 		}
