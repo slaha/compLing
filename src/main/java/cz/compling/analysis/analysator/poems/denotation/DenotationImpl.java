@@ -116,7 +116,7 @@ public class DenotationImpl implements IDenotation {
 	}
 
 	@Override
-	public double computeTopikalnost(Spike spike, double cardinalNumber) {
+	public double computeTopicality(Spike spike, double cardinalNumber) {
 		return denotation.computeTopikalnost(spike, cardinalNumber);
 	}
 
@@ -160,5 +160,20 @@ public class DenotationImpl implements IDenotation {
 	@Override
 	public GuiPoemAsSpikeNumbers getPoemAsSpikeNumbers() {
 		return denotation.getPoemAsSpikeNumbers();
+	}
+
+	@Override
+	public double getNonContinuousIndex() {
+		return denotation.getNonContinuousIndex();
+	}
+
+	@Override
+	public double getNonIsolationIndex() {
+		return denotation.getNonIsolationIndex();
+	}
+
+	@Override
+	public double getReachabilityIndex() {
+		return denotation.getReachabilityIndex();
 	}
 }

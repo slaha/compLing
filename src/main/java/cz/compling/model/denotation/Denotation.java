@@ -6,10 +6,7 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.procedure.TObjectProcedure;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -22,7 +19,7 @@ import java.util.List;
  * <dd> 1.5.14 17:42</dd>
  * </dl>
  */
-public class Denotation {
+public class Denotation implements CoincidenceProvider {
 
 	private final SpikesHolder spikesHolder;
 	private final DenotationPoem denotationPoem;
@@ -223,6 +220,7 @@ public class Denotation {
 		return ( ((double)elementMax) - ((double)elementMin) ) / ((double)spike.size());
 	}
 
+	@Override
 	public List<Coincidence> getCoincidenceFor(int spikeNumber) {
 		List<Coincidence> coincidences = new ArrayList<Coincidence>();
 
@@ -262,6 +260,54 @@ public class Denotation {
 			}
 		}
 		return coincidences;
+	}
+
+	public double getNonContinuousIndex() {
+		double min = -1;
+		for (Spike spike : getSpikes()) {
+			int spikeNumber = spike.getNumber();
+			for (Coincidence coincidence : getCoincidenceFor(spikeNumber)) {
+				final double probability = coincidence.probability;
+				if (probability <= 0) {
+					continue;
+				}
+				if (min == -1 || probability < min) {
+					min = probability;
+				}
+			}
+		}
+		return min;
+	}
+
+	public double getNonIsolationIndex() {
+		List<Double> minProbabilities = new ArrayList<Double>(getSpikes().size());
+
+		for (Spike spike : getSpikes()) {
+			double min = Double.MAX_VALUE;
+			int spikeNumber = spike.getNumber();
+			for (Coincidence coincidence : getCoincidenceFor(spikeNumber)) {
+				final double probability = coincidence.probability;
+				if (probability < min) {
+					min = probability;
+				}
+			}
+			if (min != Double.MAX_VALUE) {
+				minProbabilities.add(min);
+			} else {
+				return Double.POSITIVE_INFINITY; //..no coincidence with another hreb → not possible to connect the hreb
+			}
+		}
+
+		if (minProbabilities.isEmpty()) {
+			return Double.POSITIVE_INFINITY;
+		}
+		return Collections.max(minProbabilities);
+	}
+
+	public double getReachabilityIndex() {
+		ReachabilityComputer reachabilityComputer = new ReachabilityComputer(getSpikes(), this);
+		reachabilityComputer.compute();
+		return reachabilityComputer.getResult();
 	}
 
 	private interface ForEachRunner {

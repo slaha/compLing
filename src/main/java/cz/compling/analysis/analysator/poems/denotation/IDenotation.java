@@ -69,7 +69,7 @@ public interface IDenotation {
 
 	void addNewWord(int number, DenotationWord word);
 
-	double computeTopikalnost(Spike spike, double cardinalNumber);
+	double computeTopicality(Spike spike, double cardinalNumber);
 
 	double getTextCompactness();
 
@@ -86,4 +86,10 @@ public interface IDenotation {
 	List<Coincidence> getDeterministicFor(int spikeNumber);
 
 	GuiPoemAsSpikeNumbers getPoemAsSpikeNumbers();
+
+	double getNonContinuousIndex();
+
+	double getNonIsolationIndex();
+
+	double getReachabilityIndex();
 }
