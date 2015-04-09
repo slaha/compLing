@@ -1,9 +1,6 @@
 package cz.compling.model.denotation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 class ComponentsList extends ArrayList<ReachabilityGraphComponent> {
 	private final CoincidenceProvider coincidenceProvider;
@@ -35,6 +32,9 @@ class ComponentsList extends ArrayList<ReachabilityGraphComponent> {
 					minProbabilities.add(min);
 				}
 			}
+		}
+		if (minProbabilities.isEmpty()) {
+			throw new NoSuchElementException();
 		}
 		return Collections.min(minProbabilities);
 	}

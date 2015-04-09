@@ -1,6 +1,7 @@
 package cz.compling.model.denotation;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 class ReachabilityComputer {
 
@@ -14,17 +15,21 @@ class ReachabilityComputer {
 
 	public void compute() {
 
-		double index;
-		do {
-			MinimumCoincidenceResult c = components.findMinProbabilityComponent();
-			ReachabilityGraphComponent another = components.findComponentFor(c.getSpike());
-			c.getLeft().connect(another);
-			components.remove(another);
+		try {
+			double index;
+			do {
+				MinimumCoincidenceResult c = components.findMinProbabilityComponent();
+				ReachabilityGraphComponent another = components.findComponentFor(c.getSpike());
+				c.getLeft().connect(another);
+				components.remove(another);
 
-			index = c.getProbability();
-		} while (components.size() > 1);
+				index = c.getProbability();
+			} while (components.size() > 1);
+			this.index = index;
+		} catch (NoSuchElementException ex) {
+			index = Double.POSITIVE_INFINITY;
+		}
 
-		this.index = index;
 		this.computed = true;
 	}
 
