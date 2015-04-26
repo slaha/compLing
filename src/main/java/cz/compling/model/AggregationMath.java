@@ -16,7 +16,7 @@ public class AggregationMath {
 		this.leastSquares = new LeastSquares();
 	}
 
-	private double computeSimilarity(Aggregations.Aggregation.LineAggregation  aggregation, int shift) {
+	private double computeSimilarity(Aggregations.Aggregation.LineAggregation aggregation, int shift) {
 
 		double aNominator = Math.pow(aggregation.getSingleSetsIntersectionSize(), 2);
 		double aDenominator = aggregation.getSingleSet1Size() * aggregation.getSingleSet2Size();
@@ -40,7 +40,7 @@ public class AggregationMath {
 				size++;
 			}
 		}
-		return (sum / (double)size);
+		return (sum / (double) size);
 	}
 
 	public double computeApproximatedSimilarity(int n, int shift) {
@@ -49,6 +49,14 @@ public class AggregationMath {
 
 	public double computeCoefficientD(int n) {
 		return leastSquares.computeD(n);
+	}
+
+	public double getApproxA(int n) {
+		return leastSquares.getApproxA(n);
+	}
+
+	public double getApproxB(int n) {
+		return leastSquares.getApproxB(n);
 	}
 
 	private class LeastSquares {
@@ -123,17 +131,31 @@ public class AggregationMath {
 			return D;
 		}
 
+		double getApproxA(int n) {
+			if (lastN != n) {
+				compute(n);
+			}
+			return A;
+		}
+
+		double getApproxB(int n) {
+			if (lastN != n) {
+				compute(n);
+			}
+			return B;
+		}
+
 		private double computeAvgS(int n) {
 			double s = 0;
 			for (int i = 0; i < n; i++) {
 				s += averagesSi.get(i);
 			}
-			return s / (double)n;
+			return s / (double) n;
 		}
 
 		private double computeLnLi(int n) {
 			double sum = 0;
-			for (int i  = 1; i <= n; i++) {
+			for (int i = 1; i <= n; i++) {
 				sum += Math.log(i);
 			}
 			return sum;
@@ -175,7 +197,7 @@ public class AggregationMath {
 		final String base = "přece stále žal mne soužil pro lenoru žal a trud".replaceAll(" ", "");
 		final char[] baseline = base.toCharArray();
 		final String shift = "děl jsem pane nebo paní promiňte jsem uleknut".replaceAll(" ", "");
-		final char[] shifted  = shift.toCharArray();
+		final char[] shifted = shift.toCharArray();
 
 		final String[] baseline2 = new String[baseline.length - 1];
 		for (int i = 0; i < baseline2.length; i++) {
@@ -187,7 +209,7 @@ public class AggregationMath {
 		}
 
 		System.out.println("first single character's set size: " + baseline.length + "\n" +
-							"second single character's set size: " + shifted.length);
+			"second single character's set size: " + shifted.length);
 
 		Arrays.sort(baseline);
 		Arrays.sort(shifted);
@@ -208,7 +230,8 @@ public class AggregationMath {
 					i2++;
 				}
 			}
-		} catch (ArrayIndexOutOfBoundsException ignored) {}
+		} catch (ArrayIndexOutOfBoundsException ignored) {
+		}
 
 		System.out.println("size of single character intersection: " + size);
 
@@ -218,7 +241,9 @@ public class AggregationMath {
 		Arrays.sort(baseline2);
 		Arrays.sort(shifted2);
 
-		size = 0; i1 = 0; i2 = 0;
+		size = 0;
+		i1 = 0;
+		i2 = 0;
 		try {
 			while (true) {
 				String c1 = baseline2[i1];
@@ -236,8 +261,19 @@ public class AggregationMath {
 					i2++;
 				}
 			}
-		} catch (ArrayIndexOutOfBoundsException ignored) {}
+		} catch (ArrayIndexOutOfBoundsException ignored) {
+		}
 
 		System.out.println("size of double character intersection: " + size);
+
+
+	}
+
+	private static final List<Double> averagesSi;
+	private static final List<Double> expectedSi;
+
+	static {
+		averagesSi = Arrays.asList(36.06, 34.60, 34.44, 34.77, 33.78, 33.84, 34.01, 33.76, 32.21, 32.01);
+		expectedSi = Arrays.asList(35.87, 35.06, 34.60, 34.27, 34.02, 33.82, 33.65, 33.50, 33.37, 33.26);
 	}
 }

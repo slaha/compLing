@@ -84,7 +84,7 @@ public class Aggregations {
 
 
 		public void put(int currentLine, int intersection1, int sizeA1, int length, int intersection2, int sizeB1, int length1) {
-			int shift = currentLine - baseLine + 1;
+			int shift = currentLine - baseLine;
 			aggregation.put(shift,
 				new LineAggregation(
 					shift,

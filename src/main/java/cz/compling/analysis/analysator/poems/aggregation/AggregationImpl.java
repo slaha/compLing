@@ -84,7 +84,7 @@ public class AggregationImpl implements IAggregation {
 			final int intersection2 = intersection(line1double, lineDouble);
 
 			aggregation.put(
-				currentLine,
+				currentLine + 1,
 				intersection1,
 				sizeA1,
 				lineSingle.length,
