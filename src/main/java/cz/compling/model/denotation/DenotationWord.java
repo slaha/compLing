@@ -1,5 +1,7 @@
 package cz.compling.model.denotation;
 
+import org.apache.commons.lang3.text.StrBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -111,7 +113,16 @@ public class DenotationWord {
 	}
 
 	public List<DenotationWord> getWords() {
-		List<DenotationWord> list = new ArrayList<DenotationWord>(1 + joinedWords.size());
+		List<DenotationWord> list = new ArrayList<DenotationWord>(1 + joinedWords.size()) {
+			@Override
+			public String toString() {
+				if (isEmpty()) {
+					return "";
+				}
+				StrBuilder strBuilder = new StrBuilder();
+				return strBuilder.appendWithSeparators(this, ",").toString();
+ 			}
+		};
 		list.add(this);
 		list.addAll(joinedWords);
 		return Collections.unmodifiableList(list);
