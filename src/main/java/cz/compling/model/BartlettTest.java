@@ -53,7 +53,7 @@ public class BartlettTest {
 			int ni = testData.getValuesCountFor(i);
 			ni -= 1;
 			double varValue = testData.getVarianceFor(i);
-			varValue = Math.log(varValue);
+			varValue = varValue == 0 ? 0 : Math.log(varValue);
 			sum += (ni * varValue);
 		}
 
