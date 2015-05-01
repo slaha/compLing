@@ -14,9 +14,9 @@ package cz.compling.model.denotation;
 public class DenotationElement {
 	private final DenotationWord denotationWord;
 	private int number;
-	private Spike spike;
+	private Hreb hreb;
 
-	/** Used if user has to provide part which does not belong to spike = (lete)l */
+	/** Used if user has to provide part which does not belong to hreb = (lete)l */
 	private String text;
 
 	public DenotationElement(DenotationWord denotationWord, int number) {
@@ -29,12 +29,12 @@ public class DenotationElement {
 		this.text = alias;
 	}
 
-	public boolean isInSpike() {
-		return spike != null;
+	public boolean isInHreb() {
+		return hreb != null;
 	}
 
-	public Spike getSpike() {
-		return spike;
+	public Hreb getHreb() {
+		return hreb;
 	}
 
 	@Override
@@ -42,22 +42,22 @@ public class DenotationElement {
 		return String.valueOf(number);
 	}
 
-	void onAddToSpike(Spike spike, String input) {
-		this.spike = spike;
+	void onAddToHreb(Hreb hreb, String input) {
+		this.hreb = hreb;
 		this.text = input;
 	}
 
-	void onRemoveFromSpike(Spike spike) {
-		if (spike == this.spike) {
-			this.spike = null;
+	void onRemoveFromHreb(Hreb hreb) {
+		if (hreb == this.hreb) {
+			this.hreb = null;
 			this.text = null;
 		} else {
-			throw new IllegalArgumentException("Illegal call to onRemoveFromSpike. Current spike" + this.spike + ", arg. spike " + spike);
+			throw new IllegalArgumentException("Illegal call to onRemoveFromHreb. Current hreb" + this.hreb + ", arg. hreb " + hreb);
 		}
 	}
 
-	public void onAddToSpike(Spike spike) {
-		onAddToSpike(spike, this.text);
+	public void onAddToHreb(Hreb hreb) {
+		onAddToHreb(hreb, this.text);
 	}
 
 	public int getNumber() {

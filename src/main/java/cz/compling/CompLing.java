@@ -175,7 +175,7 @@ public class CompLing {
 
 		public synchronized IDenotation denotationAnalysis() {
 			if (this.denotationAnalyser == null) {
-				this.denotationAnalyser = new DenotationAnalyserImpl(getPoem(), generalAnalysis().getWords().getWords());
+				this.denotationAnalyser = new DenotationAnalyserImpl(getPoem());
 			}
 			return denotationAnalyser.getDenotation();
 		}

@@ -11,8 +11,8 @@ package cz.compling.model.denotation;
 * <dd> 3.5.14 11:35</dd>
 * </dl>
 */
-public class SpikeNotFoundException extends RuntimeException {
-	public SpikeNotFoundException(String s) {
+public class HrebNotFoundException extends RuntimeException {
+	public HrebNotFoundException(String s) {
 		super(s);
 	}
 }

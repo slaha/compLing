@@ -19,37 +19,37 @@ import java.util.List;
 public interface IDenotation {
 
 	/**
-	 * Creates new empty spike
+	 * Creates new empty hreb
 	 *
-	 * @return number of spike (must be positive)
+	 * @return number of hreb (must be positive)
 	 */
-	int createNewSpike();
+	int createNewHreb();
 
-	int addSpike(Spike spike);
+	int addHreb(Hreb hreb);
 
 	/**
-	 * Check if spike with number {@code number} exists
-	 * @param number the number of spike
-	 * @return true if spike exists; false otherwise
+	 * Check if hreb with number {@code number} exists
+	 * @param number the number of hreb
+	 * @return true if hreb exists; false otherwise
 	 */
-	boolean containsSpike(int number);
+	boolean containsHreb(int number);
 
 	/**
-	 * Remove spike. All words in spike will be removed from the spike
+	 * Remove hreb. All words in hreb will be removed from the hreb
 	 *
-	 * @param number the number of spike
-	 * @return the lowest number of {@code DenotationPoemModel.DenotationWord} which was in removed spike
+	 * @param number the number of hreb
+	 * @return the lowest number of {@code DenotationPoemModel.DenotationWord} which was in removed hreb
 	 */
-	int removeSpike(int number);
+	int removeHreb(int number);
 
-	Spike getSpike(int number);
+	Hreb getHreb(int number);
 
 
 	int getCountOfWords();
 
 	DenotationWord getWord(int number);
 
-	Collection<Spike> getSpikes();
+	Collection<Hreb> getHrebs();
 
 	void addNewElementTo(int denotationWordNumber);
 
@@ -69,7 +69,7 @@ public interface IDenotation {
 
 	void addNewWord(int number, DenotationWord word);
 
-	double computeTopicality(Spike spike, double cardinalNumber);
+	double computeTopicality(Hreb hreb, double cardinalNumber);
 
 	double getTextCompactness();
 
@@ -77,15 +77,15 @@ public interface IDenotation {
 
 	double getMacIntosh();
 
-	double getDiffusionFor(int spike);
+	double getDiffusionFor(int hreb);
 
 	List<DenotationWord> getAllWords();
 
-	List<Coincidence> getCoincidenceFor(int spikeNumber);
+	List<Coincidence> getCoincidenceFor(int hrebNumber);
 
-	List<Coincidence> getDeterministicFor(int spikeNumber);
+	List<Coincidence> getDeterministicFor(int hrebNumber);
 
-	GuiPoemAsSpikeNumbers getPoemAsSpikeNumbers();
+	PoemAsHrebNumbers getPoemAsHrebNumbers();
 
 	double getNonContinuousIndex();
 

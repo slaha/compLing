@@ -4,14 +4,14 @@ import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
 public class MinimumCoincidenceResult
-	extends MutableTriple<ReachabilityGraphComponent, Spike, Double>
+	extends MutableTriple<ReachabilityGraphComponent, Hreb, Double>
 {
 
-	public MinimumCoincidenceResult(ReachabilityGraphComponent component, Spike spike, double maxValue) {
-		super(component, spike, maxValue);
+	public MinimumCoincidenceResult(ReachabilityGraphComponent component, Hreb hreb, double maxValue) {
+		super(component, hreb, maxValue);
 
 	}
-	public int compareTo(Triple<ReachabilityGraphComponent, Spike, Double> o) {
+	public int compareTo(Triple<ReachabilityGraphComponent, Hreb, Double> o) {
 		return getRight().compareTo(o.getRight());
 	}
 
@@ -19,11 +19,11 @@ public class MinimumCoincidenceResult
 		this.setRight(probability);
 	}
 
-	public void setSpike(Spike spike) {
-		this.setMiddle(spike);
+	public void setHreb(Hreb hreb) {
+		this.setMiddle(hreb);
 	}
 
-	public Spike getSpike() {
+	public Hreb getHreb() {
 		return getMiddle();
 	}
 

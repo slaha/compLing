@@ -1,8 +1,7 @@
 package cz.compling.analysis.analysator.poems;
 
-import cz.compling.analysis.analysator.poems.denotation.DenotationImpl;
 import cz.compling.analysis.analysator.poems.denotation.IDenotation;
-import cz.compling.model.Words;
+import cz.compling.model.denotation.Denotation;
 import cz.compling.text.poem.Poem;
 
 /**
@@ -18,16 +17,13 @@ import cz.compling.text.poem.Poem;
  */
 public class DenotationAnalyserImpl implements DenotationAnalyser {
 	private final Poem poem;
-	private final Words words;
 
-	public DenotationAnalyserImpl(Poem poem, Words words) {
+	public DenotationAnalyserImpl(Poem poem) {
 		this.poem = poem;
-
-		this.words = words;
 	}
 
 	@Override
 	public IDenotation getDenotation() {
-		return new DenotationImpl(poem, words);
+		return new Denotation(poem);
 	}
 }

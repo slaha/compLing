@@ -4,8 +4,8 @@ import cz.compling.AbstTest;
 import cz.compling.CompLing;
 import cz.compling.analysis.analysator.poems.denotation.IDenotation;
 import cz.compling.model.denotation.DenotationWord;
-import cz.compling.model.denotation.Spike;
-import cz.compling.model.denotation.SpikeNotFoundException;
+import cz.compling.model.denotation.Hreb;
+import cz.compling.model.denotation.HrebNotFoundException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -40,46 +40,46 @@ public class DenotationmplTest extends AbstTest {
 	}
 
 	@Test
-	public void test001AddNewSpike() throws Exception {
-		int newSpike = analyser.createNewSpike();
+	public void test001AddNewHreb() throws Exception {
+		int newHreb = analyser.createNewHreb();
 
-		Assert.assertEquals(1, newSpike);
+		Assert.assertEquals(1, newHreb);
 	}
 
-	@Test(expected = SpikeNotFoundException.class)
-	public void test010GetSpike() throws Exception {
-		Spike spike = analyser.getSpike(1);
+	@Test(expected = HrebNotFoundException.class)
+	public void test010GetHreb() throws Exception {
+		Hreb hreb = analyser.getHreb(1);
 
-		Assert.assertNotNull(spike);
+		Assert.assertNotNull(hreb);
 
-		analyser.getSpike(10);
+		analyser.getHreb(10);
 	}
 
 	@Test
-	public void test015ContainsSpike() throws Exception {
-		Assert.assertEquals(true, analyser.containsSpike(1));
-		Assert.assertEquals(false, analyser.containsSpike(10));
+	public void test015ContainsHreb() throws Exception {
+		Assert.assertEquals(true, analyser.containsHreb(1));
+		Assert.assertEquals(false, analyser.containsHreb(10));
 	}
 
-	@Test(expected = SpikeNotFoundException.class)
-	public void test020RemoveSpike() throws Exception {
-		final int spike = analyser.removeSpike(1);
+	@Test(expected = HrebNotFoundException.class)
+	public void test020RemoveHreb() throws Exception {
+		final int hreb = analyser.removeHreb(1);
 
 		Assert.assertEquals(1, 1); //..no exception
 
-		analyser.removeSpike(10);
+		analyser.removeHreb(10);
 	}
 
 	@Test
 	public void test100AddWord() throws Exception {
-		final int newSpike = analyser.createNewSpike();
-		final Spike spike = analyser.getSpike(newSpike);
+		final int newHreb = analyser.createNewHreb();
+		final Hreb hreb = analyser.getHreb(newHreb);
 
 		DenotationWord word = analyser.getWord(1);
 		DenotationWord word2 = analyser.getWord(2);
 		analyser.joinWords(2, 3);
 		analyser.joinWords(word.getNumber(), analyser.getWord(2).getNumber());
-		spike.addWord(word, null);
+		hreb.addWord(word, null);
 
 		for (int i = 1; i <= analyser.getCountOfWords(); i++) {
 			Assert.assertNotNull(analyser.getWord(i));

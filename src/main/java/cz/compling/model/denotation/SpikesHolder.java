@@ -18,89 +18,89 @@ import java.util.Comparator;
 * <dd> 1.5.14 17:46</dd>
 * </dl>
 */
-class SpikesHolder {
+class HrebsHolder {
 	/**
-	 * Key: number of spike
-	 * value: spike
+	 * Key: number of hreb
+	 * value: hreb
 	 */
-	private final TIntObjectMap<Spike> spikes;
+	private final TIntObjectMap<Hreb> hrebs;
 
-	/** no. of current spike (used for creating new spike) */
-	private int currentSpike;
+	/** no. of current hreb (used for creating new hreb) */
+	private int currentHreb;
 
-	SpikesHolder() {
-		spikes = new TIntObjectHashMap<Spike>();
+	HrebsHolder() {
+		hrebs = new TIntObjectHashMap<Hreb>();
 }
 
-	int createNewSpike() {
-		Spike spike = new Spike(++currentSpike);
-		return addSpike(spike);
+	int createNewHreb() {
+		Hreb hreb = new Hreb(++currentHreb);
+		return addHreb(hreb);
 	}
 
-	int removeSpike(final int number) {
-		Spike spike = spikes.remove(number);
-		if (spike == null) {
-			throw new SpikeNotFoundException("Spike with number " + number + " does not exist");
+	int removeHreb(final int number) {
+		Hreb hreb = hrebs.remove(number);
+		if (hreb == null) {
+			throw new HrebNotFoundException("Hreb with number " + number + " does not exist");
 		}
-		currentSpike--;
-		if (currentSpike != number) {
-			final TIntObjectMap<Spike> newSpikes = new TIntObjectHashMap<Spike>();
-			spikes.forEachEntry(new TIntObjectProcedure<Spike>() {
+		currentHreb--;
+		if (currentHreb != number) {
+			final TIntObjectMap<Hreb> newHrebs = new TIntObjectHashMap<Hreb>();
+			hrebs.forEachEntry(new TIntObjectProcedure<Hreb>() {
 				@Override
-				public boolean execute(int key, Spike spike) {
+				public boolean execute(int key, Hreb hreb) {
 					if (key > number) {
-						final Spike s = spikes.remove(key);
+						final Hreb s = hrebs.remove(key);
 						s.setNumber(s.getNumber() - 1);
-						newSpikes.put(s.getNumber(), spike);
+						newHrebs.put(s.getNumber(), hreb);
 					}
 					return true;
 				}
 			});
-			System.out.println(newSpikes);
-			spikes.putAll(newSpikes);
+			System.out.println(newHrebs);
+			hrebs.putAll(newHrebs);
 		}
-		return spike.onRemove();
+		return hreb.onRemove();
 	}
 
 	/**
-	 * Checks if there is at least one Spike
+	 * Checks if there is at least one Hreb
 	 */
-	boolean hasSpikes() {
-		return !spikes.isEmpty();
+	boolean hasHrebs() {
+		return !hrebs.isEmpty();
 	}
 
 	/**
-	 * @return all Spikes as sorted array (by Spike's number)
+	 * @return all Hrebs as sorted array (by Hreb's number)
 	 */
-	Spike[] getSpikes() {
-		Spike[] values = spikes.values(new Spike[spikes.size()]);
-		Arrays.sort(values, new Comparator<Spike>() {
+	Hreb[] getHrebs() {
+		Hreb[] values = hrebs.values(new Hreb[hrebs.size()]);
+		Arrays.sort(values, new Comparator<Hreb>() {
 			@Override
-			public int compare(Spike o1, Spike o2) {
+			public int compare(Hreb o1, Hreb o2) {
 				return o1.getNumber() - o2.getNumber();
 			}
 		});
 		return values;
 	}
 
-	public Spike getSpike(int number) {
-		Spike s = spikes.get(number);
+	public Hreb getHreb(int number) {
+		Hreb s = hrebs.get(number);
 		if (s == null) {
-			throw new SpikeNotFoundException("Spike with number " + number + " does not exist");
+			throw new HrebNotFoundException("Hreb with number " + number + " does not exist");
 		}
 
 		return s;
 	}
 
-	public boolean containsSpike(int number) {
-		return spikes.containsKey(number);
+	public boolean containsHreb(int number) {
+		return hrebs.containsKey(number);
 	}
 
-	int addSpike(Spike spike) {
-		spikes.put(spike.getNumber(), spike);
-		if (spike.getNumber() > currentSpike) {
-			currentSpike = spike.getNumber();
+	int addHreb(Hreb hreb) {
+		hrebs.put(hreb.getNumber(), hreb);
+		if (hreb.getNumber() > currentHreb) {
+			currentHreb = hreb.getNumber();
 		}
-		return spike.getNumber();
+		return hreb.getNumber();
 	}
 }

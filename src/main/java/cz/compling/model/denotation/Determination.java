@@ -2,7 +2,7 @@ package cz.compling.model.denotation;
 
 public class Determination extends Coincidence {
 
-	public Determination(Spike baseSpike, Spike anotherSpike) {
-		super(baseSpike, anotherSpike, 1, 0);
+	public Determination(Hreb baseHreb, Hreb anotherHreb) {
+		super(baseHreb, anotherHreb, 1, 0);
 	}
 }

@@ -13,15 +13,15 @@ import java.util.*;
  * <dd> 1.5.14 17:49</dd>
  * </dl>
  */
-public class Spike {
+public class Hreb {
 
-	/** number of Spike */
+	/** number of Hreb */
 	private int number;
 
-	/** Words in spike */
+	/** Words in hreb */
 	private final DenotationWordsMap words;
 
-	public Spike(int number) {
+	public Hreb(int number) {
 		this.number = number;
 		words = new DenotationWordsMap();
 	}
@@ -41,7 +41,7 @@ public class Spike {
 
 	public void remove(DenotationWord word) {
 		final DenotationWord remove = words.remove(word);
-		remove.onRemoveFromSpike(this);
+		remove.onRemoveFromHreb(this);
 	}
 
 	public Collection<DenotationWord> getWords() {
@@ -66,8 +66,8 @@ public class Spike {
 			if (word.getNumber() < lowestWordNumber) {
 				lowestWordNumber = word.getNumber();
 			}
-			if (word.isInSpike(this)) {
-				word.onRemoveFromSpike(this);
+			if (word.isInHreb(this)) {
+				word.onRemoveFromHreb(this);
 			}
 		}
 		words.clear();
@@ -76,16 +76,16 @@ public class Spike {
 
 	public void addWord(DenotationWord word, String input) {
 		this.words.put(word, word);
-		word.onAddToSpike(this, input);
+		word.onAddToHreb(this, input);
 	}
 
 	public void addWord(DenotationWord word, String input, int elementNumber) {
 		this.words.put(word, word);
-		word.onAddToSpike(this, input ,elementNumber);
+		word.onAddToHreb(this, input ,elementNumber);
 	}
 
 	/**
-	 * This map is set of DenotationWords in the spike
+	 * This map is set of DenotationWords in the hreb
 	 */
 	private static class DenotationWordsMap extends HashMap<DenotationWord, DenotationWord> {
 		@Override

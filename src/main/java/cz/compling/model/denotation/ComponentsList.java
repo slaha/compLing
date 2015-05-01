@@ -5,26 +5,26 @@ import java.util.*;
 class ComponentsList extends ArrayList<ReachabilityGraphComponent> {
 	private final CoincidenceProvider coincidenceProvider;
 
-	public ComponentsList(Collection<Spike> spikes, CoincidenceProvider coincidenceProvider) {
-		super(spikes.size());
+	public ComponentsList(Collection<Hreb> hrebs, CoincidenceProvider coincidenceProvider) {
+		super(hrebs.size());
 		this.coincidenceProvider = coincidenceProvider;
-		for (Spike spike : spikes) {
-			add(new ReachabilityGraphComponent(spike));
+		for (Hreb hreb : hrebs) {
+			add(new ReachabilityGraphComponent(hreb));
 		}
 	}
 
 	public MinimumCoincidenceResult findMinProbabilityComponent() {
 		List<MinimumCoincidenceResult> minProbabilities = new ArrayList<MinimumCoincidenceResult>();
 		for (ReachabilityGraphComponent component : this) {
-			for (Spike spike : component.spikes) {
+			for (Hreb hreb : component.hrebs) {
 				MinimumCoincidenceResult min = new MinimumCoincidenceResult(component, null, Double.MAX_VALUE);
-				final int number = spike.getNumber();
+				final int number = hreb.getNumber();
 				for (Coincidence coincidence : coincidenceProvider.getCoincidenceFor(number)) {
 
 					double probability = coincidence.probability;
-					final Spike anotherSpike = coincidence.anotherSpike;
-					if (probability < min.getRight() && !component.connectedWith(anotherSpike)) {
-						min.setSpike(anotherSpike);
+					final Hreb anotherHreb = coincidence.anotherHreb;
+					if (probability < min.getRight() && !component.connectedWith(anotherHreb)) {
+						min.setHreb(anotherHreb);
 						min.setProbability(probability);
 					}
 				}
@@ -39,9 +39,9 @@ class ComponentsList extends ArrayList<ReachabilityGraphComponent> {
 		return Collections.min(minProbabilities);
 	}
 
-	public ReachabilityGraphComponent findComponentFor(Spike hreb) {
+	public ReachabilityGraphComponent findComponentFor(Hreb hreb) {
 		for (ReachabilityGraphComponent component : this) {
-			if (component.spikes.contains(hreb)) {
+			if (component.hrebs.contains(hreb)) {
 				return component;
 			}
 		}

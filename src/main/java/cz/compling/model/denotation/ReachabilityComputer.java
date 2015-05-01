@@ -9,8 +9,8 @@ class ReachabilityComputer {
 	private double index;
 	private boolean computed;
 
-	public ReachabilityComputer(Collection<Spike> spikes, CoincidenceProvider coincidenceProvider) {
-		components = new ComponentsList(spikes, coincidenceProvider);
+	public ReachabilityComputer(Collection<Hreb> hrebs, CoincidenceProvider coincidenceProvider) {
+		components = new ComponentsList(hrebs, coincidenceProvider);
 	}
 
 	public void compute() {
@@ -19,7 +19,7 @@ class ReachabilityComputer {
 			double index;
 			do {
 				MinimumCoincidenceResult c = components.findMinProbabilityComponent();
-				ReachabilityGraphComponent another = components.findComponentFor(c.getSpike());
+				ReachabilityGraphComponent another = components.findComponentFor(c.getHreb());
 				c.getLeft().connect(another);
 				components.remove(another);
 

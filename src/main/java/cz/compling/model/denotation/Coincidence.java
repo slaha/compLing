@@ -2,14 +2,14 @@ package cz.compling.model.denotation;
 
 public class Coincidence {
 
-	public final Spike baseSpike;
-	public final Spike anotherSpike;
+	public final Hreb baseHreb;
+	public final Hreb anotherHreb;
 	public final int coincidenceCount;
 	public final double probability;
 
-	public Coincidence(Spike baseSpike, Spike anotherSpike, int coincidenceCount, double probability) {
-		this.baseSpike = baseSpike;
-		this.anotherSpike = anotherSpike;
+	public Coincidence(Hreb baseHreb, Hreb anotherHreb, int coincidenceCount, double probability) {
+		this.baseHreb = baseHreb;
+		this.anotherHreb = anotherHreb;
 		this.coincidenceCount = coincidenceCount;
 		this.probability = probability;
 	}

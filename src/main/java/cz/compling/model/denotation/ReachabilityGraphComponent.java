@@ -5,24 +5,24 @@ import java.util.Set;
 
 class ReachabilityGraphComponent {
 
-	Set<Spike> spikes;
-	public ReachabilityGraphComponent(Spike spike) {
-		spikes = new HashSet<Spike>();
-		spikes.add(spike);
+	Set<Hreb> hrebs;
+	public ReachabilityGraphComponent(Hreb hreb) {
+		hrebs = new HashSet<Hreb>();
+		hrebs.add(hreb);
 	}
 
 	public void connect(ReachabilityGraphComponent another) {
-		spikes.addAll(another.spikes);
+		hrebs.addAll(another.hrebs);
 	}
 
-	public boolean connectedWith(Spike anotherSpike) {
-		return spikes.contains(anotherSpike);
+	public boolean connectedWith(Hreb anotherHreb) {
+		return hrebs.contains(anotherHreb);
 	}
 
 	@Override
 	public String toString() {
 		return "Component{" +
-			"spikes=" + spikes +
+			"hrebs=" + hrebs +
 			'}';
 	}
 }

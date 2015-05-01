@@ -19,7 +19,7 @@ import java.util.List;
  * <dd> 17.5.14 14:27</dd>
  * </dl>
  */
-public class GuiPoemAsSpikeNumbers {
+public class PoemAsHrebNumbers {
 
 	private static final Comparator<DenotationWord> WORD_COMPARATOR = new Comparator<DenotationWord>() {
 		@Override
@@ -48,7 +48,7 @@ public class GuiPoemAsSpikeNumbers {
 	private final TIntObjectMap<Strophe> strophes;
 	private final int versesCount;
 
-	public GuiPoemAsSpikeNumbers(List<DenotationWord> allWords) {
+	public PoemAsHrebNumbers(List<DenotationWord> allWords) {
 
 		this.strophes = new TIntObjectHashMap<Strophe>();
 
@@ -59,7 +59,7 @@ public class GuiPoemAsSpikeNumbers {
 			final List<DenotationElement> elements = new ArrayList<DenotationElement>(word.getDenotationElements());
 			Collections.sort(elements, ELEMENT_COMPARATOR);
 			for (DenotationElement element : elements) {
-				if (element.getSpike() != null) {
+				if (element.getHreb() != null) {
 					addElement(element, word);
 				}
 			}
@@ -91,13 +91,13 @@ public class GuiPoemAsSpikeNumbers {
 		return versesCount;
 	}
 
-	int getVersesCountWith(int spikeNumber) {
+	int getVersesCountWith(int hrebNumber) {
 		int verses = 0;
 
 		for (Strophe strophe : strophes.valueCollection()) {
 			for (Strophe.Verse verse : strophe.verses.valueCollection()) {
-				for (Spike spike : verse.spikes) {
-					if (spike.getNumber() == spikeNumber) {
+				for (Hreb hreb : verse.hrebs) {
+					if (hreb.getNumber() == hrebNumber) {
 						verses++;
 						break;
 					}
@@ -115,10 +115,10 @@ public class GuiPoemAsSpikeNumbers {
 			for (Strophe.Verse verse : strophe.verses.valueCollection()) {
 				boolean hasA = false;
 				boolean hasB = false;
-				for (Spike spike : verse.spikes) {
-					if (spike.getNumber() == aNumber) {
+				for (Hreb hreb : verse.hrebs) {
+					if (hreb.getNumber() == aNumber) {
 						hasA = true;
-					} else if (spike.getNumber() == bNumber) {
+					} else if (hreb.getNumber() == bNumber) {
 						hasB = true;
 					}
 					if (hasA && hasB) {
@@ -169,15 +169,15 @@ public class GuiPoemAsSpikeNumbers {
 		public static class Verse implements Comparable<Verse> {
 
 			private final int verseNumber;
-			private final List<Spike> spikes;
+			private final List<Hreb> hrebs;
 
 			public Verse(int verseNumber) {
 				this.verseNumber = verseNumber;
-				this.spikes = new ArrayList<Spike>();
+				this.hrebs = new ArrayList<Hreb>();
 			}
 
 			public void addElement(DenotationElement element) {
-				spikes.add(element.getSpike());
+				hrebs.add(element.getHreb());
 			}
 
 			@Override
@@ -185,10 +185,10 @@ public class GuiPoemAsSpikeNumbers {
 				return this.verseNumber - o.verseNumber;
 			}
 
-			public List<Integer> getSpikes() {
+			public List<Integer> getHrebs() {
 				List<Integer> el = new ArrayList<Integer>();
-				for (Spike spike : spikes) {
-					el.add(spike.getNumber());
+				for (Hreb hreb : hrebs) {
+					el.add(hreb.getNumber());
 				}
 				return Collections.unmodifiableList(el);
 			}

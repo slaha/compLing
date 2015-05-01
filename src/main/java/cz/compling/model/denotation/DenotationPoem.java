@@ -1,6 +1,5 @@
 package cz.compling.model.denotation;
 
-import cz.compling.model.Words;
 import cz.compling.text.poem.Poem;
 import cz.compling.text.poem.Strophe;
 import cz.compling.text.poem.Verse;
@@ -22,8 +21,8 @@ class DenotationPoem {
 	private final TIntObjectMap<DenotationWord> words;
 	private final int countOfWords;
 
-	DenotationPoem(Poem poem, Words words) {
-		this.words = new TIntObjectHashMap<DenotationWord>(words.getCountOfWords());
+	DenotationPoem(Poem poem) {
+		this.words = new TIntObjectHashMap<DenotationWord>();
 
 		int currentWordNumber = 0;
 		int stropheNumber = 0;

@@ -1,12 +1,15 @@
 package cz.compling.model.denotation;
 
-import cz.compling.model.Words;
+import cz.compling.analysis.analysator.poems.denotation.IDenotation;
 import cz.compling.text.poem.Poem;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.procedure.TObjectProcedure;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -19,36 +22,36 @@ import java.util.*;
  * <dd> 1.5.14 17:42</dd>
  * </dl>
  */
-public class Denotation implements CoincidenceProvider {
+public class Denotation implements CoincidenceProvider, IDenotation {
 
-	private final SpikesHolder spikesHolder;
+	private final HrebsHolder hrebsHolder;
 	private final DenotationPoem denotationPoem;
 	private final DenotationMath denotationMath;
 
-	public Denotation(Poem poem, Words words) {
-		denotationPoem = new DenotationPoem(poem, words);
-		spikesHolder = new SpikesHolder();
+	public Denotation(Poem poem) {
+		denotationPoem = new DenotationPoem(poem);
+		hrebsHolder = new HrebsHolder();
 		denotationMath = new DenotationMath();
 	}
 
-	public int createNewSpike() {
-		return spikesHolder.createNewSpike();
+	public int createNewHreb() {
+		return hrebsHolder.createNewHreb();
 	}
 
-	public int addSpike(Spike spike) {
-		return spikesHolder.addSpike(spike);
+	public int addHreb(Hreb hreb) {
+		return hrebsHolder.addHreb(hreb);
 	}
 
-	public int removeSpike(int number) {
-		return spikesHolder.removeSpike(number);
+	public int removeHreb(int number) {
+		return hrebsHolder.removeHreb(number);
 	}
 
-	public Spike getSpike(int number) {
-		return spikesHolder.getSpike(number);
+	public Hreb getHreb(int number) {
+		return hrebsHolder.getHreb(number);
 	}
 
-	public boolean containsSpike(int number) {
-		return spikesHolder.containsSpike(number);
+	public boolean containsHreb(int number) {
+		return hrebsHolder.containsHreb(number);
 	}
 
 	public DenotationWord getWord(int number) {
@@ -68,17 +71,17 @@ public class Denotation implements CoincidenceProvider {
 		return denotationPoem.getCountOfWords();
 	}
 
-	public Collection<Spike> getSpikes() {
-		return Arrays.asList(spikesHolder.getSpikes());
+	public Collection<Hreb> getHrebs() {
+		return Arrays.asList(hrebsHolder.getHrebs());
 	}
 
-	public void addElementTo(int denotationWordNumber) {
+	public void addNewElementTo(int denotationWordNumber) {
 		final DenotationWord word = getWord(denotationWordNumber);
 		word.addElement();
 		forEachValue(getIncrementaror(1), word.getNumber());
 	}
 
-	public void addElementTo(int denotationWordNumber, int elementNumber) {
+	public void addNewElementTo(int denotationWordNumber, int elementNumber) {
 		final DenotationWord word = getWord(denotationWordNumber);
 		word.addElement(new DenotationElement(word, elementNumber));
 		forEachValue(getIncrementaror(1), word.getNumber());
@@ -124,15 +127,15 @@ public class Denotation implements CoincidenceProvider {
 		forEachValue(getIncrementaror(ignored ? -1: 1), word.getNumber());
 	}
 
-	public double computeTopikalnost(Spike spike, double cardinalNumber) {
-		return ((double)spike.getWords().size()) / cardinalNumber;
+	public double computeTopicality(Hreb hreb, double cardinalNumber) {
+		return denotationMath.computeTopicality(hreb, cardinalNumber);
 	}
 
 	public List<DenotationWord> getAllWords() {
 		return new ArrayList<DenotationWord>(denotationPoem.getAllWords().valueCollection());
 	}
 
-	private double getMaxDenotationElement() {
+	private int getMaxDenotationElement() {
 
 		int lastWordIndex = denotationPoem.getCountOfWords();
 		DenotationWord lastWord = denotationPoem.getWord(lastWordIndex);
@@ -152,110 +155,75 @@ public class Denotation implements CoincidenceProvider {
 	}
 
 	public double getTextCompactness() {
-		double n = spikesHolder.getSpikes().length;
+		double n = hrebsHolder.getHrebs().length;
 		double l = getMaxDenotationElement();
-		double numerator = 1d - (n / l);
-		double denominator = 1d - (1d / l);
-		return numerator / denominator;
+		return denotationMath.computeTextCompactness(n, l);
 	}
 
 	private long[] calcSumAndN() {
-		final Spike[] spikes = spikesHolder.getSpikes();
+		final Hreb[] hrebs = hrebsHolder.getHrebs();
 		TIntIntMap map = new TIntIntHashMap();
-		for (Spike spike : spikes) {
-			map.adjustOrPutValue(spike.size(), 1, 1);
+		for (Hreb hreb : hrebs) {
+			map.adjustOrPutValue(hreb.size(), 1, 1);
 		}
-		long sum = 0;
-		long n = 0;
-		for (int key : map.keys()) {
-			sum += Math.pow(key, 2) * map.get(key);
-			n += key * map.get(key);
-		}
+		long sum = denotationMath.computeSumHiFi(map);
+		long n = denotationMath.computeSumN(map);
 		return new long[]{sum, n};
 	}
 
 	public double getTextCentralization() {
 		long[] values = calcSumAndN();
-		return getTextCentralization(values[0], values[1]);
-	}
-
-	public double getTextCentralization(long sum, long n) {
-		return ((double)sum) / Math.pow(n, 2);
+		return denotationMath.computeTextCentralization(values[0], values[1]);
 	}
 
 	public double getMacIntosh() {
 		long[] values = calcSumAndN();
 
-		double numerator = 1d - Math.sqrt(getTextCentralization(values[0], values[1]));
-		double denominator = 1d - (1d / values[1]);
-
-		return numerator / denominator;
+		return denotationMath.computeMacIntosh(getTextCentralization(), values[1]);
 	}
 
-	public double getDiffusionFor(int spikeNumber) {
-		final Spike spike = spikesHolder.getSpike(spikeNumber);
-		final List<DenotationWord> words = new ArrayList<DenotationWord>(spike.getWords());
-		if (words.isEmpty()) {
-			return 0;
-		}
-		int elementMin = Integer.MAX_VALUE;
-		int elementMax = Integer.MIN_VALUE;
-		for (int indexOf = 0; indexOf < words.size(); indexOf++) {
-			final DenotationWord word = words.get(indexOf);
-			if (word.isIgnored()  || word.getDenotationElements().isEmpty()) {
-				continue;
-			}
-			for (DenotationElement element : word.getDenotationElements()) {
-				if (element.getSpike().getNumber() != spikeNumber) {
-					continue;
-				}
-				if (element.getNumber() < elementMin) {
-					elementMin = element.getNumber();
-				}
-				if (element.getNumber() > elementMax) {
-					elementMax = element.getNumber();
-				}
-			}
-		}
-		return ( ((double)elementMax) - ((double)elementMin) ) / ((double)spike.size());
+	public double getDiffusionFor(int hrebNumber) {
+		final Hreb hreb = hrebsHolder.getHreb(hrebNumber);
+		final List<DenotationWord> words = new ArrayList<DenotationWord>(hreb.getWords());
+		return denotationMath.getDiffusionFor(words, hrebNumber, hreb.size());
 	}
 
 	@Override
-	public List<Coincidence> getCoincidenceFor(int spikeNumber) {
+	public List<Coincidence> getCoincidenceFor(int hrebNumber) {
 		List<Coincidence> coincidences = new ArrayList<Coincidence>();
 
-		final GuiPoemAsSpikeNumbers poem = getPoemAsSpikeNumbers();
+		final PoemAsHrebNumbers poem = getPoemAsHrebNumbers();
 		final int N = poem.getVersesCount();
-		final int M = poem.getVersesCountWith(spikeNumber);
+		final int M = poem.getVersesCountWith(hrebNumber);
 
-		final Spike baseSpike = getSpike(spikeNumber);
+		final Hreb baseHreb = getHreb(hrebNumber);
 
-		final List<Spike> spikes = new ArrayList<Spike>(getSpikes());
-		for (Spike anotherSpike : spikes) {
-			if (anotherSpike.getNumber() != spikeNumber) {
-				final int n = poem.getVersesCountWith(anotherSpike.getNumber());
-				final int x = poem.getVersesCountWithBoth(spikeNumber, anotherSpike.getNumber());
+		final List<Hreb> hrebs = new ArrayList<Hreb>(getHrebs());
+		for (Hreb anotherHreb : hrebs) {
+			if (anotherHreb.getNumber() != hrebNumber) {
+				final int n = poem.getVersesCountWith(anotherHreb.getNumber());
+				final int x = poem.getVersesCountWithBoth(hrebNumber, anotherHreb.getNumber());
 				if (n > 0 && x > 0) {
 					double coincidenceResult = denotationMath.computeCoincidence(N, M, n, x);
-					coincidences.add(new Coincidence(baseSpike, anotherSpike, x, coincidenceResult));
+					coincidences.add(new Coincidence(baseHreb, anotherHreb, x, coincidenceResult));
 				}
 			}
 		}
 		return coincidences;
 	}
 
-	public GuiPoemAsSpikeNumbers getPoemAsSpikeNumbers() {
-		return new GuiPoemAsSpikeNumbers(getAllWords());
+	public PoemAsHrebNumbers getPoemAsHrebNumbers() {
+		return new PoemAsHrebNumbers(getAllWords());
 	}
 
-	public List<Coincidence> getDeterministicFor(int spikeNumber) {
-		final List<Coincidence> coincidences = getCoincidenceFor(spikeNumber);
-		final Spike baseSpike = getSpike(spikeNumber);
-		for (DenotationWord denotationWord : baseSpike.getWords()) {
+	public List<Coincidence> getDeterministicFor(int hrebNumber) {
+		final List<Coincidence> coincidences = getCoincidenceFor(hrebNumber);
+		final Hreb baseHreb = getHreb(hrebNumber);
+		for (DenotationWord denotationWord : baseHreb.getWords()) {
 			for (DenotationElement denotationElement : denotationWord.getDenotationElements()) {
-				final Spike spike = denotationElement.getSpike();
-				if (spike != null && spike.getNumber() != spikeNumber) {
-					coincidences.add(new Determination(baseSpike, spike));
+				final Hreb hreb = denotationElement.getHreb();
+				if (hreb != null && hreb.getNumber() != hrebNumber) {
+					coincidences.add(new Determination(baseHreb, hreb));
 				}
 			}
 		}
@@ -263,49 +231,15 @@ public class Denotation implements CoincidenceProvider {
 	}
 
 	public double getNonContinuousIndex() {
-		double min = -1;
-		for (Spike spike : getSpikes()) {
-			int spikeNumber = spike.getNumber();
-			for (Coincidence coincidence : getCoincidenceFor(spikeNumber)) {
-				final double probability = coincidence.probability;
-				if (probability <= 0) {
-					continue;
-				}
-				if (min == -1 || probability < min) {
-					min = probability;
-				}
-			}
-		}
-		return min;
+		return denotationMath.computeNonContinuousIndex(getHrebs(), this);
 	}
 
 	public double getNonIsolationIndex() {
-		List<Double> minProbabilities = new ArrayList<Double>(getSpikes().size());
-
-		for (Spike spike : getSpikes()) {
-			double min = Double.MAX_VALUE;
-			int spikeNumber = spike.getNumber();
-			for (Coincidence coincidence : getCoincidenceFor(spikeNumber)) {
-				final double probability = coincidence.probability;
-				if (probability < min) {
-					min = probability;
-				}
-			}
-			if (min != Double.MAX_VALUE) {
-				minProbabilities.add(min);
-			} else {
-				return Double.POSITIVE_INFINITY; //..no coincidence with another hreb → not possible to connect the hreb
-			}
-		}
-
-		if (minProbabilities.isEmpty()) {
-			return Double.POSITIVE_INFINITY;
-		}
-		return Collections.max(minProbabilities);
+		return denotationMath.computeNonIsolationIndex(getHrebs(), this);
 	}
 
 	public double getReachabilityIndex() {
-		ReachabilityComputer reachabilityComputer = new ReachabilityComputer(getSpikes(), this);
+		ReachabilityComputer reachabilityComputer = new ReachabilityComputer(getHrebs(), this);
 		reachabilityComputer.compute();
 		return reachabilityComputer.getResult();
 	}

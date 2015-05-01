@@ -132,59 +132,59 @@ public class DenotationWord {
 		return joined;
 	}
 
-	public boolean isInSpike() {
+	public boolean isInHreb() {
 		for (DenotationElement denotationElement : denotationElements) {
-			if (denotationElement.isInSpike()) {
+			if (denotationElement.isInHreb()) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public boolean areAllSpikesAssigned() {
+	public boolean areAllHrebsAssigned() {
 		for (DenotationElement denotationElement : denotationElements) {
-			if (!denotationElement.isInSpike()) {
+			if (!denotationElement.isInHreb()) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	public boolean isInSpike(Spike spike) {
+	public boolean isInHreb(Hreb hreb) {
 		for (DenotationElement denotationElement : denotationElements) {
-			if (denotationElement.getSpike() == spike) {
+			if (denotationElement.getHreb() == hreb) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public DenotationElement getElementInSpike(Spike spike) {
+	public DenotationElement getElementInHreb(Hreb hreb) {
 		for (DenotationElement denotationElement : denotationElements) {
-			if (denotationElement.getSpike() == spike) {
+			if (denotationElement.getHreb() == hreb) {
 				return denotationElement;
 			}
 		}
-		throw new IllegalStateException("Denotation word" + this + " is not in spike " + spike);
+		throw new IllegalStateException("Denotation word" + this + " is not in hreb " + hreb);
 	}
 
 	public boolean hasFreeElement() {
 		for (DenotationElement element : denotationElements) {
-			if (!element.isInSpike()) {
+			if (!element.isInHreb()) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public List<Spike> getSpikes() {
-		List<Spike> spikes = new ArrayList<Spike>();
+	public List<Hreb> getHrebs() {
+		List<Hreb> hrebs = new ArrayList<Hreb>();
 		for (DenotationElement element : denotationElements) {
-			if (element.isInSpike()) {
-				spikes.add(element.getSpike());
+			if (element.isInHreb()) {
+				hrebs.add(element.getHreb());
 			}
 		}
-		return Collections.unmodifiableList(spikes);
+		return Collections.unmodifiableList(hrebs);
 	}
 
 	public List<DenotationWord> getJoinedWords() {
@@ -193,7 +193,7 @@ public class DenotationWord {
 
 	public DenotationElement getFreeElement() {
 		for (DenotationElement element : denotationElements) {
-			if (!element.isInSpike()) {
+			if (!element.isInHreb()) {
 				return element;
 			}
 		}
@@ -217,7 +217,7 @@ public class DenotationWord {
 	}
 
 	void removeElement(DenotationElement element) {
-		element.onRemoveFromSpike(element.getSpike());
+		element.onRemoveFromHreb(element.getHreb());
 		denotationElements.remove(denotationElements.size() - 1);
 	}
 
@@ -234,7 +234,7 @@ public class DenotationWord {
 	public DenotationElement getFreeElement(int elementNumber) {
 		for (DenotationElement element : denotationElements) {
 			if (element.getNumber() == elementNumber) {
-				if (!element.isInSpike()) {
+				if (!element.isInHreb()) {
 					return element;
 				}
 			}
@@ -242,25 +242,25 @@ public class DenotationWord {
 		throw new IllegalStateException("Word " + this + " (number " + getNumber() + ") has no free element with number " + elementNumber);
 	}
 
-	void onRemoveFromSpike(Spike spike) {
-		getElementForSpike(spike).onRemoveFromSpike(spike);
+	void onRemoveFromHreb(Hreb hreb) {
+		getElementForHreb(hreb).onRemoveFromHreb(hreb);
 	}
 
-	void onAddToSpike(Spike spike, String input) {
-		getFreeElement().onAddToSpike(spike, input);
+	void onAddToHreb(Hreb hreb, String input) {
+		getFreeElement().onAddToHreb(hreb, input);
 	}
 
-	void onAddToSpike(Spike spike, String input, int elementNumber) {
-		getFreeElement(elementNumber).onAddToSpike(spike, input);
+	void onAddToHreb(Hreb hreb, String input, int elementNumber) {
+		getFreeElement(elementNumber).onAddToHreb(hreb, input);
 	}
 
 
-	private DenotationElement getElementForSpike(Spike spike) {
+	private DenotationElement getElementForHreb(Hreb hreb) {
 		for (DenotationElement element : denotationElements) {
-			if (element.getSpike() == spike) {
+			if (element.getHreb() == hreb) {
 				return element;
 			}
 		}
-		throw new IllegalArgumentException("Cannot found element for spike "  + spike + ". Word " + this + " has only elements " + denotationElements);
+		throw new IllegalArgumentException("Cannot found element for hreb "  + hreb + ". Word " + this + " has only elements " + denotationElements);
 	}
 }
