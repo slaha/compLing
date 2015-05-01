@@ -6,7 +6,7 @@
 
     <groupId>cz.compling</groupId>
     <artifactId>compLing</artifactId>
-    <version>0.99.6-SNAPSHOT</version>
+    <version>0.99.7-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
